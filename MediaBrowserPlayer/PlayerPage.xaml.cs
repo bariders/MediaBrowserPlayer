@@ -25,6 +25,7 @@ namespace MediaBrowserPlayer
         public PlayerPage()
         {
             this.InitializeComponent();
+            this.NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Enabled;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

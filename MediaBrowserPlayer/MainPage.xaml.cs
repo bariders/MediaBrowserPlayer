@@ -30,6 +30,8 @@ namespace MediaBrowserPlayer
         {
             this.InitializeComponent();
 
+            this.NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Enabled;
+
             mainWebPage.NavigationStarting += OnNavigate;
 
             string server = appSettings.GetServer();
