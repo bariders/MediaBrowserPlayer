@@ -8,8 +8,19 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <TextBox x:Name="notificationBox" HorizontalAlignment="Left" Margin="34,503,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="219" Width="1301" AcceptsReturn="True"/>
-        <WebView x:Name="mainWebPage" HorizontalAlignment="Left" Height="430" Margin="34,47,0,0" VerticalAlignment="Top" Width="1301"/>
 
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="200" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <WebView x:Name="mainWebPage" Grid.Row="0"/>
+        <TextBox x:Name="notificationBox" TextWrapping="Wrap" AcceptsReturn="True" Grid.Row="1"/>
+        
+        
     </Grid>
 </Page>

@@ -1,0 +1,22 @@
+﻿<SettingsFlyout
+    x:Class="MediaBrowserPlayer.SettingsFlyoutMain"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MediaBrowserPlayer"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    IconSource="Assets/SmallLogo.png"
+    Title="Server Settings"
+    d:DesignWidth="346" Unloaded="SettingsFlyout_Unloaded" Loaded="SettingsFlyout_Loaded">
+
+    <!-- This StackPanel acts as a root panel for vertical layout of the content sections -->
+    <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" RenderTransformOrigin="0.514,0.471" Height="206" Width="265" >
+
+        <TextBlock TextWrapping="Wrap" Text="Server" RenderTransformOrigin="0.468,4.429" FontSize="14" Height="21"/>
+        <TextBox x:Name="setting_server" Height="22" TextWrapping="Wrap" Text="" RenderTransformOrigin="0.112,0.469"/>
+        <TextBlock HorizontalAlignment="Left" Height="24" TextWrapping="Wrap" Text="Port" Width="265" FontSize="14"/>
+        <TextBox x:Name="setting_port" TextWrapping="Wrap"/>
+
+    </StackPanel>
+</SettingsFlyout>

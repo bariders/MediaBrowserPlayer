@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Windows.Networking.Sockets;
 using Windows.Storage.Streams;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.Web;
@@ -39,22 +40,30 @@ namespace MediaBrowserPlayer.Classes
 
         public async void SetupWebSocket()
         {
-                     
-            Uri server = new Uri("ws://localhost:8096/mediabrowser");
-            webSocket = new MessageWebSocket();
-            webSocket.Control.MessageType = SocketMessageType.Utf8;
+            try
+            {
+                Uri server = new Uri("ws://192.168.0.15:8096/mediabrowser");
+                webSocket = new MessageWebSocket();
+                webSocket.Control.MessageType = SocketMessageType.Utf8;
 
-            webSocket.MessageReceived += MessageReceived;
+                webSocket.MessageReceived += MessageReceived;
 
-            webSocket.Closed += Closed;
+                webSocket.Closed += Closed;
 
-            await webSocket.ConnectAsync(server);
+                await webSocket.ConnectAsync(server);
 
-            DataWriter messageWriter = new DataWriter(webSocket.OutputStream);
+                DataWriter messageWriter = new DataWriter(webSocket.OutputStream);
 
-            string identityMessage = "{\"MessageType\":\"Identity\", \"Data\":\"Windows RT|12345|0.0.1|MBP\"}";
-            messageWriter.WriteString(identityMessage);
-            await messageWriter.StoreAsync();
+                string identityMessage = "{\"MessageType\":\"Identity\", \"Data\":\"Windows RT|12345|0.0.1|MBP\"}";
+                messageWriter.WriteString(identityMessage);
+                await messageWriter.StoreAsync();
+            }
+            catch(Exception e)
+            {
+                string errorString = "Error Creating WebSockt : " + e.Message;
+                MessageDialog msg = new MessageDialog(errorString, "WebSocket Error");
+                msg.ShowAsync();
+            }
 
         }
 
