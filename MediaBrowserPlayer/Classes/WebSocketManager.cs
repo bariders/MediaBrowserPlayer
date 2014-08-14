@@ -79,9 +79,11 @@ namespace MediaBrowserPlayer.Classes
                     Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
                     {
                         Frame rootFrame = Window.Current.Content as Frame;
+
                         var p = rootFrame.Content as MainPage;
                         p.LogMessage(read);
-                        
+
+                        rootFrame.Navigate(typeof(PlayerPage));
                     });
 
 

@@ -28,15 +28,15 @@ namespace MediaBrowserPlayer
         {
             var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
 
-            localSettings.Values["server_host"] = setting_server.Text;
-            localSettings.Values["server_port"] = setting_port.Text;
+            localSettings.Values["server_host"] = setting_server.Text.Trim();
+            localSettings.Values["server_port"] = setting_port.Text.Trim();
         }
 
         private void SettingsFlyout_Loaded(object sender, RoutedEventArgs e)
         {
             var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
 
-            if (localSettings.Values["server_host"] != null)
+            if (localSettings.Values.ContainsKey("server_host"))
             {
                 setting_server.Text = ((string)localSettings.Values["server_host"]).Trim();
             }
@@ -45,7 +45,7 @@ namespace MediaBrowserPlayer
                 setting_server.Text = "localhost";
             }
 
-            if (localSettings.Values["server_port"] != null)
+            if (localSettings.Values.ContainsKey("server_host"))
             {
                 setting_port.Text = ((string)localSettings.Values["server_port"]).Trim();
             }

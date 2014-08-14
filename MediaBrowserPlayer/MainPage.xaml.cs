@@ -65,5 +65,6 @@ namespace MediaBrowserPlayer
         {
             notificationBox.Text = notificationBox.Text + data + "\n";
         }
+
     }
 }
