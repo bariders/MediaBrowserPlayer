@@ -1,0 +1,15 @@
+﻿<Page
+    x:Class="MediaBrowserPlayer.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MediaBrowserPlayer"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <TextBox x:Name="notificationBox" HorizontalAlignment="Left" Margin="34,503,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="219" Width="1301" AcceptsReturn="True"/>
+        <WebView x:Name="mainWebPage" HorizontalAlignment="Left" Height="430" Margin="34,47,0,0" VerticalAlignment="Top" Width="1301"/>
+
+    </Grid>
+</Page>
