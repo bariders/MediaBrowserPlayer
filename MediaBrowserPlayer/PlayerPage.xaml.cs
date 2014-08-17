@@ -91,6 +91,8 @@ namespace MediaBrowserPlayer
             playbackProgress.Maximum = mediaItem.duration;
 
             PlaybackAction(startIndex);
+
+            mediaDuration.Text = new TimeSpan(0, 0, (int)mediaItem.duration).ToString(@"hh\:mm\:ss");
         }
 
         void slider_PointerEntered(object sender, PointerRoutedEventArgs e)
@@ -110,7 +112,7 @@ namespace MediaBrowserPlayer
         {
             if (!_sliderpressed)
             {
-                progress.Text = mediaPlayer.Position.Add(new TimeSpan(0, 0, (int)_seekTo)).ToString(@"hh\:mm\:ss");
+                mediaPossitionText.Text = mediaPlayer.Position.Add(new TimeSpan(0, 0, (int)_seekTo)).ToString(@"hh\:mm\:ss");
                 playbackProgress.Value = mediaPlayer.Position.TotalSeconds + _seekTo;
             }
         }
@@ -128,14 +130,14 @@ namespace MediaBrowserPlayer
                 transcodingProgress.Value = info.CompletionPercentage;
 
                 String transInfo = "";
-                transInfo += "Audio Codec: " + info.AudioCodec + "\n";
-                transInfo += "AudioChannels: " + info.AudioChannels + "\n";
-                transInfo += "Video Codec: " + info.VideoCodec + "\n";
-                transInfo += "Width x Height: " + info.Width + "x" + info.Height + "\n";
+                transInfo += "ACodec: " + info.AudioCodec + "\n";
+                transInfo += "AChannels: " + info.AudioChannels + "\n";
+                transInfo += "VCodec: " + info.VideoCodec + "\n";
+                transInfo += "Res: " + info.Width + "x" + info.Height + "\n";
                 transInfo += "Container: " + info.Container + "\n";
                 transInfo += "Bitrate: " + info.Bitrate + "\n";
-                transInfo += "Framerate: " + info.Framerate + "\n";
-                transInfo += "Complete: " + info.CompletionPercentage + "\n";
+                transInfo += "Framerate: " + info.Framerate.ToString(".00") + "\n";
+                transInfo += "Complete: " + info.CompletionPercentage.ToString(".00") + "%\n";
 
                 sessionInfo.Text = transInfo;
             }
@@ -232,7 +234,7 @@ namespace MediaBrowserPlayer
                 "VideoCodec=h264&" +
                 "AudioCodec=aac&" +
                 "maxWidth=1920&" +
-                "videoBitrate=4000000&" +
+                "videoBitrate=5000000&" +
                 "audioBitrate=128000&" +
                 "EnableAutoStreamCopy=true&" +
                 "StartTimeTicks=" + startTicks;
@@ -240,6 +242,20 @@ namespace MediaBrowserPlayer
             mediaPlayer.Source = new Uri(mediaFile, UriKind.Absolute);
 
             client.PlaybackCheckinStarted(itemId, startAtSeconds);
+        }
+
+        private void mediaPlayer_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            if (gridAreaProgress.Visibility == Windows.UI.Xaml.Visibility.Collapsed)
+            {
+                gridAreaProgress.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                gridAreaInfo.Visibility = Windows.UI.Xaml.Visibility.Visible;
+            }
+            else
+            {
+                gridAreaProgress.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                gridAreaInfo.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+            }
         }
     }
 }

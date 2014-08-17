@@ -14,14 +14,50 @@
     </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Button Content="Back" HorizontalAlignment="Left" Margin="21,365,0,0" VerticalAlignment="Top" Click="Button_Click" Width="150"/>
-        <TextBox x:Name="stats" HorizontalAlignment="Left" Margin="24,256,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="-3.211,-5.938" Width="144"/>
-        <TextBox x:Name="progress" HorizontalAlignment="Left" Margin="24,293,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="144"/>
-        <Slider x:Name="playbackProgress" HorizontalAlignment="Left" Margin="189,467,0,0" VerticalAlignment="Top" Width="1020" Height="39" ThumbToolTipValueConverter="{StaticResource SecondsToTimeSpan}"/>
-        <PlayerFramework:MediaPlayer x:Name="mediaPlayer" Margin="189,57,157,311" Width="1020" Height="400" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <Button x:Name="pauseButton" Content="Pause" HorizontalAlignment="Left" Margin="21,422,0,0" VerticalAlignment="Top" Click="pauseButton_Click" Width="150"/>
-        <TextBox x:Name="sessionInfo" HorizontalAlignment="Left" Margin="189,529,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="206" Width="1020"/>
-        <ProgressBar x:Name="transcodingProgress" HorizontalAlignment="Left" Height="9" Margin="189,506,0,0" VerticalAlignment="Top" Width="1020" IsDoubleTapEnabled="False" IsHoldingEnabled="False" IsRightTapEnabled="False" IsTapEnabled="False"/>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <Grid x:Name="gridAreaPlayer" Grid.Row="0" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            
+            <PlayerFramework:MediaPlayer Grid.Row="0" Grid.Column="0" x:Name="mediaPlayer" Width="Auto" Height="Auto" Tapped="mediaPlayer_Tapped"/>
+        </Grid>
+
+        <Grid x:Name="gridAreaInfo" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2">
+            <Button Content="Back" Margin="0,0,0,0" Click="Button_Click" Width="150" VerticalAlignment="Top" />
+            <Button x:Name="pauseButton" Content="Pause" HorizontalAlignment="Left" Margin="0,50,0,0" VerticalAlignment="Top" Click="pauseButton_Click" Width="150"/>
+            <TextBox x:Name="stats" HorizontalAlignment="Left" Margin="0,100,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150"/>
+            <TextBox x:Name="sessionInfo" Margin="0,150,0,0" TextWrapping="Wrap" Height="300" VerticalAlignment="Top" />
+        </Grid>
+
+        <Grid x:Name="gridAreaProgress" Grid.Row="1" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="150" />
+            </Grid.ColumnDefinitions>
+            <TextBlock x:Name="mediaPossitionText" Grid.Row="0" Grid.Column="0" Text="Test" FontSize="14"/>
+            <TextBlock x:Name="mediaDuration" Grid.Row="0" Grid.Column="2" Text="Test" FontSize="14" TextAlignment="Right"/>
+            <Slider x:Name="playbackProgress" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"  Width="Auto" Height="60" ThumbToolTipValueConverter="{StaticResource SecondsToTimeSpan}" RenderTransformOrigin="0,0"/>
+            <ProgressBar x:Name="transcodingProgress" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Height="10" Width="Auto" IsDoubleTapEnabled="False" IsHoldingEnabled="False" IsRightTapEnabled="False" IsTapEnabled="False" Foreground="#FF3CC52E"/>
+        </Grid>
 
     </Grid>
 </Page>
