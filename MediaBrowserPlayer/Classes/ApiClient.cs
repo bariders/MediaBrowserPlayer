@@ -53,6 +53,55 @@ namespace MediaBrowserPlayer.Classes
             return value;
         }
 
+        public async Task<SessionInfo> GetSessionInfo()
+        {
+            string server = settings.GetServer();
+            if (server == null)
+            {
+                throw new Exception("Server not set");
+            }
+
+            Uri url = new Uri("http://" + server + "/mediabrowser/Sessions?DeviceId=" + settings.GetDeviceId() + "&format=json");
+
+            HttpClient httpClient = new HttpClient();
+
+            string authorization = await GetAuthorizationHeader();
+            httpClient.DefaultRequestHeaders.Add("Authorization", authorization);
+
+            string authToken = await Authenticate();
+            httpClient.DefaultRequestHeaders.Add("X-MediaBrowser-Token", authToken);
+
+            HttpResponseMessage itemResponce = await httpClient.GetAsync(url);
+            itemResponce.EnsureSuccessStatusCode();
+
+            string responceText = await itemResponce.Content.ReadAsStringAsync();
+
+            JArray sessionInfoList = JArray.Parse(responceText);
+
+            SessionInfo info = null;
+
+            if (sessionInfoList.Count > 0)
+            {
+                JObject sessionInfo = (JObject)sessionInfoList[0];
+
+                // build the responce object
+                info = new SessionInfo();
+
+                JObject transcodingInfo = (JObject)sessionInfo["TranscodingInfo"];
+                info.AudioCodec = (transcodingInfo["AudioCodec"] != null) ? (string)transcodingInfo["AudioCodec"] : "";
+                info.VideoCodec = (transcodingInfo["VideoCodec"] != null) ? (string)transcodingInfo["VideoCodec"] : "";
+                info.Container = (transcodingInfo["Container"] != null) ? (string)transcodingInfo["Container"] : "";
+                info.Bitrate = (transcodingInfo["Bitrate"] != null) ? (int)transcodingInfo["Bitrate"] : 0;
+                info.Framerate = (transcodingInfo["Framerate"] != null) ? (double)transcodingInfo["Framerate"] : 0;
+                info.CompletionPercentage = (transcodingInfo["CompletionPercentage"] != null) ? (double)transcodingInfo["CompletionPercentage"] : 0;
+                info.Width = (transcodingInfo["Width"] != null) ? (int)transcodingInfo["Width"] : 0;
+                info.Height = (transcodingInfo["Height"] != null) ? (int)transcodingInfo["Height"] : 0;
+                info.AudioChannels = (transcodingInfo["AudioChannels"] != null) ? (int)transcodingInfo["AudioChannels"] : 0;
+            }
+
+            return info;
+        }
+
         public async void PlaybackCheckinProgress(string itemId, long position)
         {
             HttpClient httpClient = new HttpClient();

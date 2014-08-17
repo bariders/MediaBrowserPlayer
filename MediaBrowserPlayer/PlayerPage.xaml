@@ -21,6 +21,7 @@
         <PlayerFramework:MediaPlayer x:Name="mediaPlayer" Margin="189,57,157,311" Width="1020" Height="400" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <Button x:Name="pauseButton" Content="Pause" HorizontalAlignment="Left" Margin="21,422,0,0" VerticalAlignment="Top" Click="pauseButton_Click" Width="150"/>
         <TextBox x:Name="sessionInfo" HorizontalAlignment="Left" Margin="189,529,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="206" Width="1020"/>
+        <ProgressBar x:Name="transcodingProgress" HorizontalAlignment="Left" Height="9" Margin="189,506,0,0" VerticalAlignment="Top" Width="1020" IsDoubleTapEnabled="False" IsHoldingEnabled="False" IsRightTapEnabled="False" IsTapEnabled="False"/>
 
     </Grid>
 </Page>

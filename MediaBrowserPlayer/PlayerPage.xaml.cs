@@ -56,6 +56,9 @@ namespace MediaBrowserPlayer
 
             mediaPlayer.BufferingProgressChanged += mediaPlayer_BufferingProgressChanged;
 
+            // reset session info controls
+            sessionInfo.Text = "";
+            transcodingProgress.Value = 0;
 
             // process the play action
             JObject playRequestData = e.Parameter as JObject;
@@ -112,11 +115,31 @@ namespace MediaBrowserPlayer
             }
         }
 
-        private void _playbackCheckin_Tick(object sender, object e)
+        private async void _playbackCheckin_Tick(object sender, object e)
         {
             long possition = (long)playbackProgress.Value;
 
             client.PlaybackCheckinProgress(itemId, possition);
+
+            SessionInfo info = await client.GetSessionInfo();
+
+            if (info != null)
+            {
+                transcodingProgress.Value = info.CompletionPercentage;
+
+                String transInfo = "";
+                transInfo += "Audio Codec: " + info.AudioCodec + "\n";
+                transInfo += "AudioChannels: " + info.AudioChannels + "\n";
+                transInfo += "Video Codec: " + info.VideoCodec + "\n";
+                transInfo += "Width x Height: " + info.Width + "x" + info.Height + "\n";
+                transInfo += "Container: " + info.Container + "\n";
+                transInfo += "Bitrate: " + info.Bitrate + "\n";
+                transInfo += "Framerate: " + info.Framerate + "\n";
+                transInfo += "Complete: " + info.CompletionPercentage + "\n";
+
+                sessionInfo.Text = transInfo;
+            }
+            
         }
 
         private void SetupTimer()

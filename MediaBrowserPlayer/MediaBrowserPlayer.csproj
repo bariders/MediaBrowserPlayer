@@ -109,6 +109,7 @@
     <Compile Include="Classes\AppSettings.cs" />
     <Compile Include="Classes\MediaItem.cs" />
     <Compile Include="Classes\SecondsToTimeSpan.cs" />
+    <Compile Include="Classes\SessionInfo.cs" />
     <Compile Include="Classes\WebSocketManager.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
