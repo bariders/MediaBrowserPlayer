@@ -9,10 +9,58 @@ namespace MediaBrowserPlayer.Classes
     class AppSettings
     {
         
-
         public AppSettings()
         {
 
+        }
+
+        public string GetDeviceId()
+        {
+            string guid = GetAppSettingString("device_id");
+
+            if(string.IsNullOrEmpty(guid))
+            {
+                Guid newGuid = Guid.NewGuid();
+                guid = newGuid.ToString();
+                SaveAppSettingString("device_id", guid);
+            }
+
+            return guid;
+        }
+
+        public string GetDeviceName()
+        {
+            string device_name = GetAppSettingString("device_name");
+            return device_name.Trim();
+        }
+
+        public string GetUserName()
+        {
+            string value = GetAppSettingString("user_name");
+            return value.Trim();
+        }
+
+        public string GetPassword()
+        {
+            string value = GetAppSettingString("password");
+            return value.Trim();
+        }
+
+        public void SaveAppSettingString(string name, string value)
+        {
+            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+            localSettings.Values[name] = value;
+        }
+
+        public string GetAppSettingString(string name)
+        {
+            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+            string tempData = (string)localSettings.Values[name];
+            if (tempData == null)
+            {
+                return "";
+            }
+            return tempData;
         }
 
         public string GetServerPort()

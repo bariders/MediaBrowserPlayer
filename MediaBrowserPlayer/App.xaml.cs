@@ -20,6 +20,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.Web;
 using Windows.UI.ApplicationSettings;
+using Windows.UI.Popups;
 
 // The Blank Application template is documented at http://go.microsoft.com/fwlink/?LinkId=234227
 
@@ -66,6 +67,9 @@ namespace MediaBrowserPlayer
 
         private void OnResume(object sender, object e)
         {
+            socketManager.CloseWebSocket();
+            socketManager.SetupWebSocket();
+
             Frame rootFrame = Window.Current.Content as Frame;
             if (rootFrame != null)
             {
@@ -79,7 +83,7 @@ namespace MediaBrowserPlayer
         /// will be used such as when the application is launched to open a specific file.
         /// </summary>
         /// <param name="e">Details about the launch request and process.</param>
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        protected async override void OnLaunched(LaunchActivatedEventArgs e)
         {
 
 #if DEBUG
@@ -125,6 +129,21 @@ namespace MediaBrowserPlayer
             p.LogMessage("AppLaunched");
 
             socketManager.SetupWebSocket();
+
+            try
+            {
+                ApiClient apiClient = new ApiClient();
+                await apiClient.Authenticate();
+            }
+            catch(Exception exp)
+            {
+                MessageDialog msg = new MessageDialog(exp.Message, "Error Authenticating");
+                try
+                {
+                    msg.ShowAsync();
+                }
+                catch (Exception) { }
+            }
         }
 
         /// <summary>

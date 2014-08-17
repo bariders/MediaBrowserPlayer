@@ -30,29 +30,43 @@ namespace MediaBrowserPlayer
 
             localSettings.Values["server_host"] = setting_server.Text.Trim();
             localSettings.Values["server_port"] = setting_port.Text.Trim();
+            localSettings.Values["user_name"] = setting_user_name.Text.Trim();
+            localSettings.Values["password"] = setting_password.Text.Trim();
+            localSettings.Values["device_name"] = setting_device_name.Text.Trim();
+        }
+
+        private string GetSetting(string name)
+        {
+            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+
+            if (localSettings.Values.ContainsKey(name))
+            {
+                return ((string)localSettings.Values[name]).Trim();
+            }
+            else
+            {
+                return "";
+            }
         }
 
         private void SettingsFlyout_Loaded(object sender, RoutedEventArgs e)
         {
             var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
 
-            if (localSettings.Values.ContainsKey("server_host"))
-            {
-                setting_server.Text = ((string)localSettings.Values["server_host"]).Trim();
-            }
-            else
+            setting_server.Text = GetSetting("server_host");
+            if(setting_server.Text == "")
             {
                 setting_server.Text = "localhost";
             }
-
-            if (localSettings.Values.ContainsKey("server_host"))
-            {
-                setting_port.Text = ((string)localSettings.Values["server_port"]).Trim();
-            }
-            else
+            setting_port.Text = GetSetting("server_port");
+            if(setting_port.Text == "")
             {
                 setting_port.Text = "8096";
-            }   
+            }
+
+            setting_user_name.Text = GetSetting("user_name");
+            setting_password.Text = GetSetting("password");
+            setting_device_name.Text = GetSetting("device_name");
         }
     }
 }

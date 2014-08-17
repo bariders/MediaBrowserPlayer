@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,7 +17,7 @@ namespace MediaBrowserPlayer.Classes
 
     class WebSocketManager
     {
-
+        private AppSettings settings = new AppSettings();
         private MessageWebSocket webSocket = null;
 
         public WebSocketManager()
@@ -42,7 +43,13 @@ namespace MediaBrowserPlayer.Classes
         {
             try
             {
-                Uri server = new Uri("ws://192.168.0.15:8096/mediabrowser");
+                string server = settings.GetServer();
+                if (server == null)
+                {
+                    throw new Exception("Server not set");
+                }
+
+                Uri serverUri = new Uri("ws://" + server + "/mediabrowser");
                 webSocket = new MessageWebSocket();
                 webSocket.Control.MessageType = SocketMessageType.Utf8;
 
@@ -50,17 +57,24 @@ namespace MediaBrowserPlayer.Classes
 
                 webSocket.Closed += Closed;
 
-                await webSocket.ConnectAsync(server);
+                await webSocket.ConnectAsync(serverUri);
 
                 DataWriter messageWriter = new DataWriter(webSocket.OutputStream);
 
-                string identityMessage = "{\"MessageType\":\"Identity\", \"Data\":\"Windows RT|12345|0.0.1|MBP\"}";
+                string deviceName = settings.GetDeviceName();
+                string value = "MBP";
+                if (string.IsNullOrEmpty(deviceName) == false)
+                {
+                    value = "MBP-" + settings.GetDeviceName();
+                }
+
+                string identityMessage = "{\"MessageType\":\"Identity\", \"Data\":\"Windows RT|" + settings.GetDeviceId() + "|0.0.1|" + value + "\"}";
                 messageWriter.WriteString(identityMessage);
                 await messageWriter.StoreAsync();
             }
             catch(Exception e)
             {
-                string errorString = "Error Creating WebSockt : " + e.Message;
+                string errorString = "Error Creating WebSocket : " + e.Message;
                 MessageDialog msg = new MessageDialog(errorString, "WebSocket Error");
                 msg.ShowAsync();
             }
@@ -76,15 +90,33 @@ namespace MediaBrowserPlayer.Classes
                     reader.UnicodeEncoding = Windows.Storage.Streams.UnicodeEncoding.Utf8;
                     string read = reader.ReadString(reader.UnconsumedBufferLength);
 
-                    Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                    // parse the message 
+                    JObject messageObject = null;
+                    try
                     {
-                        Frame rootFrame = Window.Current.Content as Frame;
+                        messageObject = JObject.Parse(read);
+                    }
+                    catch(Exception e)
+                    {
+                        messageObject = null;
+                    }
 
-                        var p = rootFrame.Content as MainPage;
-                        p.LogMessage(read);
+                    // if we have an object and it is of type play
+                    if (messageObject != null && "Play" == (string)messageObject["MessageType"])
+                    {
+                        Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                        {
+                            Frame rootFrame = Window.Current.Content as Frame;
 
-                        rootFrame.Navigate(typeof(PlayerPage));
-                    });
+                            var p = rootFrame.Content as MainPage;
+                            if (p != null)
+                            {
+                                p.LogMessage(read);
+                            }
+
+                            rootFrame.Navigate(typeof(PlayerPage), messageObject);
+                        });
+                    }
 
 
                 }

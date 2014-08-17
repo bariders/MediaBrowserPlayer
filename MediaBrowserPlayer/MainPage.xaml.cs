@@ -24,7 +24,8 @@ namespace MediaBrowserPlayer
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        AppSettings appSettings = new AppSettings();
+        private AppSettings appSettings = new AppSettings();
+        private bool navigationStarted = false;
 
         public MainPage()
         {
@@ -32,19 +33,27 @@ namespace MediaBrowserPlayer
 
             this.NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Enabled;
 
+            this.Loaded += MainPage_Loaded;
+
             mainWebPage.NavigationStarting += OnNavigate;
+        }
 
-            string server = appSettings.GetServer();
-
-            if (server != null)
+        private void MainPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (navigationStarted == false)
             {
-                Uri mb = new Uri("http://" + server + "/mediabrowser");
-                mainWebPage.Navigate(mb);
-            }
-            else
-            {
-                MessageDialog msg = new MessageDialog("Server Not Set", "Error");
-                msg.ShowAsync();
+                navigationStarted = true;
+                try
+                {
+                    string server = appSettings.GetServer();
+                    Uri mb = new Uri("http://" + server + "/mediabrowser");
+                    mainWebPage.Navigate(mb);
+                }
+                catch (Exception exeption)
+                {
+                    MessageDialog msg = new MessageDialog("Server Not Correct:\n" + exeption.Message, "Error");
+                    msg.ShowAsync();
+                }
             }
         }
 

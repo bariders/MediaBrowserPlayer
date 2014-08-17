@@ -11,12 +11,18 @@
     d:DesignWidth="346" Unloaded="SettingsFlyout_Unloaded" Loaded="SettingsFlyout_Loaded">
 
     <!-- This StackPanel acts as a root panel for vertical layout of the content sections -->
-    <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" RenderTransformOrigin="0.514,0.471" Height="206" Width="265" >
+    <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" RenderTransformOrigin="0.514,0.471" Height="289" Width="265" >
 
-        <TextBlock TextWrapping="Wrap" Text="Server" RenderTransformOrigin="0.468,4.429" FontSize="14" Height="21"/>
+        <TextBlock TextWrapping="Wrap" Text="Server" RenderTransformOrigin="0.468,4.429" FontSize="16" Height="21"/>
         <TextBox x:Name="setting_server" Height="22" TextWrapping="Wrap" Text="" RenderTransformOrigin="0.112,0.469"/>
-        <TextBlock HorizontalAlignment="Left" Height="24" TextWrapping="Wrap" Text="Port" Width="265" FontSize="14"/>
+        <TextBlock HorizontalAlignment="Left" Height="24" TextWrapping="Wrap" Text="Port" Width="265" FontSize="16"/>
         <TextBox x:Name="setting_port" TextWrapping="Wrap"/>
+        <TextBlock TextWrapping="Wrap" Text="User Name" FontSize="16"/>
+        <TextBox x:Name="setting_user_name" TextWrapping="Wrap"/>
+        <TextBlock TextWrapping="Wrap" Text="Password" FontSize="16"/>
+        <TextBox x:Name="setting_password" TextWrapping="Wrap"/>
+        <TextBlock TextWrapping="Wrap" Text="Device Name" FontSize="16"/>
+        <TextBox x:Name="setting_device_name" TextWrapping="Wrap"/>
 
     </StackPanel>
 </SettingsFlyout>
