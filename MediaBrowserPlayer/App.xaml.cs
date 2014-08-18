@@ -50,16 +50,13 @@ namespace MediaBrowserPlayer
             //notifications.Add(new Notification() { Title = "Test Title", Message = "This is a test" });
 
             notificationTimer.Tick += NotificationTimer_Tick;
-            notificationTimer.Interval = TimeSpan.FromSeconds(10);
+            notificationTimer.Interval = TimeSpan.FromSeconds(3);
             notificationTimer.Start();
         }
 
         public static void AddNotification(Notification notification)
         {
             notifications.Add(notification);
-
-            // set interval to a low priority
-            notificationTimer.Interval = TimeSpan.FromSeconds(1);
         }
 
         private async void NotificationTimer_Tick(object sender, object e)
@@ -89,9 +86,6 @@ namespace MediaBrowserPlayer
             {
                 notificationRunning = false;
             }
-
-            // set interval to a low priority
-            notificationTimer.Interval = TimeSpan.FromSeconds(10);
         }
 
 
@@ -128,13 +122,6 @@ namespace MediaBrowserPlayer
             await socketManager.SetupWebSocket();
             ApiClient apiClient = new ApiClient();
             await apiClient.SetCapabilities();
-
-            Frame rootFrame = Window.Current.Content as Frame;
-            if (rootFrame != null)
-            {
-                var p = rootFrame.Content as MainPage;
-                p.LogMessage("AppResumed");
-            }
         }
 
         /// <summary>
@@ -184,9 +171,6 @@ namespace MediaBrowserPlayer
             // Ensure the current window is active
             Window.Current.Activate();
 
-            var p = rootFrame.Content as MainPage;
-            p.LogMessage("AppLaunched");
-
             ApiClient apiClient = new ApiClient();
 
             try
@@ -223,13 +207,6 @@ namespace MediaBrowserPlayer
         /// <param name="e">Details about the suspend request.</param>
         private void OnSuspending(object sender, SuspendingEventArgs e)
         {
-            Frame rootFrame = Window.Current.Content as Frame;
-            if(rootFrame != null)
-            {
-                var p = rootFrame.Content as MainPage;
-                p.LogMessage("AppSuspending");
-            }
-
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Save application state and stop any background activity
             deferral.Complete();

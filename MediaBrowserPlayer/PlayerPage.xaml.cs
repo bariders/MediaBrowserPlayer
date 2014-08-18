@@ -55,7 +55,14 @@ namespace MediaBrowserPlayer
             mediaPlayer.BufferingProgressChanged += mediaPlayer_BufferingProgressChanged;
 
             // reset session info controls
-            sessionInfo.Text = "";
+            transcodeInfoACodec.Text = "-";
+            transcodeInfoVCodec.Text = "-";
+            transcodeInfoRes.Text = "-";
+            transcodeInfoChan.Text = "-";
+            transcodeInfoBitrate.Text = "-";
+            transcodeInfoSpeed.Text = "-";
+            transcodeInfoComplete.Text = "-";
+            playbackInfoBuffer.Text = "-";
             transcodingProgress.Value = 0;
 
             // process the play action
@@ -94,6 +101,10 @@ namespace MediaBrowserPlayer
 
                 mediaDuration.Text = new TimeSpan(0, 0, (int)mediaItem.duration).ToString(@"hh\:mm\:ss");
             }
+            else
+            {
+                itemId = null;
+            }
         }
 
         void slider_PointerEntered(object sender, PointerRoutedEventArgs e)
@@ -130,17 +141,14 @@ namespace MediaBrowserPlayer
             {
                 transcodingProgress.Value = info.CompletionPercentage;
 
-                String transInfo = "";
-                transInfo += "ACodec: " + info.AudioCodec + "\n";
-                transInfo += "AChannels: " + info.AudioChannels + "\n";
-                transInfo += "VCodec: " + info.VideoCodec + "\n";
-                transInfo += "Res: " + info.Width + "x" + info.Height + "\n";
-                transInfo += "Container: " + info.Container + "\n";
-                transInfo += "Bitrate: " + info.Bitrate + "\n";
-                transInfo += "Framerate: " + info.Framerate.ToString(".00") + "\n";
-                transInfo += "Complete: " + info.CompletionPercentage.ToString(".00") + "%\n";
+                transcodeInfoACodec.Text = info.AudioCodec;
+                transcodeInfoVCodec.Text = info.VideoCodec;
+                transcodeInfoRes.Text = info.Width + "x" + info.Height;
+                transcodeInfoChan.Text = info.AudioChannels.ToString();
+                transcodeInfoBitrate.Text = info.Bitrate.ToString("n0");
+                transcodeInfoSpeed.Text = info.Framerate.ToString("f1") + " fps";
+                transcodeInfoComplete.Text = info.CompletionPercentage.ToString("f1") + "%";
 
-                sessionInfo.Text = transInfo;
             }
             
         }
@@ -151,7 +159,7 @@ namespace MediaBrowserPlayer
             _timer.Interval = TimeSpan.FromSeconds(1);
 
             _playbackCheckin = new DispatcherTimer();
-            _playbackCheckin.Interval = TimeSpan.FromSeconds(10);
+            _playbackCheckin.Interval = TimeSpan.FromSeconds(5);
 
             StartTimer();
         }
@@ -184,7 +192,13 @@ namespace MediaBrowserPlayer
         private void mediaPlayer_BufferingProgressChanged(object sender, RoutedEventArgs e)
         {
             int percent = (int)(mediaPlayer.BufferingProgress * 100);
-            stats.Text = percent.ToString() + "%";
+
+            if (percent > 100)
+            {
+                percent = 0;
+            }
+
+            playbackInfoBuffer.Text = percent.ToString() + "%";
         }
 
         private void mediaPlayer_MediaFailed(object sender, ExceptionRoutedEventArgs e)
@@ -203,8 +217,11 @@ namespace MediaBrowserPlayer
             mediaPlayer.Close();
             StopTimer();
 
-            long possition = (long)playbackProgress.Value;
-            client.PlaybackCheckinStopped(itemId, possition);
+            if (itemId != null)
+            {
+                long possition = (long)playbackProgress.Value;
+                client.PlaybackCheckinStopped(itemId, possition);
+            }
 
             Frame rootFrame = Window.Current.Content as Frame;
             rootFrame.Navigate(typeof(MainPage));
@@ -225,8 +242,6 @@ namespace MediaBrowserPlayer
         private void PlaybackAction(long startAtSeconds)
         {
             _seekTo = startAtSeconds;
-
-            stats.Text = playbackProgress.Value.ToString();
 
             long startTicks = startAtSeconds * 1000 * 10000;
 

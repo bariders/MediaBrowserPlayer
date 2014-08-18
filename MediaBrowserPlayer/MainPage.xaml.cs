@@ -75,11 +75,6 @@ namespace MediaBrowserPlayer
 
         }
 
-        public void LogMessage(string data)
-        {
-            notificationBox.Text = notificationBox.Text + data + "\n";
-        }
-
         private void AppBarButton_Back(object sender, RoutedEventArgs e)
         {
             mainWebPage.GoBack();

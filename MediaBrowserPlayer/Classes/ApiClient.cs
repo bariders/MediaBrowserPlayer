@@ -59,6 +59,11 @@ namespace MediaBrowserPlayer.Classes
             SessionInfo sessionInfo;
             sessionInfo = await GetSessionInfo();
 
+            if(sessionInfo == null)
+            {
+                return false;
+            }
+
             string server = settings.GetServer();
             if (server == null)
             {

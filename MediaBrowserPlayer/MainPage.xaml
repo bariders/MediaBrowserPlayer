@@ -21,7 +21,6 @@
 
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
-            <RowDefinition Height="100" />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -29,8 +28,6 @@
         </Grid.ColumnDefinitions>
 
         <WebView x:Name="mainWebPage" Grid.Row="0"/>
-        <TextBox x:Name="notificationBox" TextWrapping="Wrap" AcceptsReturn="True" Grid.Row="1"/>
-        
         
     </Grid>
 </Page>

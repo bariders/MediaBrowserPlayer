@@ -36,10 +36,53 @@
         </Grid>
 
         <Grid x:Name="gridAreaInfo" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2">
+            
+            
             <Button Content="Back" Margin="0,0,0,0" Click="Button_Click" Width="150" VerticalAlignment="Top" />
             <Button x:Name="pauseButton" Content="Pause" HorizontalAlignment="Left" Margin="0,50,0,0" VerticalAlignment="Top" Click="pauseButton_Click" Width="150"/>
-            <TextBox x:Name="stats" HorizontalAlignment="Left" Margin="0,100,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150"/>
-            <TextBox x:Name="sessionInfo" Margin="0,150,0,0" TextWrapping="Wrap" Height="300" VerticalAlignment="Top" />
+
+            <Grid Margin="10,120,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Audio:" FontSize="14" TextAlignment="Right"/>
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="-" FontSize="14" TextAlignment="Left" x:Name="transcodeInfoACodec" Margin="2,0,0,0"/>
+
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Video:" FontSize="14" TextAlignment="Right"/>
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="-" FontSize="14" TextAlignment="Left" x:Name="transcodeInfoVCodec" Margin="2,0,0,0"/>
+
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="Res:" FontSize="14" TextAlignment="Right"/>
+                <TextBlock Grid.Row="2" Grid.Column="1" Text="-" FontSize="14" TextAlignment="Left" x:Name="transcodeInfoRes" Margin="2,0,0,0"/>
+
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="Chan:" FontSize="14" TextAlignment="Right"/>
+                <TextBlock Grid.Row="3" Grid.Column="1" Text="-" FontSize="14" TextAlignment="Left" x:Name="transcodeInfoChan" Margin="2,0,0,0"/>
+
+                <TextBlock Grid.Row="4" Grid.Column="0" Text="Bitrate:" FontSize="14" TextAlignment="Right"/>
+                <TextBlock Grid.Row="4" Grid.Column="1" Text="-" FontSize="14" TextAlignment="Left" x:Name="transcodeInfoBitrate" Margin="2,0,0,0"/>
+
+                <TextBlock Grid.Row="5" Grid.Column="0" Text="Speed:" FontSize="14" TextAlignment="Right"/>
+                <TextBlock Grid.Row="5" Grid.Column="1" Text="-" FontSize="14" TextAlignment="Left" x:Name="transcodeInfoSpeed" Margin="2,0,0,0"/>
+
+                <TextBlock Grid.Row="6" Grid.Column="0" Text="Done:" FontSize="14" TextAlignment="Right"/>
+                <TextBlock Grid.Row="6" Grid.Column="1" Text="-" FontSize="14" TextAlignment="Left" x:Name="transcodeInfoComplete" Margin="2,0,0,0"/>
+
+                <TextBlock Grid.Row="7" Grid.Column="0" Text="Buffer:" FontSize="14" TextAlignment="Right"/>
+                <TextBlock Grid.Row="7" Grid.Column="1" Text="-" FontSize="14" TextAlignment="Left" x:Name="playbackInfoBuffer" Margin="2,0,0,0"/>
+
+            </Grid>
+            
         </Grid>
 
         <Grid x:Name="gridAreaProgress" Grid.Row="1" Grid.Column="0">
@@ -53,8 +96,8 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="150" />
             </Grid.ColumnDefinitions>
-            <TextBlock x:Name="mediaPossitionText" Grid.Row="0" Grid.Column="0" Text="Test" FontSize="14"/>
-            <TextBlock x:Name="mediaDuration" Grid.Row="0" Grid.Column="2" Text="Test" FontSize="14" TextAlignment="Right"/>
+            <TextBlock x:Name="mediaPossitionText" Grid.Row="0" Grid.Column="0" Text="" FontSize="14"/>
+            <TextBlock x:Name="mediaDuration" Grid.Row="0" Grid.Column="2" Text="" FontSize="14" TextAlignment="Right"/>
             <Slider x:Name="playbackProgress" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"  Width="Auto" Height="60" ThumbToolTipValueConverter="{StaticResource SecondsToTimeSpan}" RenderTransformOrigin="0,0"/>
             <ProgressBar x:Name="transcodingProgress" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Height="10" Width="Auto" IsDoubleTapEnabled="False" IsHoldingEnabled="False" IsRightTapEnabled="False" IsTapEnabled="False" Foreground="#FF3CC52E"/>
         </Grid>

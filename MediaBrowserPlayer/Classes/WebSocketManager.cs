@@ -116,12 +116,6 @@ namespace MediaBrowserPlayer.Classes
                         {
                             Frame rootFrame = Window.Current.Content as Frame;
 
-                            var p = rootFrame.Content as MainPage;
-                            if (p != null)
-                            {
-                                p.LogMessage(read);
-                            }
-
                             rootFrame.Navigate(typeof(PlayerPage), messageObject);
                         });
                     }
@@ -150,12 +144,6 @@ namespace MediaBrowserPlayer.Classes
                 {
                     ws.Dispose();
                 }
-                Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-                {
-                    Frame rootFrame = Window.Current.Content as Frame;
-                    var p = rootFrame.Content as MainPage;
-                    p.LogMessage("SocketClosed");
-                });
             }
         }
 
