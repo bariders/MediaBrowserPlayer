@@ -31,7 +31,10 @@ namespace MediaBrowserPlayer
     /// </summary>
     sealed partial class App : Application
     {
-        private WebSocketManager socketManager = new WebSocketManager();
+        private static WebSocketManager socketManager = new WebSocketManager();
+        private static List<Notification> notifications = new List<Notification>();
+        private static bool notificationRunning = false;
+        private static DispatcherTimer notificationTimer = new DispatcherTimer();
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
@@ -44,7 +47,53 @@ namespace MediaBrowserPlayer
 
             this.Resuming += OnResume;
 
+            //notifications.Add(new Notification() { Title = "Test Title", Message = "This is a test" });
+
+            notificationTimer.Tick += NotificationTimer_Tick;
+            notificationTimer.Interval = TimeSpan.FromSeconds(10);
+            notificationTimer.Start();
         }
+
+        public static void AddNotification(Notification notification)
+        {
+            notifications.Add(notification);
+
+            // set interval to a low priority
+            notificationTimer.Interval = TimeSpan.FromSeconds(1);
+        }
+
+        private async void NotificationTimer_Tick(object sender, object e)
+        {
+            lock (notifications)
+            {
+                if (notificationRunning == true)
+                {
+                    return;
+                }
+                else
+                {
+                    notificationRunning = true;
+                }
+            }
+
+            while (notifications.Count > 0)
+            {
+                Notification notification = notifications[0];
+                notifications.RemoveAt(0);
+
+                MessageDialog msg = new MessageDialog(notification.Message, notification.Title);
+                await msg.ShowAsync();
+            }
+
+            lock (notifications)
+            {
+                notificationRunning = false;
+            }
+
+            // set interval to a low priority
+            notificationTimer.Interval = TimeSpan.FromSeconds(10);
+        }
+
 
         protected override void OnWindowCreated(WindowCreatedEventArgs args)
         {
@@ -65,10 +114,20 @@ namespace MediaBrowserPlayer
             CustomSettingFlyout.Show();
         }
 
-        private void OnResume(object sender, object e)
+        public async static void ReInitializeWebSocket()
         {
             socketManager.CloseWebSocket();
-            socketManager.SetupWebSocket();
+            await socketManager.SetupWebSocket();
+            ApiClient apiClient = new ApiClient();
+            await apiClient.SetCapabilities();
+        }
+
+        private async void OnResume(object sender, object e)
+        {
+            socketManager.CloseWebSocket();
+            await socketManager.SetupWebSocket();
+            ApiClient apiClient = new ApiClient();
+            await apiClient.SetCapabilities();
 
             Frame rootFrame = Window.Current.Content as Frame;
             if (rootFrame != null)
@@ -128,22 +187,21 @@ namespace MediaBrowserPlayer
             var p = rootFrame.Content as MainPage;
             p.LogMessage("AppLaunched");
 
-            socketManager.SetupWebSocket();
+            ApiClient apiClient = new ApiClient();
 
             try
             {
-                ApiClient apiClient = new ApiClient();
                 await apiClient.Authenticate();
             }
             catch(Exception exp)
             {
-                MessageDialog msg = new MessageDialog(exp.Message, "Error Authenticating");
-                try
-                {
-                    msg.ShowAsync();
-                }
-                catch (Exception) { }
+                App.AddNotification(new Notification() { Title = "Authentication Error", Message = exp.Message});
             }
+
+            // set up WebSocket
+            await socketManager.SetupWebSocket();
+            await apiClient.SetCapabilities();
+
         }
 
         /// <summary>

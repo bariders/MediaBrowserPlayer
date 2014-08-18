@@ -6,6 +6,16 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
+    
+    <Page.BottomAppBar>
+        <CommandBar IsOpen="False">
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Label="Back" Icon="Back" Click="AppBarButton_Back"/>
+                <AppBarButton Label="Refresh" Icon="Refresh" Click="AppBarButton_Refresh"/>
+                <AppBarButton Label="Home" Icon="Home" Click="AppBarButton_Home"/>
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+    </Page.BottomAppBar>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 

@@ -25,22 +25,27 @@ namespace MediaBrowserPlayer.Classes
 
         }
 
-        public void CloseWebSocket()
+        public bool CloseWebSocket()
         {
+            bool worked = false;
             if(webSocket != null)
             {
                 try
                 {
                     webSocket.Close(0, "App Closing");
+                    worked = true;
                 }
                 catch (Exception)
                 { }
                 webSocket = null;
             }
+
+            return worked;
         }
 
-        public async void SetupWebSocket()
+        public async Task<bool> SetupWebSocket()
         {
+            bool worked = false;
             try
             {
                 string server = settings.GetServer();
@@ -71,14 +76,16 @@ namespace MediaBrowserPlayer.Classes
                 string identityMessage = "{\"MessageType\":\"Identity\", \"Data\":\"Windows RT|" + settings.GetDeviceId() + "|0.0.1|" + value + "\"}";
                 messageWriter.WriteString(identityMessage);
                 await messageWriter.StoreAsync();
+
+                worked = true;
             }
             catch(Exception e)
             {
                 string errorString = "Error Creating WebSocket : " + e.Message;
-                MessageDialog msg = new MessageDialog(errorString, "WebSocket Error");
-                msg.ShowAsync();
+                App.AddNotification(new Notification() { Title = "Error Creating Web Socket", Message = errorString });
             }
 
+            return worked;
         }
 
         private void MessageReceived(MessageWebSocket sender, MessageWebSocketMessageReceivedEventArgs args)
@@ -99,6 +106,7 @@ namespace MediaBrowserPlayer.Classes
                     catch(Exception e)
                     {
                         messageObject = null;
+                        App.AddNotification(new Notification() { Title = "Error Parsing WebSocket Data Package", Message = e.Message });
                     }
 
                     // if we have an object and it is of type play

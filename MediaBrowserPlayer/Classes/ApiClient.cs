@@ -53,6 +53,41 @@ namespace MediaBrowserPlayer.Classes
             return value;
         }
 
+        public async Task<bool> SetCapabilities()
+        {
+            bool worked = false;
+            SessionInfo sessionInfo;
+            sessionInfo = await GetSessionInfo();
+
+            string server = settings.GetServer();
+            if (server == null)
+            {
+                throw new Exception("Server not set");
+            }
+
+            Uri url = new Uri("http://" + server + "/mediabrowser/Sessions/Capabilities?Id=" + sessionInfo.Id + "&PlayableMediaTypes=Video&SupportedCommands=Play");
+
+            HttpClient httpClient = new HttpClient();
+
+            string authorization = await GetAuthorizationHeader();
+            httpClient.DefaultRequestHeaders.Add("Authorization", authorization);
+
+            string authToken = await Authenticate();
+            httpClient.DefaultRequestHeaders.Add("X-MediaBrowser-Token", authToken);
+
+            JObject jsonData = new JObject();
+
+            jsonData.Add("Id", sessionInfo.Id);
+            jsonData.Add("PlayableMediaTypes", "Video");
+
+            HttpContent myContent = new StringContent(jsonData.ToString(), Encoding.UTF8, "application/json");
+
+            var responce = await httpClient.PostAsync(url, myContent);
+            responce.EnsureSuccessStatusCode();
+
+            return worked;
+        }
+
         public async Task<SessionInfo> GetSessionInfo()
         {
             string server = settings.GetServer();
@@ -87,16 +122,21 @@ namespace MediaBrowserPlayer.Classes
                 // build the responce object
                 info = new SessionInfo();
 
+                info.Id = (string)sessionInfo["Id"];
+
                 JObject transcodingInfo = (JObject)sessionInfo["TranscodingInfo"];
-                info.AudioCodec = (transcodingInfo["AudioCodec"] != null) ? (string)transcodingInfo["AudioCodec"] : "";
-                info.VideoCodec = (transcodingInfo["VideoCodec"] != null) ? (string)transcodingInfo["VideoCodec"] : "";
-                info.Container = (transcodingInfo["Container"] != null) ? (string)transcodingInfo["Container"] : "";
-                info.Bitrate = (transcodingInfo["Bitrate"] != null) ? (int)transcodingInfo["Bitrate"] : 0;
-                info.Framerate = (transcodingInfo["Framerate"] != null) ? (double)transcodingInfo["Framerate"] : 0;
-                info.CompletionPercentage = (transcodingInfo["CompletionPercentage"] != null) ? (double)transcodingInfo["CompletionPercentage"] : 0;
-                info.Width = (transcodingInfo["Width"] != null) ? (int)transcodingInfo["Width"] : 0;
-                info.Height = (transcodingInfo["Height"] != null) ? (int)transcodingInfo["Height"] : 0;
-                info.AudioChannels = (transcodingInfo["AudioChannels"] != null) ? (int)transcodingInfo["AudioChannels"] : 0;
+                if (transcodingInfo != null)
+                {
+                    info.AudioCodec = (transcodingInfo["AudioCodec"] != null) ? (string)transcodingInfo["AudioCodec"] : "";
+                    info.VideoCodec = (transcodingInfo["VideoCodec"] != null) ? (string)transcodingInfo["VideoCodec"] : "";
+                    info.Container = (transcodingInfo["Container"] != null) ? (string)transcodingInfo["Container"] : "";
+                    info.Bitrate = (transcodingInfo["Bitrate"] != null) ? (int)transcodingInfo["Bitrate"] : 0;
+                    info.Framerate = (transcodingInfo["Framerate"] != null) ? (double)transcodingInfo["Framerate"] : 0;
+                    info.CompletionPercentage = (transcodingInfo["CompletionPercentage"] != null) ? (double)transcodingInfo["CompletionPercentage"] : 0;
+                    info.Width = (transcodingInfo["Width"] != null) ? (int)transcodingInfo["Width"] : 0;
+                    info.Height = (transcodingInfo["Height"] != null) ? (int)transcodingInfo["Height"] : 0;
+                    info.AudioChannels = (transcodingInfo["AudioChannels"] != null) ? (int)transcodingInfo["AudioChannels"] : 0;
+                }
             }
 
             return info;
@@ -115,7 +155,7 @@ namespace MediaBrowserPlayer.Classes
             JObject jsonData = new JObject();
 
             JArray queueable = new JArray();
-            queueable.Add("Video");
+            //queueable.Add("Video");
             jsonData.Add("QueueableMediaTypes", queueable);
             jsonData.Add("CanSeek", true);
             jsonData.Add("ItemId", itemId);
@@ -152,7 +192,7 @@ namespace MediaBrowserPlayer.Classes
             JObject jsonData = new JObject();
 
             JArray queueable = new JArray();
-            queueable.Add("Video");
+            //queueable.Add("Video");
             jsonData.Add("QueueableMediaTypes", queueable);
             jsonData.Add("CanSeek", true);
             jsonData.Add("ItemId", itemId);
@@ -189,7 +229,7 @@ namespace MediaBrowserPlayer.Classes
             JObject jsonData = new JObject();
 
             JArray queueable = new JArray();
-            queueable.Add("Video");
+            //queueable.Add("Video");
             jsonData.Add("QueueableMediaTypes", queueable);
             jsonData.Add("CanSeek", true);
             jsonData.Add("ItemId", itemId);
@@ -314,10 +354,17 @@ namespace MediaBrowserPlayer.Classes
 
             JObject itemInfo = JObject.Parse(itemResponceText);
 
-            long runTimeSeconds = (long)itemInfo["RunTimeTicks"];
-            runTimeSeconds = (runTimeSeconds / 1000) / 10000;
-
-            item.duration = runTimeSeconds;
+            if (itemInfo["RunTimeTicks"] != null)
+            {
+                long runTimeSeconds = (long)itemInfo["RunTimeTicks"];
+                runTimeSeconds = (runTimeSeconds / 1000) / 10000;
+                item.duration = runTimeSeconds;
+            }
+            else
+            {
+                item.duration = 0;
+                App.AddNotification(new Notification() { Title = "Media Item Error", Message = "The media item has no duration" });
+            }
 
             return item;
         }

@@ -48,8 +48,6 @@ namespace MediaBrowserPlayer
             PointerEventHandler pointerreleasedhandler = new PointerEventHandler(slider_PointerCaptureLost);
             playbackProgress.AddHandler(Control.PointerCaptureLostEvent, pointerreleasedhandler, true);
 
-            SetupTimer();
-
             mediaPlayer.MediaFailed += mediaPlayer_MediaFailed;
 
             mediaPlayer.InteractiveActivationMode = Microsoft.PlayerFramework.InteractionType.None;
@@ -78,21 +76,24 @@ namespace MediaBrowserPlayer
 
                 itemId = (string)itemIds[0];
 
-                
                 mediaItem = await client.GetItemInfo(itemId);
             }
             catch(Exception exception)
             {
-                MessageDialog msg = new MessageDialog(exception.Message, "Error Retreiving Playback Info");
-                msg.ShowAsync();
+                App.AddNotification(new Notification() { Title = "Error Retreiving Playback Info", Message = exception.Message });
             }
 
-            playbackProgress.Minimum = 0;
-            playbackProgress.Maximum = mediaItem.duration;
+            if (mediaItem.duration > 0)
+            {
+                SetupTimer();
 
-            PlaybackAction(startIndex);
+                playbackProgress.Minimum = 0;
+                playbackProgress.Maximum = mediaItem.duration;
 
-            mediaDuration.Text = new TimeSpan(0, 0, (int)mediaItem.duration).ToString(@"hh\:mm\:ss");
+                PlaybackAction(startIndex);
+
+                mediaDuration.Text = new TimeSpan(0, 0, (int)mediaItem.duration).ToString(@"hh\:mm\:ss");
+            }
         }
 
         void slider_PointerEntered(object sender, PointerRoutedEventArgs e)
@@ -166,11 +167,18 @@ namespace MediaBrowserPlayer
 
         private void StopTimer()
         {
-            _timer.Stop();
-            _timer.Tick -= _timer_Tick;
+            if (_timer != null)
+            {
+                _timer.Stop();
+                _timer.Tick -= _timer_Tick;
+            }
 
-            _playbackCheckin.Stop();
-            _playbackCheckin.Tick -= _playbackCheckin_Tick;
+
+            if (_playbackCheckin != null)
+            {
+                _playbackCheckin.Stop();
+                _playbackCheckin.Tick -= _playbackCheckin_Tick;
+            }
         }
 
         private void mediaPlayer_BufferingProgressChanged(object sender, RoutedEventArgs e)
@@ -179,7 +187,7 @@ namespace MediaBrowserPlayer
             stats.Text = percent.ToString() + "%";
         }
 
-        private async void mediaPlayer_MediaFailed(object sender, ExceptionRoutedEventArgs e)
+        private void mediaPlayer_MediaFailed(object sender, ExceptionRoutedEventArgs e)
         {
             string error = e.ErrorMessage;
             if (e.OriginalSource != null)
@@ -187,8 +195,7 @@ namespace MediaBrowserPlayer
                 error += "\n" + e.OriginalSource.ToString();
             }
 
-            MessageDialog msgDialog = new MessageDialog(error, "Error Playing Media");
-            await msgDialog.ShowAsync();
+            App.AddNotification(new Notification() { Title = "Error Playing Media", Message = error });
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

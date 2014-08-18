@@ -33,6 +33,19 @@ namespace MediaBrowserPlayer
             localSettings.Values["user_name"] = setting_user_name.Text.Trim();
             localSettings.Values["password"] = setting_password.Text.Trim();
             localSettings.Values["device_name"] = setting_device_name.Text.Trim();
+
+            // on settings update reload main page and reconnect websocket
+
+            Frame rootFrame = Window.Current.Content as Frame;
+            var p = rootFrame.Content as MainPage;
+            if (p != null)
+            {
+                p.LoadMainPage(true);
+            }
+
+            // ReInitialize WebSocket
+            App.ReInitializeWebSocket();
+
         }
 
         private string GetSetting(string name)

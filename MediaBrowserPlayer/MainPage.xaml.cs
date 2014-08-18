@@ -40,7 +40,12 @@ namespace MediaBrowserPlayer
 
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
-            if (navigationStarted == false)
+            LoadMainPage();
+        }
+
+        public void LoadMainPage(bool overRide = false)
+        {
+            if (navigationStarted == false || overRide)
             {
                 navigationStarted = true;
                 try
@@ -51,8 +56,7 @@ namespace MediaBrowserPlayer
                 }
                 catch (Exception exeption)
                 {
-                    MessageDialog msg = new MessageDialog("Server Not Correct:\n" + exeption.Message, "Error");
-                    msg.ShowAsync();
+                    App.AddNotification(new Notification() { Title = "Error Loading Main Page", Message = "Server Not Correct:\n" + exeption.Message });
                 }
             }
         }
@@ -66,8 +70,7 @@ namespace MediaBrowserPlayer
             if (destination.Host != server)
             {
                 args.Cancel = true;
-                MessageDialog msg = new MessageDialog("Remote sites not allowed", "Warning");
-                msg.ShowAsync();
+                App.AddNotification(new Notification() { Title = "Navigation Error", Message = "Remote sites not allowed" });
             }
 
         }
@@ -75,6 +78,21 @@ namespace MediaBrowserPlayer
         public void LogMessage(string data)
         {
             notificationBox.Text = notificationBox.Text + data + "\n";
+        }
+
+        private void AppBarButton_Back(object sender, RoutedEventArgs e)
+        {
+            mainWebPage.GoBack();
+        }
+
+        private void AppBarButton_Refresh(object sender, RoutedEventArgs e)
+        {
+            mainWebPage.Refresh();
+        }
+
+        private void AppBarButton_Home(object sender, RoutedEventArgs e)
+        {
+            LoadMainPage(true);
         }
 
     }
