@@ -46,10 +46,30 @@ namespace MediaBrowserPlayer.Classes
             return value.Trim();
         }
 
+        public void SaveAppSettingInt(string name, int value)
+        {
+            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+            localSettings.Values[name] = value;
+        }
+
         public void SaveAppSettingString(string name, string value)
         {
             var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
             localSettings.Values[name] = value;
+        }
+
+        public int GetAppSettingInt(string name)
+        {
+            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+            if (localSettings.Values[name] != null)
+            {
+                int tempData = (int)localSettings.Values[name];
+                return tempData;
+            }
+            else
+            {
+                return -1;
+            }
         }
 
         public string GetAppSettingString(string name)

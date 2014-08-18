@@ -107,6 +107,7 @@
     </Compile>
     <Compile Include="Classes\ApiClient.cs" />
     <Compile Include="Classes\AppSettings.cs" />
+    <Compile Include="Classes\ComboBoxData.cs" />
     <Compile Include="Classes\MediaItem.cs" />
     <Compile Include="Classes\Notification.cs" />
     <Compile Include="Classes\SecondsToTimeSpan.cs" />
@@ -121,6 +122,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SettingsFlyoutMain.xaml.cs">
       <DependentUpon>SettingsFlyoutMain.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsFlyoutStreaming.xaml.cs">
+      <DependentUpon>SettingsFlyoutStreaming.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -150,6 +154,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SettingsFlyoutMain.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SettingsFlyoutStreaming.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

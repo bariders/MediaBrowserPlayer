@@ -1,0 +1,35 @@
+﻿<SettingsFlyout
+    x:Class="MediaBrowserPlayer.SettingsFlyoutStreaming"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MediaBrowserPlayer"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    IconSource="Assets/SmallLogo.png"
+    Title="Streaming"
+    d:DesignWidth="346">
+
+    <!-- This StackPanel acts as a root panel for vertical layout of the content sections -->
+    <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" >
+
+        <!-- The StackPanel(s) below define individual content sections -->
+
+        <!-- Content Section 1-->
+        <StackPanel Style="{StaticResource SettingsFlyoutSectionStyle}">
+            <TextBlock TextWrapping="Wrap" Text="Video Bitrate" FontSize="14"/>
+            <ComboBox x:Name="videoBitrate" Width="250" SelectionChanged="videoBitrate_SelectionChanged"/>
+
+            <TextBlock TextWrapping="Wrap" Text="Max Video Width" FontSize="14"/>
+            <ComboBox x:Name="videoMaxWidth" Width="250" SelectionChanged="videoMaxWidth_SelectionChanged"/>
+
+            <TextBlock TextWrapping="Wrap" Text="Audio Bitrate" FontSize="14"/>
+            <ComboBox x:Name="audioBitrate" Width="250" SelectionChanged="audioBitrate_SelectionChanged"/>
+
+        </StackPanel>
+        
+
+        <!-- Define more Content Sections below as necessary -->
+
+    </StackPanel>
+</SettingsFlyout>

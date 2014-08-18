@@ -247,17 +247,35 @@ namespace MediaBrowserPlayer
 
             string server = settings.GetServer();
 
+            // get streaming values
+            int videoBitrateSetting = settings.GetAppSettingInt("video_bitrate");
+            if (videoBitrateSetting == -1)
+            {
+                videoBitrateSetting = 5000000;
+            }
+            int videoMaxWidthSetting = settings.GetAppSettingInt("video_max_width");
+            if (videoMaxWidthSetting == -1)
+            {
+                videoMaxWidthSetting = 1920;
+            }
+            int audioBitrateSetting = settings.GetAppSettingInt("audio_bitrate");
+            if (audioBitrateSetting == -1)
+            {
+                audioBitrateSetting = 196000;
+            }
+
+
             string mediaFile = "http://" + server + "/mediabrowser/Videos/" + itemId + "/stream.ts" +
                 "?audioChannels=2&" +
                 "AudioStreamIndex=1&" +
-                "deviceId=" + settings.GetDeviceId() + "&" +
+                "DeviceId=" + settings.GetDeviceId() + "&" +
                 "Static=false&" +
-                "mediaSourceId=" + itemId + "&" +
+                "MediaSourceId=" + itemId + "&" +
                 "VideoCodec=h264&" +
                 "AudioCodec=aac&" +
-                "maxWidth=1920&" +
-                "videoBitrate=5000000&" +
-                "audioBitrate=128000&" +
+                "MaxWidth=" + videoMaxWidthSetting + "&" +
+                "VideoBitrate=" + videoBitrateSetting + "&" +
+                "AudioBitrate=" + audioBitrateSetting + "&" +
                 "EnableAutoStreamCopy=true&" +
                 "StartTimeTicks=" + startTicks;
 

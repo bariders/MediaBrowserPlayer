@@ -98,14 +98,22 @@ namespace MediaBrowserPlayer
         {
 
             args.Request.ApplicationCommands.Add(new SettingsCommand(
-                "Server Settings", "Server Setting", (handler) => ShowCustomSettingFlyout()));
+                "Server Settings", "Server Settings", (handler) => ShowCustomSettingFlyoutMain()));
+
+            args.Request.ApplicationCommands.Add(new SettingsCommand(
+                "Streaming Settings", "Streaming Settings", (handler) => ShowCustomSettingFlyoutStreaming()));
         }
 
-        public void ShowCustomSettingFlyout()
+        public void ShowCustomSettingFlyoutMain()
         {
-            SettingsFlyoutMain CustomSettingFlyout = new SettingsFlyoutMain();
+            SettingsFlyoutMain settingFlyout = new SettingsFlyoutMain();
+            settingFlyout.Show();
+        }
 
-            CustomSettingFlyout.Show();
+        public void ShowCustomSettingFlyoutStreaming()
+        {
+            SettingsFlyoutStreaming settingFlyout = new SettingsFlyoutStreaming();
+            settingFlyout.Show();
         }
 
         public async static void ReInitializeWebSocket()
