@@ -121,7 +121,14 @@ namespace MediaBrowserPlayer
             socketManager.CloseWebSocket();
             await socketManager.SetupWebSocket();
             ApiClient apiClient = new ApiClient();
-            await apiClient.SetCapabilities();
+            try
+            {
+                await apiClient.SetCapabilities();
+            }
+            catch (Exception exp)
+            {
+                App.AddNotification(new Notification() { Title = "Set Capabilities Error", Message = exp.Message });
+            }
         }
 
         private async void OnResume(object sender, object e)
@@ -129,7 +136,14 @@ namespace MediaBrowserPlayer
             socketManager.CloseWebSocket();
             await socketManager.SetupWebSocket();
             ApiClient apiClient = new ApiClient();
-            await apiClient.SetCapabilities();
+            try
+            {
+                await apiClient.SetCapabilities();
+            }
+            catch (Exception exp)
+            {
+                App.AddNotification(new Notification() { Title = "Set Capabilities Error", Message = exp.Message });
+            }
         }
 
         /// <summary>
@@ -179,6 +193,9 @@ namespace MediaBrowserPlayer
             // Ensure the current window is active
             Window.Current.Activate();
 
+            // set up WebSocket
+            await socketManager.SetupWebSocket();
+
             ApiClient apiClient = new ApiClient();
 
             try
@@ -190,9 +207,14 @@ namespace MediaBrowserPlayer
                 App.AddNotification(new Notification() { Title = "Authentication Error", Message = exp.Message});
             }
 
-            // set up WebSocket
-            await socketManager.SetupWebSocket();
-            await apiClient.SetCapabilities();
+            try
+            {
+                await apiClient.SetCapabilities();
+            }
+            catch (Exception exp)
+            {
+                App.AddNotification(new Notification() { Title = "Set Capabilities Error", Message = exp.Message });
+            }
 
         }
 
