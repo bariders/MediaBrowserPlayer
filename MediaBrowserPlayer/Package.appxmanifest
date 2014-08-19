@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest">
-  <Identity Name="e1f541fd-fb1c-4413-a9ed-175e69f83a3c" Publisher="CN=shfaul" Version="1.0.0.0" />
+  <Identity Name="e1f541fd-fb1c-4413-a9ed-175e69f83a3c" Publisher="CN=shfaul" Version="1.0.0.4" />
   <Properties>
     <DisplayName>Media Browser Player</DisplayName>
     <PublisherDisplayName>shfaul</PublisherDisplayName>
