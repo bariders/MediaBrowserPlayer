@@ -21,6 +21,7 @@ using Windows.UI.Xaml.Navigation;
 using Windows.Web;
 using Windows.UI.ApplicationSettings;
 using Windows.UI.Popups;
+using Newtonsoft.Json.Linq;
 
 // The Blank Application template is documented at http://go.microsoft.com/fwlink/?LinkId=234227
 
@@ -35,6 +36,8 @@ namespace MediaBrowserPlayer
         private static List<Notification> notifications = new List<Notification>();
         private static bool notificationRunning = false;
         private static DispatcherTimer notificationTimer = new DispatcherTimer();
+        private static AppSettings settings = new AppSettings();
+        private static DiscoverServer discoverer = new DiscoverServer();
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
@@ -153,7 +156,6 @@ namespace MediaBrowserPlayer
         /// <param name="e">Details about the launch request and process.</param>
         protected async override void OnLaunched(LaunchActivatedEventArgs e)
         {
-
 #if DEBUG
             if (System.Diagnostics.Debugger.IsAttached)
             {
@@ -161,6 +163,62 @@ namespace MediaBrowserPlayer
             }
 #endif
 
+            // if there is no server/port then try to discover it
+            string server = settings.GetAppSettingString("server_host");
+            string port = settings.GetAppSettingString("server_port");
+            if (server == "" || port == "")
+            {
+                try
+                {
+                    AutoResetEvent autoEvent = new AutoResetEvent(false);
+                    discoverer.DiscoverNow(autoEvent);
+                    autoEvent.WaitOne(TimeSpan.FromSeconds(5));
+
+                    if (discoverer.discoverResponce != null)
+                    {
+
+                        JObject server_info = JObject.Parse(discoverer.discoverResponce);
+                        string discovered_server_host = (string)server_info["Address"];
+                        if (discovered_server_host != null)
+                        {
+                            Uri serverUri = new Uri(discovered_server_host);
+                            string server_host = serverUri.Host;
+                            string server_port = serverUri.Port.ToString();
+
+                            settings.SaveAppSettingString("server_host", server_host);
+                            settings.SaveAppSettingString("server_port", server_port);
+                        }
+
+                    }
+                }
+                catch (Exception exep)
+                {
+                    App.AddNotification(new Notification() { Title = "Error Processing Auto Discover User Data", Message = exep.Message });
+                }
+            }
+
+            // if user name is blank then try to get the first visible none password protected user
+            string user_name = settings.GetUserName();
+            if (user_name == "")
+            {
+                try
+                {
+                    ApiClient client = new ApiClient();
+                    string firstUser = await client.GetFirstUsableUser();
+
+                    if(firstUser != null)
+                    {
+                        settings.SaveAppSettingString("user_name", firstUser);
+                    }
+                }
+                catch (Exception exep)
+                {
+                    App.AddNotification(new Notification() { Title = "Error Processing Auto Discover User Data", Message = exep.Message });
+                }
+            }
+
+
+            // set up the main page
             Frame rootFrame = Window.Current.Content as Frame;
 
             // Do not repeat app initialization when the Window already has content,

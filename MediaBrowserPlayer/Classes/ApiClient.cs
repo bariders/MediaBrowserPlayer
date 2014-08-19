@@ -98,7 +98,7 @@ namespace MediaBrowserPlayer.Classes
             string server = settings.GetServer();
             if (server == null)
             {
-                throw new Exception("Server not set");
+                return null;
             }
 
             Uri url = new Uri("http://" + server + "/mediabrowser/Sessions?DeviceId=" + settings.GetDeviceId() + "&format=json");
@@ -372,6 +372,44 @@ namespace MediaBrowserPlayer.Classes
             }
 
             return item;
+        }
+
+        public async Task<string> GetFirstUsableUser()
+        {
+            string server = settings.GetServer();
+            if (server == null)
+            {
+                throw new Exception("Server not set");
+            }
+
+            Uri url = new Uri("http://" + server + "/mediabrowser/Users?format=json");
+
+            HttpClient httpClient = new HttpClient();
+
+            string authorization = await GetAuthorizationHeader(false);
+            httpClient.DefaultRequestHeaders.Add("Authorization", authorization);
+
+            HttpResponseMessage response = await httpClient.GetAsync(url);
+            response.EnsureSuccessStatusCode();
+
+            string responseBodyAsText = await response.Content.ReadAsStringAsync();
+
+            JArray json = JArray.Parse(responseBodyAsText);
+
+            string username = null;
+
+            foreach (JObject obj in json)
+            {
+                string name = (string)obj["Name"];
+                bool hasPassword = (bool)obj["HasPassword"];
+                if (hasPassword == false)
+                {
+                    username = name;
+                    break;
+                }
+            }
+
+            return username;
         }
 
         public async Task<string> GetUserID()

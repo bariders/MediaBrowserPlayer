@@ -67,16 +67,7 @@ namespace MediaBrowserPlayer
             var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
 
             setting_server.Text = GetSetting("server_host");
-            if(setting_server.Text == "")
-            {
-                setting_server.Text = "localhost";
-            }
             setting_port.Text = GetSetting("server_port");
-            if(setting_port.Text == "")
-            {
-                setting_port.Text = "8096";
-            }
-
             setting_user_name.Text = GetSetting("user_name");
             setting_password.Text = GetSetting("password");
             setting_device_name.Text = GetSetting("device_name");

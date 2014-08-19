@@ -111,6 +111,7 @@
     <Compile Include="Classes\ApiClient.cs" />
     <Compile Include="Classes\AppSettings.cs" />
     <Compile Include="Classes\ComboBoxData.cs" />
+    <Compile Include="Classes\DiscoverServer.cs" />
     <Compile Include="Classes\MediaItem.cs" />
     <Compile Include="Classes\Notification.cs" />
     <Compile Include="Classes\SecondsToTimeSpan.cs" />

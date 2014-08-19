@@ -36,6 +36,31 @@ namespace MediaBrowserPlayer
             this.Loaded += MainPage_Loaded;
 
             mainWebPage.NavigationStarting += OnNavigate;
+
+            mainWebPage.LoadCompleted += mainWebPage_LoadCompleted;
+        }
+
+        private async void mainWebPage_LoadCompleted(object sender, NavigationEventArgs e)
+        {
+            try
+            {
+                // try to call set player in client
+                ApiClient client = new ApiClient();
+                SessionInfo session = await client.GetSessionInfo();
+
+                if (session != null)
+                {
+                    string itemObj = "{\"deviceName\":\"Windows RT\",\"id\":\"" + session.Id + "\",\"name\":\"BMP\",\"playableMediaTypes\":\"Video\",\"supportedCommands\":\"PlayNow\"}";
+
+                    string[] args = { "MediaController.setActivePlayer(\"Remote Control\", " + itemObj + ")" };
+
+                    await mainWebPage.InvokeScriptAsync("eval", args);
+                }
+            }
+            catch(Exception exp)
+            {
+                App.AddNotification(new Notification() { Title = "Error Setting Remote Control Target", Message = exp.Message });
+            }
         }
 
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
@@ -75,7 +100,7 @@ namespace MediaBrowserPlayer
 
         }
 
-        private void AppBarButton_Back(object sender, RoutedEventArgs e)
+        private async void AppBarButton_Back(object sender, RoutedEventArgs e)
         {
             mainWebPage.GoBack();
         }
