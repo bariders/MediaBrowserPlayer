@@ -1,8 +1,11 @@
-﻿using System;
+﻿using MediaBrowserPlayer.Classes;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -30,8 +33,6 @@ namespace MediaBrowserPlayer
 
             localSettings.Values["server_host"] = setting_server.Text.Trim();
             localSettings.Values["server_port"] = setting_port.Text.Trim();
-            localSettings.Values["user_name"] = setting_user_name.Text.Trim();
-            localSettings.Values["password"] = setting_password.Text.Trim();
             localSettings.Values["device_name"] = setting_device_name.Text.Trim();
 
             // on settings update reload main page and reconnect websocket
@@ -68,9 +69,48 @@ namespace MediaBrowserPlayer
 
             setting_server.Text = GetSetting("server_host");
             setting_port.Text = GetSetting("server_port");
-            setting_user_name.Text = GetSetting("user_name");
-            setting_password.Text = GetSetting("password");
             setting_device_name.Text = GetSetting("device_name");
+        }
+
+        public void DataReceived(string discoverData)
+        {
+            try
+            {
+                JObject server_info = JObject.Parse(discoverData);
+                string discovered_server_host = (string)server_info["Address"];
+                if (discovered_server_host != null)
+                {
+                    Uri serverUri = new Uri(discovered_server_host);
+                    string server_host = serverUri.Host;
+                    string server_port = serverUri.Port.ToString();
+
+                    Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                    {
+                        setting_server.Text = server_host;
+                        setting_port.Text = server_port;
+                    });
+
+                }
+            }
+            catch (Exception exep)
+            {
+                App.AddNotification(new Notification() { Title = "Error Receiving Discover Data", Message = exep.Message });
+            }
+
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                DiscoverServer discoverer = new DiscoverServer();
+                discoverer.dataReceived += DataReceived;
+                discoverer.DiscoverNow(null);
+            }
+            catch (Exception exep)
+            {
+                App.AddNotification(new Notification() { Title = "Error Sending Discover Data", Message = exep.Message });
+            }
         }
     }
 }

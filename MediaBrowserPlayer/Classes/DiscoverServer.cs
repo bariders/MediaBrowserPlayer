@@ -14,6 +14,9 @@ namespace MediaBrowserPlayer.Classes
 {
     class DiscoverServer
     {
+        public delegate void DataReceived(string discoverData);
+        public DataReceived dataReceived;
+
         private DatagramSocket socket = null;
         public string discoverResponce = null;
         private AutoResetEvent autoEvent = null;
@@ -21,6 +24,7 @@ namespace MediaBrowserPlayer.Classes
         public DiscoverServer()
         {
             socket = new DatagramSocket();
+
             socket.MessageReceived += SocketOnMessageReceived;
         }
 
@@ -41,8 +45,10 @@ namespace MediaBrowserPlayer.Classes
                     var data = Encoding.UTF8.GetBytes(message);
 
                     writer.WriteBytes(data);
-                    writer.StoreAsync();
+                    await writer.StoreAsync();
                 }
+
+                stream.Dispose();
             }
         }
 
@@ -61,6 +67,7 @@ namespace MediaBrowserPlayer.Classes
                     {
                         autoEvent.Set();
                     }
+                    dataReceived(text);
                 }
             }
             catch (Exception e)

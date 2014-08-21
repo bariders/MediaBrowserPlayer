@@ -17,12 +17,10 @@
         <TextBox x:Name="setting_server" Height="22" TextWrapping="Wrap" Text="" RenderTransformOrigin="0.112,0.469"/>
         <TextBlock HorizontalAlignment="Left" Height="24" TextWrapping="Wrap" Text="Port" Width="265" FontSize="16"/>
         <TextBox x:Name="setting_port" TextWrapping="Wrap"/>
-        <TextBlock TextWrapping="Wrap" Text="User Name" FontSize="16"/>
-        <TextBox x:Name="setting_user_name" TextWrapping="Wrap"/>
-        <TextBlock TextWrapping="Wrap" Text="Password" FontSize="16"/>
-        <TextBox x:Name="setting_password" TextWrapping="Wrap"/>
+        <Button Content="Auto Detect" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="Button_Click"/>       
         <TextBlock TextWrapping="Wrap" Text="Device Name" FontSize="16"/>
         <TextBox x:Name="setting_device_name" TextWrapping="Wrap"/>
+        
 
     </StackPanel>
 </SettingsFlyout>

@@ -15,9 +15,6 @@ namespace MediaBrowserPlayer.Classes
     {
         private AppSettings settings = new AppSettings();
 
-        private string accessToken = null;
-        private string userId = null;
-
         public ApiClient()
         {
 
@@ -260,74 +257,14 @@ namespace MediaBrowserPlayer.Classes
 
         public async Task<string> Authenticate()
         {
-            if (accessToken != null)
+            string token = settings.GetAccessToken();
+
+            if(string.IsNullOrEmpty(token))
             {
-                return accessToken;
+                throw new Exception("Access Token Not Set");
             }
 
-            //await GetUserID();
-
-            string userName = settings.GetUserName();
-            string password = settings.GetPassword();
-
-            IBuffer buffer = CryptographicBuffer.ConvertStringToBinary(password, BinaryStringEncoding.Utf8);
-            HashAlgorithmProvider provider = HashAlgorithmProvider.OpenAlgorithm(HashAlgorithmNames.Sha1);
-            IBuffer hash = provider.HashData(buffer);
-            string hashString = CryptographicBuffer.EncodeToHexString(hash);
-
-            JObject authJsonData = new JObject();
-            authJsonData.Add("password", hashString);
-            authJsonData.Add("username", userName);
-            string authData = authJsonData.ToString();
-
-            HttpClient httpClient = new HttpClient();
-
-            string authorization = await GetAuthorizationHeader();
-            httpClient.DefaultRequestHeaders.Add("Authorization", authorization);
-
-            string server = settings.GetServer();
-            if (server == null)
-            {
-                throw new Exception("Server not set");
-            }
-
-            Uri url = new Uri("http://" + server + "/mediabrowser/Users/AuthenticateByName?format=json");
-
-            HttpContent myContent = new StringContent(authData, Encoding.UTF8, "application/json");
-
-            var responce = await httpClient.PostAsync(url, myContent);
-
-            if(responce.StatusCode != System.Net.HttpStatusCode.OK)
-            {
-                string errormessage = "Error In Authentication:\n" + responce.StatusCode.ToString() + " - " + responce.ReasonPhrase;
-
-                string reason = "";
-                foreach(var header in responce.Headers)
-                {
-                    string headerName = header.Key;
-                    if(headerName == "X-Application-Error-Code")
-                    {
-                        foreach (string value in header.Value)
-                        {
-                            reason += value + "\n";
-                        }
-                    }
-                }
-                if (string.IsNullOrEmpty(reason) == false)
-                {
-                    errormessage += errormessage + "\n" + reason;
-                }
-
-                throw new Exception(errormessage);
-            }
-
-            string data = await responce.Content.ReadAsStringAsync();
-            JObject authObject = JObject.Parse(data);
-
-            string accessTokenString = (string)authObject["AccessToken"];
-            accessToken = accessTokenString;
-
-            return accessToken;
+            return token;
         }
 
         public async Task<MediaItem> GetItemInfo(string itemId)
@@ -374,91 +311,16 @@ namespace MediaBrowserPlayer.Classes
             return item;
         }
 
-        public async Task<string> GetFirstUsableUser()
-        {
-            string server = settings.GetServer();
-            if (server == null)
-            {
-                throw new Exception("Server not set");
-            }
-
-            Uri url = new Uri("http://" + server + "/mediabrowser/Users?format=json");
-
-            HttpClient httpClient = new HttpClient();
-
-            string authorization = await GetAuthorizationHeader(false);
-            httpClient.DefaultRequestHeaders.Add("Authorization", authorization);
-
-            HttpResponseMessage response = await httpClient.GetAsync(url);
-            response.EnsureSuccessStatusCode();
-
-            string responseBodyAsText = await response.Content.ReadAsStringAsync();
-
-            JArray json = JArray.Parse(responseBodyAsText);
-
-            string username = null;
-
-            foreach (JObject obj in json)
-            {
-                string name = (string)obj["Name"];
-                bool hasPassword = (bool)obj["HasPassword"];
-                if (hasPassword == false)
-                {
-                    username = name;
-                    break;
-                }
-            }
-
-            return username;
-        }
-
         public async Task<string> GetUserID()
         {
-            if (userId != null)
+            string userId = settings.GetUserId();
+            if(string.IsNullOrEmpty(userId))
             {
-                return userId;
-            }
-
-            string server = settings.GetServer();
-            if (server == null)
-            {
-                throw new Exception("Server not set");
-            }
-
-            Uri url = new Uri("http://" + server + "/mediabrowser/Users?format=json");
-
-            HttpClient httpClient = new HttpClient();
-
-            string authorization = await GetAuthorizationHeader(false);
-            httpClient.DefaultRequestHeaders.Add("Authorization", authorization);
-
-            HttpResponseMessage response = await httpClient.GetAsync(url);
-            response.EnsureSuccessStatusCode();
-
-            string responseBodyAsText = await response.Content.ReadAsStringAsync();
-
-            JArray json = JArray.Parse(responseBodyAsText);
-
-            string username = settings.GetUserName();
-
-            foreach (JObject obj in json)
-            {
-                string name = (string)obj["Name"];
-                if (name != null && username.Equals(name, StringComparison.OrdinalIgnoreCase))
-                {
-                    userId = (string)obj["Id"];
-                    break;
-                }
-            }
-
-            if (userId == null)
-            {
-                throw new Exception("User name (" + username + ") not found");
+                throw new Exception("User ID Not Set");
             }
 
             return userId;
         }
-
 
     }
 }

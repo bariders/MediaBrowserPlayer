@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest">
-  <Identity Name="e1f541fd-fb1c-4413-a9ed-175e69f83a3c" Publisher="CN=shfaul" Version="1.0.0.4" />
+  <Identity Name="e1f541fd-fb1c-4413-a9ed-175e69f83a3c" Publisher="CN=shfaul" Version="1.0.0.5" />
   <Properties>
     <DisplayName>Media Browser Player</DisplayName>
     <PublisherDisplayName>shfaul</PublisherDisplayName>
@@ -15,7 +15,7 @@
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="MediaBrowserPlayer.App">
-      <m2:VisualElements DisplayName="Media Browser Player" Square150x150Logo="Assets\Logo.png" Square30x30Logo="Assets\SmallLogo.png" Description="Media Browser Player" ForegroundText="light" BackgroundColor="#464646">
+      <m2:VisualElements DisplayName="Media Browser Player" Square150x150Logo="Assets\Logo.png" Square30x30Logo="Assets\SmallLogo.png" Description="Media Browser Player" ForegroundText="light" BackgroundColor="#0A58C0">
         <m2:DefaultTile ShortName="Media Browser Player">
           <m2:ShowNameOnTiles>
             <m2:ShowOn Tile="square150x150Logo" />

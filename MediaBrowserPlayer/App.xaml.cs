@@ -130,7 +130,7 @@ namespace MediaBrowserPlayer
             }
             catch (Exception exp)
             {
-                App.AddNotification(new Notification() { Title = "Set Capabilities Error", Message = exp.Message });
+                //App.AddNotification(new Notification() { Title = "Set Capabilities Error", Message = exp.Message });
             }
         }
 
@@ -145,7 +145,7 @@ namespace MediaBrowserPlayer
             }
             catch (Exception exp)
             {
-                App.AddNotification(new Notification() { Title = "Set Capabilities Error", Message = exp.Message });
+                //App.AddNotification(new Notification() { Title = "Set Capabilities Error", Message = exp.Message });
             }
         }
 
@@ -168,55 +168,13 @@ namespace MediaBrowserPlayer
             string port = settings.GetAppSettingString("server_port");
             if (server == "" || port == "")
             {
-                try
-                {
-                    AutoResetEvent autoEvent = new AutoResetEvent(false);
-                    discoverer.DiscoverNow(autoEvent);
-                    autoEvent.WaitOne(TimeSpan.FromSeconds(5));
-
-                    if (discoverer.discoverResponce != null)
-                    {
-
-                        JObject server_info = JObject.Parse(discoverer.discoverResponce);
-                        string discovered_server_host = (string)server_info["Address"];
-                        if (discovered_server_host != null)
-                        {
-                            Uri serverUri = new Uri(discovered_server_host);
-                            string server_host = serverUri.Host;
-                            string server_port = serverUri.Port.ToString();
-
-                            settings.SaveAppSettingString("server_host", server_host);
-                            settings.SaveAppSettingString("server_port", server_port);
-                        }
-
-                    }
-                }
-                catch (Exception exep)
-                {
-                    App.AddNotification(new Notification() { Title = "Error Processing Auto Discover User Data", Message = exep.Message });
-                }
+                App.AddNotification(new Notification() { Title = "Notice", Message = "You need to set the server details in the settings" });
             }
-
-            // if user name is blank then try to get the first visible none password protected user
-            string user_name = settings.GetUserName();
-            if (user_name == "")
+            else
             {
-                try
-                {
-                    ApiClient client = new ApiClient();
-                    string firstUser = await client.GetFirstUsableUser();
-
-                    if(firstUser != null)
-                    {
-                        settings.SaveAppSettingString("user_name", firstUser);
-                    }
-                }
-                catch (Exception exep)
-                {
-                    App.AddNotification(new Notification() { Title = "Error Processing Auto Discover User Data", Message = exep.Message });
-                }
+                // set up WebSocket
+                await socketManager.SetupWebSocket();
             }
-
 
             // set up the main page
             Frame rootFrame = Window.Current.Content as Frame;
@@ -250,29 +208,6 @@ namespace MediaBrowserPlayer
             }
             // Ensure the current window is active
             Window.Current.Activate();
-
-            // set up WebSocket
-            await socketManager.SetupWebSocket();
-
-            ApiClient apiClient = new ApiClient();
-
-            try
-            {
-                await apiClient.Authenticate();
-            }
-            catch(Exception exp)
-            {
-                App.AddNotification(new Notification() { Title = "Authentication Error", Message = exp.Message});
-            }
-
-            try
-            {
-                await apiClient.SetCapabilities();
-            }
-            catch (Exception exp)
-            {
-                App.AddNotification(new Notification() { Title = "Set Capabilities Error", Message = exp.Message });
-            }
 
         }
 

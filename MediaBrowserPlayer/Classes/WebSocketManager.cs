@@ -51,7 +51,8 @@ namespace MediaBrowserPlayer.Classes
                 string server = settings.GetServer();
                 if (server == null)
                 {
-                    throw new Exception("Server not set");
+                    return false;
+                    //throw new Exception("Server not set");
                 }
 
                 Uri serverUri = new Uri("ws://" + server + "/mediabrowser");

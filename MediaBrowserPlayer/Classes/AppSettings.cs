@@ -34,16 +34,26 @@ namespace MediaBrowserPlayer.Classes
             return device_name.Trim();
         }
 
-        public string GetUserName()
+        public string GetUserId()
         {
-            string value = GetAppSettingString("user_name");
+            string value = GetAppSettingString("user_id");
             return value.Trim();
         }
 
-        public string GetPassword()
+        public string GetAccessToken()
         {
-            string value = GetAppSettingString("password");
+            string value = GetAppSettingString("user_access_token");
             return value.Trim();
+        }
+
+        public void SaveAccessToken(string value)
+        {
+            SaveAppSettingString("user_access_token", value);
+        }
+
+        public void SaveUserId(string value)
+        {
+            SaveAppSettingString("user_id", value);
         }
 
         public void SaveAppSettingInt(string name, int value)
