@@ -111,7 +111,7 @@ namespace MediaBrowserPlayer.Classes
             return tempData;
         }
 
-        public string GetServerPort()
+        public string GetServerHost()
         {
             var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
             string tempData = (string)localSettings.Values["server_host"];

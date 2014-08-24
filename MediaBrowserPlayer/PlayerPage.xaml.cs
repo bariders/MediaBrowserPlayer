@@ -32,6 +32,7 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
@@ -55,7 +56,7 @@ namespace MediaBrowserPlayer
         public PlayerPage()
         {
             this.InitializeComponent();
-            this.NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Enabled;
+            //this.NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Enabled;
         }
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
@@ -108,18 +109,28 @@ namespace MediaBrowserPlayer
                 App.AddNotification(new Notification() { Title = "Error Retreiving Playback Info", Message = exception.Message });
             }
 
+            string logoItemId = "";
+
             if((mediaItem.Type).Equals("Episode", StringComparison.OrdinalIgnoreCase))
             {
+                logoItemId = mediaItem.SeriesId;
                 mediaTitle.Text = mediaItem.Series + " (" + mediaItem.Year + ") " + mediaItem.Name + " (s" + mediaItem.Season + "e" + mediaItem.EpisodeIndex + ")";
             }
             else if((mediaItem.Type).Equals("Movie", StringComparison.OrdinalIgnoreCase))
             {
+                logoItemId = mediaItem.Id;
                 mediaTitle.Text = mediaItem.Name + " (" + mediaItem.Year + ")";
             }
             else
             {
                 mediaTitle.Text = "Unknown Media Type : " + mediaItem.Type;
             }
+
+            // Set media item logo
+            string logoPath = "http://" + settings.GetServer() + "/mediabrowser/Items/" + logoItemId + "/Images/Logo";
+            BitmapImage image = new BitmapImage(new Uri(logoPath, UriKind.Absolute));
+            mediaItemLogo.Source = image;
+
 
             if (mediaItem.duration > 0)
             {
@@ -312,6 +323,8 @@ namespace MediaBrowserPlayer
                 "StartTimeTicks=" + startTicks;
 
             mediaPlayer.Source = new Uri(mediaFile, UriKind.Absolute);
+
+            //mediaPlayer.Stretch = Stretch.Fill;
 
             client.PlaybackCheckinStarted(itemId, startAtSeconds);
         }

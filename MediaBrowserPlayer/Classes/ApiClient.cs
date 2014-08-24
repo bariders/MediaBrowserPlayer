@@ -326,12 +326,15 @@ namespace MediaBrowserPlayer.Classes
                 App.AddNotification(new Notification() { Title = "Media Item Error", Message = "The media item has no duration" });
             }
 
+            item.Id = (itemInfo["Id"] != null) ? (string)itemInfo["Id"] : "";
             item.Name = (itemInfo["Name"] != null) ? (string)itemInfo["Name"] : "";
             item.Year = (itemInfo["ProductionYear"] != null) ? (int)itemInfo["ProductionYear"] : 0;
             item.Series = (itemInfo["SeriesName"] != null) ? (string)itemInfo["SeriesName"] : "";
             item.Type = (itemInfo["Type"] != null) ? (string)itemInfo["Type"] : "";
             item.Season = (itemInfo["ParentIndexNumber"] != null) ? (int)itemInfo["ParentIndexNumber"] : 0;
             item.EpisodeIndex = (itemInfo["IndexNumber"] != null) ? (int)itemInfo["IndexNumber"] : 0;
+
+            item.SeriesId = (itemInfo["SeriesId"] != null) ? (string)itemInfo["SeriesId"] : "";
 
             return item;
         }

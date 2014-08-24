@@ -60,6 +60,28 @@ namespace MediaBrowserPlayer
 
         private async void mainWebPage_LoadCompleted(object sender, NavigationEventArgs e)
         {
+            
+            // if linking to dashboard after login then redirect to media home
+            Uri destination = e.Uri;
+            if (destination.ToString().Contains("dashboard.html?u="))
+            {
+                try
+                {
+                    string server = appSettings.GetServer();
+                    if (server != null)
+                    {
+                        Uri mb = new Uri("http://" + server + "/mediabrowser");
+                        mainWebPage.Navigate(mb);
+                    }
+                }
+                catch (Exception exeption)
+                {
+                    App.AddNotification(new Notification() { Title = "Error Loading Main Page", Message = exeption.Message });
+                }
+                return;
+            }
+
+            // extract the luser and security token info
             bool canSetRemote = false;
 
             // extractte user data from the browser
@@ -146,10 +168,10 @@ namespace MediaBrowserPlayer
         private void OnNavigate(WebView sender, WebViewNavigationStartingEventArgs args)
         {
             Uri destination = args.Uri;
-
+            
             // block if not to media portal
-            string server = appSettings.GetServerPort();
-            if (destination.Host != server)
+            string host = appSettings.GetServerHost();
+            if (destination.Host != host)
             {
                 args.Cancel = true;
                 App.AddNotification(new Notification() { Title = "Navigation Error", Message = "Remote sites not allowed" });

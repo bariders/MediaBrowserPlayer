@@ -34,5 +34,6 @@ namespace MediaBrowserPlayer.Classes
         public int EpisodeIndex;
         public string Type;
         public int Year;
+        public string SeriesId;
     }
 }

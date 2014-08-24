@@ -13,7 +13,7 @@
         <Classes:SecondsToTimeSpan x:Key="SecondsToTimeSpan"/>
     </Page.Resources>
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid Background="Black">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -30,10 +30,12 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <TextBlock x:Name="mediaTitle" Grid.Row="0" Grid.Column="0" Text="" FontSize="28"/>
-       </Grid>
+            <Image Grid.Row="0" x:Name="mediaItemLogo" Grid.Column="0" Height="116" Width="300"/>
+            <TextBlock x:Name="mediaTitle" Grid.Row="0" Grid.Column="1" Text="" FontSize="28" Margin="30,0,0,0" VerticalAlignment="Center"/>
+        </Grid>
 
         <Grid x:Name="gridAreaPlayer" Grid.Row="1" Grid.Column="0">
             <Grid.RowDefinitions>
@@ -47,7 +49,7 @@
             
         </Grid>
 
-        <Grid x:Name="gridAreaInfo" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Margin="20">
+        <Grid x:Name="gridAreaInfo" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Margin="50,0,100,0">
             
             
             <Button Content="Back" Margin="0,0,0,0" Click="Button_Click" Width="150" VerticalAlignment="Top" />
