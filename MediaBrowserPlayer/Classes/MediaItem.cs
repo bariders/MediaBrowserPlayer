@@ -26,7 +26,13 @@ namespace MediaBrowserPlayer.Classes
 {
     class MediaItem
     {
-        public string access_message;
         public long duration;
+        public string Id;
+        public string Name;
+        public string Series;
+        public int Season;
+        public int EpisodeIndex;
+        public string Type;
+        public int Year;
     }
 }

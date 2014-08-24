@@ -60,7 +60,7 @@ namespace MediaBrowserPlayer
             int videoBitrateSetting = settings.GetAppSettingInt("video_bitrate");
             if (videoBitrateSetting == -1)
             {
-                videoBitrateSetting = 5000000;
+                videoBitrateSetting = 10000000;
             }
             videoBitrate.SelectedItem = videoBitrateItems[GetSelectedItem(videoBitrateItems, videoBitrateSetting)];
 
@@ -93,7 +93,7 @@ namespace MediaBrowserPlayer
             int audioBitrateSetting = settings.GetAppSettingInt("audio_bitrate");
             if (audioBitrateSetting == -1)
             {
-                audioBitrateSetting = 196000;
+                audioBitrateSetting = 128000;
             }
             audioBitrate.SelectedItem = audioBitrateItems[GetSelectedItem(audioBitrateItems, audioBitrateSetting)];
 

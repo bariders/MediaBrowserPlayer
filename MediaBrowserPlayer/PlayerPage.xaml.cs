@@ -73,14 +73,14 @@ namespace MediaBrowserPlayer
             mediaPlayer.BufferingProgressChanged += mediaPlayer_BufferingProgressChanged;
 
             // reset session info controls
-            transcodeInfoACodec.Text = "-";
-            transcodeInfoVCodec.Text = "-";
-            transcodeInfoRes.Text = "-";
-            transcodeInfoChan.Text = "-";
-            transcodeInfoBitrate.Text = "-";
-            transcodeInfoSpeed.Text = "-";
-            transcodeInfoComplete.Text = "-";
-            playbackInfoBuffer.Text = "-";
+            transcodeInfoACodec.Text = ": -";
+            transcodeInfoVCodec.Text = ": -";
+            transcodeInfoRes.Text = ": -";
+            transcodeInfoChan.Text = ": -";
+            transcodeInfoBitrate.Text = ": -";
+            transcodeInfoSpeed.Text = ": -";
+            transcodeInfoComplete.Text = ": -";
+            playbackInfoBuffer.Text = ": -";
             transcodingProgress.Value = 0;
 
             // process the play action
@@ -106,6 +106,19 @@ namespace MediaBrowserPlayer
             catch(Exception exception)
             {
                 App.AddNotification(new Notification() { Title = "Error Retreiving Playback Info", Message = exception.Message });
+            }
+
+            if((mediaItem.Type).Equals("Episode", StringComparison.OrdinalIgnoreCase))
+            {
+                mediaTitle.Text = mediaItem.Series + " (" + mediaItem.Year + ") " + mediaItem.Name + " (s" + mediaItem.Season + "e" + mediaItem.EpisodeIndex + ")";
+            }
+            else if((mediaItem.Type).Equals("Movie", StringComparison.OrdinalIgnoreCase))
+            {
+                mediaTitle.Text = mediaItem.Name + " (" + mediaItem.Year + ")";
+            }
+            else
+            {
+                mediaTitle.Text = "Unknown Media Type : " + mediaItem.Type;
             }
 
             if (mediaItem.duration > 0)
@@ -159,13 +172,13 @@ namespace MediaBrowserPlayer
             {
                 transcodingProgress.Value = info.CompletionPercentage;
 
-                transcodeInfoACodec.Text = info.AudioCodec;
-                transcodeInfoVCodec.Text = info.VideoCodec;
-                transcodeInfoRes.Text = info.Width + "x" + info.Height;
-                transcodeInfoChan.Text = info.AudioChannels.ToString();
-                transcodeInfoBitrate.Text = info.Bitrate.ToString("n0");
-                transcodeInfoSpeed.Text = info.Framerate.ToString("f1") + " fps";
-                transcodeInfoComplete.Text = info.CompletionPercentage.ToString("f1") + "%";
+                transcodeInfoACodec.Text = ": " + info.AudioCodec;
+                transcodeInfoVCodec.Text = ": " + info.VideoCodec;
+                transcodeInfoRes.Text = ": " + info.Width + "x" + info.Height;
+                transcodeInfoChan.Text = ": " + info.AudioChannels.ToString();
+                transcodeInfoBitrate.Text = ": " + info.Bitrate.ToString("n0");
+                transcodeInfoSpeed.Text = ": " + info.Framerate.ToString("f1") + " fps";
+                transcodeInfoComplete.Text = ": " + info.CompletionPercentage.ToString("f1") + "%";
 
             }
             
@@ -216,7 +229,7 @@ namespace MediaBrowserPlayer
                 percent = 0;
             }
 
-            playbackInfoBuffer.Text = percent.ToString() + "%";
+            playbackInfoBuffer.Text = ": " + percent.ToString() + "%";
         }
 
         private void mediaPlayer_MediaFailed(object sender, ExceptionRoutedEventArgs e)
@@ -249,10 +262,12 @@ namespace MediaBrowserPlayer
         {
             if (mediaPlayer.CurrentState == MediaElementState.Playing)
             {
+                pauseButton.Content = "Play";
                 mediaPlayer.Pause();
             }
             else if (mediaPlayer.CurrentState == MediaElementState.Paused)
             {
+                pauseButton.Content = "Pause";
                 mediaPlayer.Play();
             }
         }
@@ -269,7 +284,7 @@ namespace MediaBrowserPlayer
             int videoBitrateSetting = settings.GetAppSettingInt("video_bitrate");
             if (videoBitrateSetting == -1)
             {
-                videoBitrateSetting = 5000000;
+                videoBitrateSetting = 10000000;
             }
             int videoMaxWidthSetting = settings.GetAppSettingInt("video_max_width");
             if (videoMaxWidthSetting == -1)
@@ -279,9 +294,8 @@ namespace MediaBrowserPlayer
             int audioBitrateSetting = settings.GetAppSettingInt("audio_bitrate");
             if (audioBitrateSetting == -1)
             {
-                audioBitrateSetting = 196000;
+                audioBitrateSetting = 128000;
             }
-
 
             string mediaFile = "http://" + server + "/mediabrowser/Videos/" + itemId + "/stream.ts" +
                 "?audioChannels=2&" +
@@ -306,11 +320,13 @@ namespace MediaBrowserPlayer
         {
             if (gridAreaProgress.Visibility == Windows.UI.Xaml.Visibility.Collapsed)
             {
+                gridAreaTitle.Visibility = Windows.UI.Xaml.Visibility.Visible;
                 gridAreaProgress.Visibility = Windows.UI.Xaml.Visibility.Visible;
                 gridAreaInfo.Visibility = Windows.UI.Xaml.Visibility.Visible;
             }
             else
             {
+                gridAreaTitle.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
                 gridAreaProgress.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
                 gridAreaInfo.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
             }
