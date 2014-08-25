@@ -26,8 +26,10 @@ namespace MediaBrowserPlayer.Classes
 {
     public class ComboBoxData
     {
-        public string DataName;
-        public int DataValue;
+        public string DataName { get; set; }
+        public int DataValueInt { get; set; }
+        public string DataValueString { get; set; }
+        public bool IsChecked { get; set; }
 
         public override string ToString()
         {

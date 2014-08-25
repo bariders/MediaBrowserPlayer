@@ -307,19 +307,34 @@ namespace MediaBrowserPlayer
             {
                 audioBitrateSetting = 128000;
             }
+            int audioChannels = settings.GetAppSettingInt("audio_channels");
+            if (audioChannels == -1)
+            {
+                audioChannels = 6;
+            }
+            string audioCodecs = settings.GetAppSettingString("audio_codec");
+            if(string.IsNullOrWhiteSpace(audioCodecs))
+            {
+                audioCodecs = "acc,ac3";
+            }
+            string enableStreamCopy = settings.GetAppSettingString("stream_copy");
+            if (string.IsNullOrWhiteSpace(enableStreamCopy))
+            {
+                enableStreamCopy = "true";
+            }
 
-            string mediaFile = "http://" + server + "/mediabrowser/Videos/" + itemId + "/stream.ts" +
-                "?audioChannels=2&" +
+            string mediaFile = "http://" + server + "/mediabrowser/Videos/" + itemId + "/stream.ts?" +
                 "AudioStreamIndex=1&" +
                 "DeviceId=" + settings.GetDeviceId() + "&" +
                 "Static=false&" +
                 "MediaSourceId=" + itemId + "&" +
                 "VideoCodec=h264&" +
-                "AudioCodec=aac&" +
+                "AudioCodec=" + audioCodecs + "&" +
+                "AudioChannels=" + audioChannels + "&" +
                 "MaxWidth=" + videoMaxWidthSetting + "&" +
                 "VideoBitrate=" + videoBitrateSetting + "&" +
                 "AudioBitrate=" + audioBitrateSetting + "&" +
-                "EnableAutoStreamCopy=true&" +
+                "EnableAutoStreamCopy=" + enableStreamCopy + "&" +
                 "StartTimeTicks=" + startTicks;
 
             mediaPlayer.Source = new Uri(mediaFile, UriKind.Absolute);

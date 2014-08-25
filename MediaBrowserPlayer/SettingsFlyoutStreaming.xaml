@@ -17,14 +17,36 @@
 
         <!-- Content Section 1-->
         <StackPanel Style="{StaticResource SettingsFlyoutSectionStyle}">
-            <TextBlock TextWrapping="Wrap" Text="Video Bitrate" FontSize="14"/>
+            
+            <TextBlock TextWrapping="Wrap" Text="Max Video Bitrate" FontSize="14"/>
             <ComboBox x:Name="videoBitrate" Width="250" SelectionChanged="videoBitrate_SelectionChanged"/>
 
             <TextBlock TextWrapping="Wrap" Text="Max Video Width" FontSize="14"/>
             <ComboBox x:Name="videoMaxWidth" Width="250" SelectionChanged="videoMaxWidth_SelectionChanged"/>
 
-            <TextBlock TextWrapping="Wrap" Text="Audio Bitrate" FontSize="14"/>
+            <TextBlock TextWrapping="Wrap" Text="Max Audio Bitrate" FontSize="14"/>
             <ComboBox x:Name="audioBitrate" Width="250" SelectionChanged="audioBitrate_SelectionChanged"/>
+
+            <TextBlock TextWrapping="Wrap" Text="Max Audio Channels" FontSize="14"/>
+            <ComboBox x:Name="audioChannels" Width="250" SelectionChanged="audioChannels_SelectionChanged"/>
+
+            <TextBlock TextWrapping="Wrap" Text="Audio Codecs" FontSize="14" />
+            <ComboBox x:Name="audioCodecs" Width="250" SelectionChanged="audioCodec_SelectionChanged"/>
+            <!--
+            <ComboBox x:Name="audioCodecList" Width="250">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox IsChecked="{Binding IsChecked}" Width="30" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding DataName}" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            -->
+
+            <TextBlock TextWrapping="Wrap" Text="Enable Stream Copy" FontSize="14"/>
+            <ComboBox x:Name="enableStreamCopy" Width="250" SelectionChanged="enableStreamCopy_SelectionChanged"/>
 
         </StackPanel>
         
