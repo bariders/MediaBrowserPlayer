@@ -115,9 +115,11 @@
     <Compile Include="Classes\ComboBoxData.cs" />
     <Compile Include="Classes\DiscoverServer.cs" />
     <Compile Include="Classes\MediaItem.cs" />
+    <Compile Include="Classes\MetroEventSource.cs" />
     <Compile Include="Classes\Notification.cs" />
     <Compile Include="Classes\SecondsToTimeSpan.cs" />
     <Compile Include="Classes\SessionInfo.cs" />
+    <Compile Include="Classes\StorageFileEventListener.cs" />
     <Compile Include="Classes\WebSocketManager.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>

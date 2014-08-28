@@ -100,6 +100,7 @@ namespace MediaBrowserPlayer.Classes
             }
             catch(Exception e)
             {
+                MetroEventSource.Log.Info("Error Creating WebSocket - " + e.Message);
                 string errorString = "Error Creating WebSocket : " + e.Message;
                 App.AddNotification(new Notification() { Title = "Error Creating Web Socket", Message = errorString });
             }

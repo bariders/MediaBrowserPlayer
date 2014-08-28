@@ -40,6 +40,10 @@ using Windows.Web;
 using Windows.UI.ApplicationSettings;
 using Windows.UI.Popups;
 using Newtonsoft.Json.Linq;
+using System.Diagnostics.Tracing;
+using Windows.Storage;
+using System.Threading.Tasks;
+using Windows.Storage.Search;
 
 // The Blank Application template is documented at http://go.microsoft.com/fwlink/?LinkId=234227
 
@@ -63,6 +67,12 @@ namespace MediaBrowserPlayer
         /// </summary>
         public App()
         {
+            PruneLogsFiles();
+
+            string logFileName = DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss");
+            EventListener informationListener = new StorageFileEventListener("AppLog-" + logFileName);
+            informationListener.EnableEvents(MetroEventSource.Log, EventLevel.Informational);
+
             this.InitializeComponent();
             this.Suspending += OnSuspending;
 
@@ -73,6 +83,36 @@ namespace MediaBrowserPlayer
             notificationTimer.Tick += NotificationTimer_Tick;
             notificationTimer.Interval = TimeSpan.FromSeconds(3);
             notificationTimer.Start();
+
+            MetroEventSource.Log.Info("App Started");
+        }
+
+        private void PruneLogsFiles()
+        {
+            var files = ApplicationData.Current.LocalFolder.GetFilesAsync();
+            
+            while (files.Status == AsyncStatus.Started)
+                Task.Delay(10).Wait();
+
+            IReadOnlyList<StorageFile> fileList = files.GetResults();
+
+            IEnumerable<StorageFile> sortedFiles = fileList.OrderBy((x) => x.DateCreated);
+            int numToDelete = Math.Max((fileList.Count - 5), 0);
+
+            // delete the oldest
+            foreach (StorageFile file in sortedFiles)
+            {
+                if (numToDelete > 0)
+                {
+                    System.Diagnostics.Debug.WriteLine("Delete Log  : " + file.Name);
+                    file.DeleteAsync();
+                }
+                else
+                {
+                    break;
+                }
+                numToDelete--;
+            }
         }
 
         public static void AddNotification(Notification notification)
@@ -99,6 +139,7 @@ namespace MediaBrowserPlayer
                 Notification notification = notifications[0];
                 notifications.RemoveAt(0);
 
+                MetroEventSource.Log.Info(notification.Title + " - " + notification.Message);
                 MessageDialog msg = new MessageDialog(notification.Message, notification.Title);
                 await msg.ShowAsync();
             }
@@ -108,7 +149,6 @@ namespace MediaBrowserPlayer
                 notificationRunning = false;
             }
         }
-
 
         protected override void OnWindowCreated(WindowCreatedEventArgs args)
         {
@@ -148,6 +188,7 @@ namespace MediaBrowserPlayer
             }
             catch (Exception exp)
             {
+                MetroEventSource.Log.Info("Set Capabilities Error - " + exp.Message);
                 //App.AddNotification(new Notification() { Title = "Set Capabilities Error", Message = exp.Message });
             }
         }
