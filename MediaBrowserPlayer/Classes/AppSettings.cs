@@ -74,6 +74,26 @@ namespace MediaBrowserPlayer.Classes
             SaveAppSettingString("user_id", value);
         }
 
+        public void SaveAppSettingBool(string name, bool value)
+        {
+            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+            localSettings.Values[name] = value;
+        }
+
+        public bool GetAppSettingBool(string name)
+        {
+            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+            if (localSettings.Values[name] != null)
+            {
+                bool tempData = (bool)localSettings.Values[name];
+                return tempData;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public void SaveAppSettingInt(string name, int value)
         {
             var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;

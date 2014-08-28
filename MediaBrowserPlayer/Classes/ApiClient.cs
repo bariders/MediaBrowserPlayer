@@ -201,6 +201,8 @@ namespace MediaBrowserPlayer.Classes
 
         public async void PlaybackCheckinStopped(string itemId, long position)
         {
+            MetroEventSource.Log.Info("Sending PlaybackCheckinStopped for " + itemId + " @ " + position);
+
             HttpClient httpClient = new HttpClient();
 
             string authorization = await GetAuthorizationHeader();
@@ -297,7 +299,7 @@ namespace MediaBrowserPlayer.Classes
                 throw new Exception("Server not set");
             }
 
-            Uri url = new Uri("http://" + server + "/mediabrowser/Users/" + userId + "/Items/" + itemId + " ?format=json");
+            Uri url = new Uri("http://" + server + "/mediabrowser/Users/" + userId + "/Items/" + itemId + "?format=json");
 
             HttpClient httpClient = new HttpClient();
 

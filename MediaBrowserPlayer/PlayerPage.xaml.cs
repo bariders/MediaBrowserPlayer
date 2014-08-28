@@ -73,6 +73,8 @@ namespace MediaBrowserPlayer
 
             mediaPlayer.BufferingProgressChanged += mediaPlayer_BufferingProgressChanged;
 
+            mediaPlayer.PlayerStateChanged += mediaPlayer_PlayerStateChanged;
+
             // reset session info controls
             transcodeInfoACodec.Text = ": -";
             transcodeInfoVCodec.Text = ": -";
@@ -146,6 +148,36 @@ namespace MediaBrowserPlayer
             else
             {
                 itemId = null;
+            }
+
+            // set player full screen if required
+            bool playFullscreen = settings.GetAppSettingBool("player_start_fullscreen");
+            if(playFullscreen)
+            {
+                gridAreaTitle.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                gridAreaProgress.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                gridAreaInfo.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+            }
+
+        }
+
+        private void mediaPlayer_PlayerStateChanged(object sender, RoutedPropertyChangedEventArgs<Microsoft.PlayerFramework.PlayerState> e)
+        {
+            if(e.NewValue == Microsoft.PlayerFramework.PlayerState.Ending)
+            {
+                MetroEventSource.Log.Info("Media Playback Ended");
+
+                mediaPlayer.Close();
+                StopTimer();
+
+                if (itemId != null)
+                {
+                    long possition = (long)playbackProgress.Value;
+                    client.PlaybackCheckinStopped(itemId, possition);
+                }
+
+                Frame rootFrame = Window.Current.Content as Frame;
+                rootFrame.Navigate(typeof(MainPage));
             }
         }
 
@@ -315,7 +347,7 @@ namespace MediaBrowserPlayer
             string audioCodecs = settings.GetAppSettingString("audio_codec");
             if(string.IsNullOrWhiteSpace(audioCodecs))
             {
-                audioCodecs = "acc,ac3";
+                audioCodecs = "aac,ac3";
             }
             string enableStreamCopy = settings.GetAppSettingString("stream_copy");
             if (string.IsNullOrWhiteSpace(enableStreamCopy))

@@ -159,10 +159,19 @@ namespace MediaBrowserPlayer
         {
 
             args.Request.ApplicationCommands.Add(new SettingsCommand(
+                "General Settings", "General Settings", (handler) => ShowCustomSettingFlyoutGeneral()));
+
+            args.Request.ApplicationCommands.Add(new SettingsCommand(
                 "Server Settings", "Server Settings", (handler) => ShowCustomSettingFlyoutMain()));
 
             args.Request.ApplicationCommands.Add(new SettingsCommand(
                 "Streaming Settings", "Streaming Settings", (handler) => ShowCustomSettingFlyoutStreaming()));
+        }
+
+        public void ShowCustomSettingFlyoutGeneral()
+        {
+            SettingsFlyoutGeneral settingFlyout = new SettingsFlyoutGeneral();
+            settingFlyout.Show();
         }
 
         public void ShowCustomSettingFlyoutMain()

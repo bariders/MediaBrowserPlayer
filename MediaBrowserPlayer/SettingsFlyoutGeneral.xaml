@@ -1,0 +1,24 @@
+﻿<SettingsFlyout
+    x:Class="MediaBrowserPlayer.SettingsFlyoutGeneral"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MediaBrowserPlayer"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    IconSource="Assets/SmallLogo.png"
+    Title="General"
+    d:DesignWidth="346" Loaded="SettingsFlyout_Loaded">
+
+    <!-- This StackPanel acts as a root panel for vertical layout of the content sections -->
+    <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" >
+
+        <!-- Content Section 1-->
+        <StackPanel Style="{StaticResource SettingsFlyoutSectionStyle}">
+
+            <CheckBox x:Name="playerStartFullscreen" Content="Start Playback Fullscreen" VerticalAlignment="Stretch" Checked="playerStartFullscreen_Checked" Unchecked="playerStartFullscreen_Unchecked"/>
+
+        </StackPanel>
+
+    </StackPanel>
+</SettingsFlyout>

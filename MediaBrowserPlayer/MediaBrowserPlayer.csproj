@@ -128,6 +128,9 @@
       <DependentUpon>PlayerPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SettingsFlyoutGeneral.xaml.cs">
+      <DependentUpon>SettingsFlyoutGeneral.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SettingsFlyoutMain.xaml.cs">
       <DependentUpon>SettingsFlyoutMain.xaml</DependentUpon>
     </Compile>
@@ -160,6 +163,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="PlayerPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SettingsFlyoutGeneral.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
