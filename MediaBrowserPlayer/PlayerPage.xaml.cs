@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
 */
 
 using MediaBrowserPlayer.Classes;
+using Microsoft.PlayerFramework;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -50,6 +51,8 @@ namespace MediaBrowserPlayer
         private bool _sliderpressed = false;
         private AppSettings settings = new AppSettings();
         private ApiClient client = new ApiClient();
+        private int audioStreamSelected = -1;
+        private int subStreamSelected = -1;
 
         private DispatcherTimer _playbackCheckin;
 
@@ -111,6 +114,41 @@ namespace MediaBrowserPlayer
                 App.AddNotification(new Notification() { Title = "Error Retreiving Playback Info", Message = exception.Message });
             }
 
+            // set up audio and subtitle selection
+            List<ComboBoxData> audioStreamItems = new List<ComboBoxData>();
+            audioStreamItems.Add(new ComboBoxData() { DataName = "Auto" , DataValueInt = -1 });
+            foreach (MediaStreamInfo mInfo in mediaItem.mediaStreams)
+            {
+                if (mInfo.Type == "Audio")
+                {
+                    string langString = mInfo.Language;
+                    if(string.IsNullOrWhiteSpace(langString))
+                    {
+                        langString = "NoLang";
+                    }
+                    audioStreamItems.Add(new ComboBoxData() { DataName = langString + " (" + mInfo.Codec + ")", DataValueInt = mInfo.Index });
+                }
+            }
+            audioStreamSelector.ItemsSource = audioStreamItems;
+            audioStreamSelector.SelectedIndex = 0;
+
+            List<ComboBoxData> subStreamItems = new List<ComboBoxData>();
+            subStreamItems.Add(new ComboBoxData() { DataName = "Auto", DataValueInt = -1 });
+            foreach (MediaStreamInfo mInfo in mediaItem.mediaStreams)
+            {
+                if (mInfo.Type == "Subtitle")
+                {
+                    string langString = mInfo.Language;
+                    if (string.IsNullOrWhiteSpace(langString))
+                    {
+                        langString = "NoLang";
+                    }
+                    subStreamItems.Add(new ComboBoxData() { DataName = langString + " (" + mInfo.Codec + ")", DataValueInt = mInfo.Index });
+                }
+            }
+            subStreamSelector.ItemsSource = subStreamItems;
+            subStreamSelector.SelectedIndex = 0;
+
             string logoItemId = "";
 
             if((mediaItem.Type).Equals("Episode", StringComparison.OrdinalIgnoreCase))
@@ -134,16 +172,16 @@ namespace MediaBrowserPlayer
             mediaItemLogo.Source = image;
 
 
-            if (mediaItem.duration > 0)
+            if (mediaItem.Duration > 0)
             {
                 SetupTimer();
 
                 playbackProgress.Minimum = 0;
-                playbackProgress.Maximum = mediaItem.duration;
+                playbackProgress.Maximum = mediaItem.Duration;
 
                 PlaybackAction(startIndex);
 
-                mediaDuration.Text = new TimeSpan(0, 0, (int)mediaItem.duration).ToString(@"hh\:mm\:ss");
+                mediaDuration.Text = new TimeSpan(0, 0, (int)mediaItem.Duration).ToString(@"hh\:mm\:ss");
             }
             else
             {
@@ -222,7 +260,6 @@ namespace MediaBrowserPlayer
                 transcodeInfoBitrate.Text = ": " + info.Bitrate.ToString("n0");
                 transcodeInfoSpeed.Text = ": " + info.Framerate.ToString("f1") + " fps";
                 transcodeInfoComplete.Text = ": " + info.CompletionPercentage.ToString("f1") + "%";
-
             }
             
         }
@@ -355,9 +392,21 @@ namespace MediaBrowserPlayer
                 enableStreamCopy = "true";
             }
 
-            string mediaFile = "http://" + server + "/mediabrowser/Videos/" + itemId + "/stream.ts?" +
-                "AudioStreamIndex=1&" +
-                "DeviceId=" + settings.GetDeviceId() + "&" +
+            string mediaFileUrl = "http://" + server + "/mediabrowser/Videos/" + itemId + "/stream.ts?";
+
+            if(audioStreamSelected != -1)
+            {
+                mediaFileUrl += "AudioStreamIndex=" + audioStreamSelected + "&";
+            }
+
+            if (subStreamSelected != -1)
+            {
+                mediaFileUrl += "SubtitleStreamIndex=" + subStreamSelected + "&";
+                //mediaFileUrl += "SubtitleDeliveryMethod=Encode&";
+                //mediaFileUrl += "SubtitleDeliveryMethod=External&";
+            }
+
+            mediaFileUrl += "DeviceId=" + settings.GetDeviceId() + "&" +
                 "Static=false&" +
                 "MediaSourceId=" + itemId + "&" +
                 "VideoCodec=h264&" +
@@ -369,7 +418,23 @@ namespace MediaBrowserPlayer
                 "EnableAutoStreamCopy=" + enableStreamCopy + "&" +
                 "StartTimeTicks=" + startTicks;
 
-            mediaPlayer.Source = new Uri(mediaFile, UriKind.Absolute);
+            mediaPlayer.Source = new Uri(mediaFileUrl, UriKind.Absolute);
+
+            /*
+            // removed for now due to sync issues
+            // set up subtitle streaming
+            if (subStreamSelected != -1)
+            {
+                string subtitleUrl = "http://" + server + "/mediabrowser/Videos/" + itemId + "/" + itemId + "/Subtitles/" + subStreamSelected + "/" + startTicks + "/Stream.vtt";
+
+                mediaPlayer.AvailableCaptions.Clear();
+                Caption cap = new Caption();
+                cap.Source = new Uri(subtitleUrl, UriKind.Absolute);
+                cap.Description = "Default";
+                mediaPlayer.AvailableCaptions.Add(cap);
+                mediaPlayer.SelectedCaption = mediaPlayer.AvailableCaptions.First();
+            }
+            */
 
             //mediaPlayer.Stretch = Stretch.Fill;
 
@@ -390,6 +455,24 @@ namespace MediaBrowserPlayer
                 gridAreaProgress.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
                 gridAreaInfo.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
             }
+        }
+
+        private void audioStreamSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBoxData selected = (sender as ComboBox).SelectedItem as ComboBoxData;
+            audioStreamSelected = selected.DataValueInt;
+
+            long currentPos = (long)(playbackProgress.Value);
+            PlaybackAction(currentPos);
+        }
+
+        private void subStreamSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBoxData selected = (sender as ComboBox).SelectedItem as ComboBoxData;
+            subStreamSelected = selected.DataValueInt;
+
+            long currentPos = (long)(playbackProgress.Value);
+            PlaybackAction(currentPos);
         }
     }
 }

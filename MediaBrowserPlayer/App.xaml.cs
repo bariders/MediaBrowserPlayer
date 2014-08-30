@@ -44,6 +44,8 @@ using System.Diagnostics.Tracing;
 using Windows.Storage;
 using System.Threading.Tasks;
 using Windows.Storage.Search;
+using Windows.UI.Notifications;
+using Windows.Data.Xml.Dom;
 
 // The Blank Application template is documented at http://go.microsoft.com/fwlink/?LinkId=234227
 
@@ -85,6 +87,27 @@ namespace MediaBrowserPlayer
             notificationTimer.Start();
 
             MetroEventSource.Log.Info("App Started");
+
+            // set up a tile
+            /*
+            TileUpdateManager.CreateTileUpdaterForApplication().EnableNotificationQueue(true);
+
+            XmlDocument tileXml = TileUpdateManager.GetTemplateContent(TileTemplateType.TileWide310x150ImageAndText01);
+
+            XmlNodeList tileTextAttributes = tileXml.GetElementsByTagName("text");
+            tileTextAttributes[0].InnerText = "notification 05";
+
+            XmlNodeList tileImageAttributes = tileXml.GetElementsByTagName("image");
+            //((XmlElement)tileImageAttributes[0]).SetAttribute("src", "ms-appdata:///local/redWide.png");
+            ((XmlElement)tileImageAttributes[0]).SetAttribute("src", "ms-appx:///assets/Logo.scale-100.png");
+            ((XmlElement)tileImageAttributes[0]).SetAttribute("alt", "red graphic");
+
+            TileNotification tileNotification = new TileNotification(tileXml);
+
+            tileNotification.ExpirationTime = DateTimeOffset.UtcNow.AddMinutes(10);
+
+            TileUpdateManager.CreateTileUpdaterForApplication().Update(tileNotification);
+            */
         }
 
         private void PruneLogsFiles()

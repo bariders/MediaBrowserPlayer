@@ -24,9 +24,9 @@ using System.Threading.Tasks;
 
 namespace MediaBrowserPlayer.Classes
 {
-    class MediaItem
+    public class MediaItem
     {
-        public long duration;
+        public long Duration;
         public string Id;
         public string Name;
         public string Series;
@@ -35,5 +35,16 @@ namespace MediaBrowserPlayer.Classes
         public string Type;
         public int Year;
         public string SeriesId;
+
+        public List<MediaStreamInfo> mediaStreams;
+    }
+
+    public class MediaStreamInfo
+    {
+        public int Index;
+        public string Type;
+        public string Language;
+        public string Codec;
+        public bool IsTextSubtitleStream;
     }
 }

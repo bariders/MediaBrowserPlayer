@@ -320,11 +320,11 @@ namespace MediaBrowserPlayer.Classes
             {
                 long runTimeSeconds = (long)itemInfo["RunTimeTicks"];
                 runTimeSeconds = (runTimeSeconds / 1000) / 10000;
-                item.duration = runTimeSeconds;
+                item.Duration = runTimeSeconds;
             }
             else
             {
-                item.duration = 0;
+                item.Duration = 0;
                 App.AddNotification(new Notification() { Title = "Media Item Error", Message = "The media item has no duration" });
             }
 
@@ -337,6 +337,23 @@ namespace MediaBrowserPlayer.Classes
             item.EpisodeIndex = (itemInfo["IndexNumber"] != null) ? (int)itemInfo["IndexNumber"] : 0;
 
             item.SeriesId = (itemInfo["SeriesId"] != null) ? (string)itemInfo["SeriesId"] : "";
+
+            // extract media streams
+            JArray streams = (JArray)itemInfo["MediaStreams"];
+            item.mediaStreams = new List<MediaStreamInfo>();
+
+            foreach (JObject stream in streams)
+            {
+                MediaStreamInfo mInfo = new MediaStreamInfo();
+
+                mInfo.Index = (int)stream["Index"];
+                mInfo.Type = (string)stream["Type"];
+                mInfo.Language = (string)stream["Language"];
+                mInfo.Codec = (string)stream["Codec"];
+                mInfo.IsTextSubtitleStream = (bool)stream["IsTextSubtitleStream"];
+
+                item.mediaStreams.Add(mInfo);
+            }
 
             return item;
         }

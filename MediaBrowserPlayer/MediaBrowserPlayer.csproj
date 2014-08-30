@@ -151,6 +151,7 @@
     <Content Include="Assets\SmallLogo.scale-100.png" />
     <Content Include="Assets\SplashScreen.scale-100.png" />
     <Content Include="Assets\StoreLogo.scale-100.png" />
+    <Content Include="Assets\Wide310x150Logo.scale-100.png" />
     <None Include="Package.StoreAssociation.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -182,6 +183,9 @@
   <ItemGroup>
     <SDKReference Include="Microsoft.PlayerFramework.Xaml, Version=2.0.0.0">
       <Name>Microsoft.PlayerFramework.Xaml</Name>
+    </SDKReference>
+    <SDKReference Include="Microsoft.PlayerFramework.Xaml.WebVTT, Version=2.0.0.0">
+      <Name>Microsoft Player Framework WebVTT Plugin</Name>
     </SDKReference>
   </ItemGroup>
   <ItemGroup>
