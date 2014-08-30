@@ -325,7 +325,6 @@ namespace MediaBrowserPlayer.Classes
             else
             {
                 item.Duration = 0;
-                App.AddNotification(new Notification() { Title = "Media Item Error", Message = "The media item has no duration" });
             }
 
             item.Id = (itemInfo["Id"] != null) ? (string)itemInfo["Id"] : "";

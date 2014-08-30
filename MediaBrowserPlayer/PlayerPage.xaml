@@ -117,10 +117,10 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="Audio" FontSize="18" TextAlignment="Left"/>
-                <ComboBox x:Name="audioStreamSelector" Grid.Row="1" Grid.Column="1" SelectionChanged="audioStreamSelector_SelectionChanged"/>
+                <ComboBox x:Name="audioStreamSelector" Grid.Row="1" Grid.Column="1"/>
 
                 <TextBlock Grid.Row="2" Grid.Column="2" Text="Subtitle" FontSize="18" TextAlignment="Left"/>
-                <ComboBox x:Name="subStreamSelector" Grid.Row="3" Grid.Column="3" SelectionChanged="subStreamSelector_SelectionChanged"/>
+                <ComboBox x:Name="subStreamSelector" Grid.Row="3" Grid.Column="3"/>
 
             </Grid>
 

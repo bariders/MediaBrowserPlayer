@@ -131,6 +131,7 @@ namespace MediaBrowserPlayer
             }
             audioStreamSelector.ItemsSource = audioStreamItems;
             audioStreamSelector.SelectedIndex = 0;
+            audioStreamSelector.SelectionChanged += audioStreamSelector_SelectionChanged;
 
             List<ComboBoxData> subStreamItems = new List<ComboBoxData>();
             subStreamItems.Add(new ComboBoxData() { DataName = "Auto", DataValueInt = -1 });
@@ -148,6 +149,7 @@ namespace MediaBrowserPlayer
             }
             subStreamSelector.ItemsSource = subStreamItems;
             subStreamSelector.SelectedIndex = 0;
+            subStreamSelector.SelectionChanged += subStreamSelector_SelectionChanged;
 
             string logoItemId = "";
 
@@ -171,22 +173,15 @@ namespace MediaBrowserPlayer
             BitmapImage image = new BitmapImage(new Uri(logoPath, UriKind.Absolute));
             mediaItemLogo.Source = image;
 
+            // start playback
+            SetupTimer();
 
-            if (mediaItem.Duration > 0)
-            {
-                SetupTimer();
+            playbackProgress.Minimum = 0;
+            playbackProgress.Maximum = mediaItem.Duration;
 
-                playbackProgress.Minimum = 0;
-                playbackProgress.Maximum = mediaItem.Duration;
+            mediaDuration.Text = new TimeSpan(0, 0, (int)mediaItem.Duration).ToString(@"hh\:mm\:ss");
 
-                PlaybackAction(startIndex);
-
-                mediaDuration.Text = new TimeSpan(0, 0, (int)mediaItem.Duration).ToString(@"hh\:mm\:ss");
-            }
-            else
-            {
-                itemId = null;
-            }
+            PlaybackAction(startIndex);
 
             // set player full screen if required
             bool playFullscreen = settings.GetAppSettingBool("player_start_fullscreen");
