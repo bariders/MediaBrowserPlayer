@@ -255,11 +255,13 @@ namespace MediaBrowserPlayer
 #endif
 
             // if there is no server/port then try to discover it
-            string server = settings.GetAppSettingString("server_host");
-            string port = settings.GetAppSettingString("server_port");
-            if (server == "" || port == "")
+            string server = settings.GetServer();
+            if (server == null)
             {
-                App.AddNotification(new Notification() { Title = "Notice", Message = "You need to set the server details in the settings" });
+                SettingsFlyoutMain settingFlyout = new SettingsFlyoutMain();
+                settingFlyout.Show();
+
+                //App.AddNotification(new Notification() { Title = "Notice", Message = "You need to set the server details in the settings" });
             }
             else
             {

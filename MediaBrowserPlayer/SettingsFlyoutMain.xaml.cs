@@ -49,22 +49,32 @@ namespace MediaBrowserPlayer
         {
             var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
 
-            localSettings.Values["server_host"] = setting_server.Text.Trim();
-            localSettings.Values["server_port"] = setting_port.Text.Trim();
-            localSettings.Values["device_name"] = setting_device_name.Text.Trim();
+            string original_server_host = (string)localSettings.Values["server_host"];
+            string original_server_post = (string)localSettings.Values["server_port"];
+            string original_server_name = (string)localSettings.Values["device_name"];
 
-            // on settings update reload main page and reconnect websocket
-
-            Frame rootFrame = Window.Current.Content as Frame;
-            var p = rootFrame.Content as MainPage;
-            if (p != null)
+            // if settings change then set them and reload interface
+            if (original_server_host != setting_server.Text.Trim() || 
+                original_server_post != setting_port.Text.Trim() ||
+                original_server_name != setting_device_name.Text.Trim())
             {
-                p.LoadMainPage(true);
+
+                localSettings.Values["server_host"] = setting_server.Text.Trim();
+                localSettings.Values["server_port"] = setting_port.Text.Trim();
+                localSettings.Values["device_name"] = setting_device_name.Text.Trim();
+
+                // on settings update reload main page and reconnect websocket
+
+                Frame rootFrame = Window.Current.Content as Frame;
+                var p = rootFrame.Content as MainPage;
+                if (p != null)
+                {
+                    p.LoadMainPage(true);
+                }
+
+                // ReInitialize WebSocket
+                App.ReInitializeWebSocket();
             }
-
-            // ReInitialize WebSocket
-            App.ReInitializeWebSocket();
-
         }
 
         private string GetSetting(string name)

@@ -43,7 +43,7 @@ namespace MediaBrowserPlayer
     public sealed partial class MainPage : Page
     {
         private AppSettings appSettings = new AppSettings();
-        private bool navigationStarted = false;
+        private bool pageLoaded = false;
 
         public MainPage()
         {
@@ -140,28 +140,35 @@ namespace MediaBrowserPlayer
 
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
-            LoadMainPage();
+            if (pageLoaded == false)
+            {
+                pageLoaded = true;
+                LoadMainPage();
+            }
         }
 
         public void LoadMainPage(bool overRide = false)
         {
-            if (navigationStarted == false || overRide)
+            string server = appSettings.GetServer();
+            if (server == null)
             {
-                navigationStarted = true;
+                SettingsFlyoutMain settingFlyout = new SettingsFlyoutMain();
+                settingFlyout.Show();
 
-                try
+                return;
+            }
+
+            try
+            {
+                if (server != null)
                 {
-                    string server = appSettings.GetServer();
-                    if (server != null)
-                    {
-                        Uri mb = new Uri("http://" + server + "/mediabrowser");
-                        mainWebPage.Navigate(mb);
-                    }
+                    Uri mb = new Uri("http://" + server + "/mediabrowser");
+                    mainWebPage.Navigate(mb);
                 }
-                catch (Exception exeption)
-                {
-                    App.AddNotification(new Notification() { Title = "Error Loading Main Page", Message = exeption.Message });
-                }
+            }
+            catch (Exception exeption)
+            {
+                App.AddNotification(new Notification() { Title = "Error Loading Main Page", Message = exeption.Message });
             }
         }
 
@@ -181,12 +188,22 @@ namespace MediaBrowserPlayer
 
         private async void AppBarButton_Back(object sender, RoutedEventArgs e)
         {
-            mainWebPage.GoBack();
+            try
+            {
+                mainWebPage.GoBack();
+            }
+            catch(Exception)
+            { }
         }
 
         private void AppBarButton_Refresh(object sender, RoutedEventArgs e)
         {
-            mainWebPage.Refresh();
+            try
+            {
+                mainWebPage.Refresh();
+            }
+            catch (Exception)
+            { }
         }
 
         private void AppBarButton_Home(object sender, RoutedEventArgs e)
