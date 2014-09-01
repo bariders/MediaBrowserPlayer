@@ -357,6 +357,48 @@ namespace MediaBrowserPlayer.Classes
             return item;
         }
 
+        public async Task<List<MediaItem>> GetResentItems()
+        {
+            List<MediaItem> recentItems = new List<MediaItem>();
+
+            string userId = await GetUserID();
+
+            string server = settings.GetServer();
+            if (server == null)
+            {
+                return recentItems;
+            }
+
+            Uri url = new Uri("http://" + server + "/mediabrowser/Users/" + userId + "/Items/Latest?Limit=5&format=json");
+
+            HttpClient httpClient = new HttpClient();
+
+            string authorization = await GetAuthorizationHeader();
+            httpClient.DefaultRequestHeaders.Add("Authorization", authorization);
+
+            string authToken = await Authenticate();
+            httpClient.DefaultRequestHeaders.Add("X-MediaBrowser-Token", authToken);
+
+            HttpResponseMessage itemResponce = await httpClient.GetAsync(url);
+            itemResponce.EnsureSuccessStatusCode();
+
+            string itemResponceText = await itemResponce.Content.ReadAsStringAsync();
+
+            JArray items = JArray.Parse(itemResponceText);
+
+            foreach (JObject itemInfo in items)
+            {
+                MediaItem mediaItem = new MediaItem();
+
+                mediaItem.Id = (string)itemInfo["Id"];
+                mediaItem.Name = (string)itemInfo["Name"];
+
+                recentItems.Add(mediaItem);
+            }
+
+            return recentItems;
+        }
+
         public async Task<string> GetUserID()
         {
             string userId = settings.GetUserId();

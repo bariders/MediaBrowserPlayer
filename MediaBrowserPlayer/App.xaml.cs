@@ -88,6 +88,9 @@ namespace MediaBrowserPlayer
 
             MetroEventSource.Log.Info("App Started");
 
+            TileNotifications tnu = new TileNotifications();
+            tnu.UpdateTileNotifications();
+
             // set up a tile
             /*
             TileUpdateManager.CreateTileUpdaterForApplication().EnableNotificationQueue(true);
@@ -95,7 +98,7 @@ namespace MediaBrowserPlayer
             XmlDocument tileXml = TileUpdateManager.GetTemplateContent(TileTemplateType.TileWide310x150ImageAndText01);
 
             XmlNodeList tileTextAttributes = tileXml.GetElementsByTagName("text");
-            tileTextAttributes[0].InnerText = "notification 05";
+            tileTextAttributes[0].InnerText = "blah blah";
 
             XmlNodeList tileImageAttributes = tileXml.GetElementsByTagName("image");
             //((XmlElement)tileImageAttributes[0]).SetAttribute("src", "ms-appdata:///local/redWide.png");
@@ -104,10 +107,11 @@ namespace MediaBrowserPlayer
 
             TileNotification tileNotification = new TileNotification(tileXml);
 
-            tileNotification.ExpirationTime = DateTimeOffset.UtcNow.AddMinutes(10);
+            tileNotification.ExpirationTime = DateTimeOffset.UtcNow.AddDays(1);
 
             TileUpdateManager.CreateTileUpdaterForApplication().Update(tileNotification);
             */
+
         }
 
         private void PruneLogsFiles()
