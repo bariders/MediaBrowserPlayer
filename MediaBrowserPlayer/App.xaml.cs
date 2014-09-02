@@ -91,27 +91,6 @@ namespace MediaBrowserPlayer
             TileNotifications tnu = new TileNotifications();
             tnu.UpdateTileNotifications();
 
-            // set up a tile
-            /*
-            TileUpdateManager.CreateTileUpdaterForApplication().EnableNotificationQueue(true);
-
-            XmlDocument tileXml = TileUpdateManager.GetTemplateContent(TileTemplateType.TileWide310x150ImageAndText01);
-
-            XmlNodeList tileTextAttributes = tileXml.GetElementsByTagName("text");
-            tileTextAttributes[0].InnerText = "blah blah";
-
-            XmlNodeList tileImageAttributes = tileXml.GetElementsByTagName("image");
-            //((XmlElement)tileImageAttributes[0]).SetAttribute("src", "ms-appdata:///local/redWide.png");
-            ((XmlElement)tileImageAttributes[0]).SetAttribute("src", "ms-appx:///assets/Logo.scale-100.png");
-            ((XmlElement)tileImageAttributes[0]).SetAttribute("alt", "red graphic");
-
-            TileNotification tileNotification = new TileNotification(tileXml);
-
-            tileNotification.ExpirationTime = DateTimeOffset.UtcNow.AddDays(1);
-
-            TileUpdateManager.CreateTileUpdaterForApplication().Update(tileNotification);
-            */
-
         }
 
         private void PruneLogsFiles()
@@ -124,10 +103,20 @@ namespace MediaBrowserPlayer
             IReadOnlyList<StorageFile> fileList = files.GetResults();
 
             IEnumerable<StorageFile> sortedFiles = fileList.OrderBy((x) => x.DateCreated);
-            int numToDelete = Math.Max((fileList.Count - 5), 0);
+
+            List<StorageFile> logFiles = new List<StorageFile>();
+            foreach (StorageFile file in sortedFiles)
+            {
+                if(file.Name.StartsWith("AppLog-"))
+                {
+                    logFiles.Add(file);
+                }
+            }
+
+            int numToDelete = Math.Max((logFiles.Count - 5), 0);
 
             // delete the oldest
-            foreach (StorageFile file in sortedFiles)
+            foreach (StorageFile file in logFiles)
             {
                 if (numToDelete > 0)
                 {
@@ -231,6 +220,8 @@ namespace MediaBrowserPlayer
 
         private async void OnResume(object sender, object e)
         {
+            MetroEventSource.Log.Info("App Resuming");
+
             socketManager.CloseWebSocket();
             await socketManager.SetupWebSocket();
             ApiClient apiClient = new ApiClient();
@@ -325,10 +316,15 @@ namespace MediaBrowserPlayer
         /// </summary>
         /// <param name="sender">The source of the suspend request.</param>
         /// <param name="e">Details about the suspend request.</param>
-        private void OnSuspending(object sender, SuspendingEventArgs e)
+        private async void OnSuspending(object sender, SuspendingEventArgs e)
         {
+            MetroEventSource.Log.Info("App Suspending");
             var deferral = e.SuspendingOperation.GetDeferral();
+            
             //TODO: Save application state and stop any background activity
+            TileNotifications tnu = new TileNotifications();
+            await tnu.UpdateTileNotifications();
+
             deferral.Complete();
         }
     }

@@ -357,6 +357,23 @@ namespace MediaBrowserPlayer.Classes
             return item;
         }
 
+        public async Task<byte[]> GetImage(string Id, string type, int width, int height, string format)
+        {
+            string server = settings.GetServer();
+            if (server == null)
+            {
+                return null;
+            }
+
+            Uri url = new Uri("http://" + server + "/mediabrowser/Items/" + Id + "/Images/" + type + "?Width= " + width + "&Height=" + height + "&Format=" + format);
+
+            HttpClient httpClient = new HttpClient();
+
+            byte[] data = await httpClient.GetByteArrayAsync(url);
+
+            return data;
+        }
+
         public async Task<List<MediaItem>> GetResentItems()
         {
             List<MediaItem> recentItems = new List<MediaItem>();
@@ -369,7 +386,8 @@ namespace MediaBrowserPlayer.Classes
                 return recentItems;
             }
 
-            Uri url = new Uri("http://" + server + "/mediabrowser/Users/" + userId + "/Items/Latest?Limit=5&format=json");
+            Uri url = new Uri("http://" + server + "/mediabrowser/Users/" + userId + "/Items/Latest?Limit=5&IsPlayed=false&format=json");
+            //&IncludeItemTypes=Movie
 
             HttpClient httpClient = new HttpClient();
 
