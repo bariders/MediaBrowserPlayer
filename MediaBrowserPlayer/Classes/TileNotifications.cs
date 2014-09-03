@@ -72,7 +72,7 @@ namespace MediaBrowserPlayer.Classes
 
                 TileNotification tileNotification = new TileNotification(tileXml);
 
-                tileNotification.ExpirationTime = DateTimeOffset.UtcNow.AddDays(1);
+                tileNotification.ExpirationTime = DateTimeOffset.UtcNow.AddDays(90);
 
                 TileUpdateManager.CreateTileUpdaterForApplication().Update(tileNotification);
             }
