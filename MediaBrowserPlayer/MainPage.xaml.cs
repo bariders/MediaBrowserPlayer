@@ -145,6 +145,9 @@ namespace MediaBrowserPlayer
                 pageLoaded = true;
                 LoadMainPage();
             }
+
+            TileNotifications tnu = new TileNotifications();
+            tnu.UpdateTileNotifications();
         }
 
         public void LoadMainPage(bool overRide = false)

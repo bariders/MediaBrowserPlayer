@@ -87,10 +87,6 @@ namespace MediaBrowserPlayer
             notificationTimer.Start();
 
             MetroEventSource.Log.Info("App Started");
-
-            TileNotifications tnu = new TileNotifications();
-            tnu.UpdateTileNotifications();
-
         }
 
         private void PruneLogsFiles()
