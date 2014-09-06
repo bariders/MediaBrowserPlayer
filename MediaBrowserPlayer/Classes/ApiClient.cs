@@ -1,5 +1,5 @@
 ﻿/*
-Media Browser Player
+Smart Player for Media Browser
 Copyright (C) 2014  Blue Bit Solutions
 
 This program is free software: you can redistribute it and/or modify
@@ -54,11 +54,11 @@ namespace MediaBrowserPlayer.Classes
             string deviceName = settings.GetDeviceName();
             if (string.IsNullOrEmpty(deviceName))
             {
-                value += "Device=\"MBP\", ";
+                value += "Device=\"SPMB\", ";
             }
             else
             {
-                value += "Device=\"MBP-" + settings.GetDeviceName() + "\", ";
+                value += "Device=\"SPMB-" + settings.GetDeviceName() + "\", ";
             }
 
             value += "DeviceId=\"" + settings.GetDeviceId() + "\", ";

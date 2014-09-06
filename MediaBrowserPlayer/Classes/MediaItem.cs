@@ -1,5 +1,5 @@
 ﻿/*
-Media Browser Player
+Smart Player for Media Browser
 Copyright (C) 2014  Blue Bit Solutions
 
 This program is free software: you can redistribute it and/or modify

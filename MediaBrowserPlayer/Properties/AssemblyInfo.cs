@@ -1,5 +1,5 @@
 ﻿/*
-Media Browser Player
+Smart Player for Media Browser
 Copyright (C) 2014  Blue Bit Solutions
 
 This program is free software: you can redistribute it and/or modify
@@ -23,11 +23,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Media Browser Player")]
+[assembly: AssemblyTitle("Smart Player for Media Browser")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Media Browser Player")]
+[assembly: AssemblyProduct("Smart Player for Media Browser")]
 [assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

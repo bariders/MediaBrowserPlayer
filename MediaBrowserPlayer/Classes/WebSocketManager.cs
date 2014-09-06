@@ -1,5 +1,5 @@
 ﻿/*
-Media Browser Player
+Smart Player for Media Browser
 Copyright (C) 2014  Blue Bit Solutions
 
 This program is free software: you can redistribute it and/or modify
@@ -86,10 +86,10 @@ namespace MediaBrowserPlayer.Classes
                 DataWriter messageWriter = new DataWriter(webSocket.OutputStream);
 
                 string deviceName = settings.GetDeviceName();
-                string value = "MBP";
+                string value = "SPMB";
                 if (string.IsNullOrEmpty(deviceName) == false)
                 {
-                    value = "MBP-" + settings.GetDeviceName();
+                    value = "SPMB-" + settings.GetDeviceName();
                 }
 
                 string identityMessage = "{\"MessageType\":\"Identity\", \"Data\":\"Windows RT|" + settings.GetDeviceId() + "|0.0.1|" + value + "\"}";

@@ -1,5 +1,5 @@
 ﻿/*
-Media Browser Player
+Smart Player for Media Browser
 Copyright (C) 2014  Blue Bit Solutions
 
 This program is free software: you can redistribute it and/or modify
@@ -125,7 +125,7 @@ namespace MediaBrowserPlayer
 
                 if (session != null)
                 {
-                    string itemObj = "{\"deviceName\":\"Media Browser Player\",\"id\":\"" + session.Id + "\",\"name\":\"BMP\",\"playableMediaTypes\":\"Video\",\"supportedCommands\":\"PlayNow\"}";
+                    string itemObj = "{\"deviceName\":\"Smart Player\",\"id\":\"" + session.Id + "\",\"name\":\"BMP\",\"playableMediaTypes\":\"Video\",\"supportedCommands\":\"PlayNow\"}";
 
                     string[] args = { "MediaController.setActivePlayer(\"Remote Control\", " + itemObj + ")" };
 
