@@ -7,8 +7,8 @@
     <ProjectGuid>{C98745BB-D41E-45BA-AD71-0A5ACC3A978E}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MediaBrowserPlayer</RootNamespace>
-    <AssemblyName>MediaBrowserPlayer</AssemblyName>
+    <RootNamespace>SmartPlayer</RootNamespace>
+    <AssemblyName>SmartPlayer</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformVersion>8.1</TargetPlatformVersion>
     <MinimumVisualStudioVersion>12</MinimumVisualStudioVersion>

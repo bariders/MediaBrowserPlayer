@@ -28,7 +28,7 @@ using Windows.Networking.Sockets;
 using Windows.Storage.Streams;
 
 
-namespace MediaBrowserPlayer.Classes
+namespace SmartPlayer.Classes
 {
     class DiscoverServer
     {

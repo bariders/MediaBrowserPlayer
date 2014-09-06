@@ -10,7 +10,7 @@ using Windows.Foundation;
 using Windows.Storage;
 using Windows.System.Threading;
 
-namespace MediaBrowserPlayer.Classes
+namespace SmartPlayer.Classes
 {
     public class StorageFileEventListener : EventListener
     {

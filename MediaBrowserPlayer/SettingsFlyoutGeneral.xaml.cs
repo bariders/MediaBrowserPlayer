@@ -1,4 +1,4 @@
-﻿using MediaBrowserPlayer.Classes;
+﻿using SmartPlayer.Classes;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,7 +16,7 @@ using Windows.UI.Xaml.Navigation;
 
 // The Settings Flyout item template is documented at http://go.microsoft.com/fwlink/?LinkId=273769
 
-namespace MediaBrowserPlayer
+namespace SmartPlayer
 {
     public sealed partial class SettingsFlyoutGeneral : SettingsFlyout
     {

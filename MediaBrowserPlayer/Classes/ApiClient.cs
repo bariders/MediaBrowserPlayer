@@ -27,7 +27,7 @@ using Windows.Security.Cryptography;
 using Windows.Security.Cryptography.Core;
 using Windows.Storage.Streams;
 
-namespace MediaBrowserPlayer.Classes
+namespace SmartPlayer.Classes
 {
     class ApiClient
     {

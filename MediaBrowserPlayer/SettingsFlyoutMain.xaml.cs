@@ -16,7 +16,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>
 */
 
-using MediaBrowserPlayer.Classes;
+using SmartPlayer.Classes;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -36,7 +36,7 @@ using Windows.UI.Xaml.Navigation;
 
 // The Settings Flyout item template is documented at http://go.microsoft.com/fwlink/?LinkId=273769
 
-namespace MediaBrowserPlayer
+namespace SmartPlayer
 {
     public sealed partial class SettingsFlyoutMain : SettingsFlyout
     {

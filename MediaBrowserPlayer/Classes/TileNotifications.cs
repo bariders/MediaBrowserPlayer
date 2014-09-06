@@ -7,7 +7,7 @@ using Windows.Data.Xml.Dom;
 using Windows.Storage;
 using Windows.UI.Notifications;
 
-namespace MediaBrowserPlayer.Classes
+namespace SmartPlayer.Classes
 {
     public class TileNotifications
     {

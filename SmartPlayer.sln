@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaBrowserPlayer", "MediaBrowserPlayer\MediaBrowserPlayer.csproj", "{C98745BB-D41E-45BA-AD71-0A5ACC3A978E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartPlayer", "MediaBrowserPlayer\SmartPlayer.csproj", "{C98745BB-D41E-45BA-AD71-0A5ACC3A978E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

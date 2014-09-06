@@ -23,7 +23,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Data;
 
-namespace MediaBrowserPlayer.Classes
+namespace SmartPlayer.Classes
 {
     public class SecondsToTimeSpan : IValueConverter
     {

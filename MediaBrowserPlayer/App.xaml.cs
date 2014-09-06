@@ -16,7 +16,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>
 */
 
-using MediaBrowserPlayer.Classes;
+using SmartPlayer.Classes;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -49,7 +49,7 @@ using Windows.Data.Xml.Dom;
 
 // The Blank Application template is documented at http://go.microsoft.com/fwlink/?LinkId=234227
 
-namespace MediaBrowserPlayer
+namespace SmartPlayer
 {
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.

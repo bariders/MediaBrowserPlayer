@@ -24,9 +24,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Smart Player for Media Browser")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Smart Player for Media Browser")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Blue Bit Solutions")]
 [assembly: AssemblyProduct("Smart Player for Media Browser")]
 [assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]

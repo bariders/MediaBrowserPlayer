@@ -16,7 +16,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>
 */
 
-using MediaBrowserPlayer.Classes;
+using SmartPlayer.Classes;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -35,7 +35,7 @@ using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace MediaBrowserPlayer
+namespace SmartPlayer
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
