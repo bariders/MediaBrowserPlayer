@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest">
-  <Identity Name="65223BlueBitSolutions.SmartPlayerforMediaBrowser" Publisher="CN=AB272381-7B5C-4819-8D05-30E144F1F843" Version="1.2.0.0" />
+  <Identity Name="65223BlueBitSolutions.MediaBrowserPlayer" Publisher="CN=AB272381-7B5C-4819-8D05-30E144F1F843" Version="1.2.0.11" />
   <Properties>
     <DisplayName>Smart Player for Media Browser</DisplayName>
     <PublisherDisplayName>Blue Bit Solutions</PublisherDisplayName>
@@ -16,7 +16,7 @@
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="MediaBrowserPlayer.App">
       <m2:VisualElements DisplayName="Smart Player for Media Browser" Square150x150Logo="Assets\Logo.png" Square30x30Logo="Assets\SmallLogo.png" Description="Smart Player for Media Browser" ForegroundText="light" BackgroundColor="#0A58C0">
-        <m2:DefaultTile ShortName="Smart Player for Media Browser" Wide310x150Logo="Assets\Wide310x150Logo.png">
+        <m2:DefaultTile ShortName="Smart Player for Media Browser" Wide310x150Logo="Assets\Wide310x150Logo.png" DefaultSize="wide310x150Logo">
           <m2:ShowNameOnTiles>
             <m2:ShowOn Tile="wide310x150Logo" />
           </m2:ShowNameOnTiles>
