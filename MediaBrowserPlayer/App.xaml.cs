@@ -46,6 +46,7 @@ using System.Threading.Tasks;
 using Windows.Storage.Search;
 using Windows.UI.Notifications;
 using Windows.Data.Xml.Dom;
+using Windows.System;
 
 // The Blank Application template is documented at http://go.microsoft.com/fwlink/?LinkId=234227
 
@@ -178,6 +179,15 @@ namespace SmartPlayer
 
             args.Request.ApplicationCommands.Add(new SettingsCommand(
                 "Streaming Settings", "Streaming Settings", (handler) => ShowCustomSettingFlyoutStreaming()));
+
+            args.Request.ApplicationCommands.Add(new SettingsCommand(
+                "Privacy Policy", "Privacy Policy", (handler) => ShowPrivacyPolicy()));
+        }
+
+        public void ShowPrivacyPolicy()
+        {
+            Uri uri = new Uri("https://raw.githubusercontent.com/faush01/MediaBrowserPlayer/master/PrivacyPolicy.txt");
+            Launcher.LaunchUriAsync(uri);
         }
 
         public void ShowCustomSettingFlyoutGeneral()
