@@ -26,7 +26,7 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <Grid x:Name="gridAreaTitle" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"  Margin="10">
+        <Grid x:Name="gridAreaTitle" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="1"  Margin="10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
@@ -54,13 +54,22 @@
 
         </Grid>
 
-        <Grid x:Name="gridAreaInfo" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Margin="50,0,100,0">
-            
-            
-            <Button Content="Back" Margin="0,0,0,0" Click="Button_Click" Width="150" VerticalAlignment="Top" />
-            <Button x:Name="pauseButton" Content="Pause" HorizontalAlignment="Left" Margin="0,50,0,0" VerticalAlignment="Top" Click="pauseButton_Click" Width="150"/>
+        <Grid x:Name="gridAreaInfo" Grid.Row="0" Grid.Column="1" Grid.RowSpan="3" Margin="50,0,100,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
-            <Grid Margin="5,120,0,0">
+            <Button Grid.Row="0" Content="Back" Click="Button_Click" Width="250" Padding="12,4" Margin="0,5"/>
+            <Button Grid.Row="1" x:Name="pauseButton" Content="Pause" Click="pauseButton_Click" Width="250" Margin="0,5"/>
+
+            <Grid Grid.Row="2" Margin="0,5">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -105,25 +114,57 @@
 
             </Grid>
 
-            <Grid Margin="5,350,0,0">
+            <Grid Grid.Row="3" Margin="0,5">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />                    
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Row="0" Grid.Column="0" Text="Audio" FontSize="18" TextAlignment="Left"/>
-                <ComboBox x:Name="audioStreamSelector" Grid.Row="1" Grid.Column="1"/>
+                <TextBlock Grid.Row="0" Text="Audio" FontSize="14"/>
+                <ComboBox Grid.Row="1" x:Name="audioStreamSelector"/>
 
-                <TextBlock Grid.Row="2" Grid.Column="2" Text="Subtitle" FontSize="18" TextAlignment="Left"/>
-                <ComboBox x:Name="subStreamSelector" Grid.Row="3" Grid.Column="3"/>
+                <TextBlock Grid.Row="2" Text="Subtitle" FontSize="14"/>
+                <ComboBox Grid.Row="3" x:Name="subStreamSelector"/>
+
+                <TextBlock Grid.Row="4" Text="Max Video Bitrate" FontSize="14"/>
+                <ComboBox Grid.Row="5" x:Name="videoBitrate" Width="250"/>
+
+                <TextBlock Grid.Row="6" Text="Max Video Width" FontSize="14"/>
+                <ComboBox Grid.Row="7" x:Name="videoMaxWidth" Width="250"/>
+
+                <TextBlock Grid.Row="8" Text="Max Audio Bitrate" FontSize="14"/>
+                <ComboBox Grid.Row="9" x:Name="audioBitrate" Width="250"/>
+
+                <TextBlock Grid.Row="10" Text="Max Audio Channels" FontSize="14"/>
+                <ComboBox Grid.Row="11" x:Name="audioChannels" Width="250"/>
+
+                <TextBlock Grid.Row="12" Text="Audio Codecs" FontSize="14" />
+                <ComboBox Grid.Row="13" x:Name="audioCodecs" Width="250"/>
+
+                <TextBlock Grid.Row="14" TextWrapping="Wrap" Text="Enable Stream Copy" FontSize="14"/>
+                <ComboBox Grid.Row="15" x:Name="enableStreamCopy" Width="250"/>
 
             </Grid>
 
+            <Button Grid.Row="4" x:Name="applyButton" Content="Apply" Width="250" Margin="0,5"/>
+            
         </Grid>
 
         <Grid x:Name="gridAreaProgress" Grid.Row="2" Grid.Column="0" Margin="10">
@@ -139,7 +180,7 @@
             </Grid.ColumnDefinitions>
             <TextBlock x:Name="mediaPossitionText" Grid.Row="0" Grid.Column="0" Text="" FontSize="16"/>
             <TextBlock x:Name="mediaDuration" Grid.Row="0" Grid.Column="2" Text="" FontSize="16" TextAlignment="Right"/>
-            <Slider x:Name="playbackProgress" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"  Width="Auto" Height="60" ThumbToolTipValueConverter="{StaticResource SecondsToTimeSpan}" RenderTransformOrigin="0,0"/>
+            <Slider x:Name="playbackProgress" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"  Width="Auto" Height="60" ThumbToolTipValueConverter="{StaticResource SecondsToTimeSpan}" RenderTransformOrigin="0,0" Padding="0"/>
             <ProgressBar x:Name="transcodingProgress" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Height="10" Width="Auto" IsDoubleTapEnabled="False" IsHoldingEnabled="False" IsRightTapEnabled="False" IsTapEnabled="False" Foreground="#FF3CC52E"/>
         </Grid>
 
