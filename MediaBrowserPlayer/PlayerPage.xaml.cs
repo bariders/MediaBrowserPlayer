@@ -51,10 +51,17 @@ namespace SmartPlayer
         private bool _sliderpressed = false;
         private AppSettings settings = new AppSettings();
         private ApiClient client = new ApiClient();
-        private int audioStreamSelected = -1;
-        private int subStreamSelected = -1;
 
         private DispatcherTimer _playbackCheckin;
+
+        private int audioStreamSelected = -1;
+        private int subStreamSelected = -1;
+        private int videoBitrateSelected = -1;
+        private int videoMaxWidthSelected = -1;
+        private int audioBitrateSelected = -1;
+        private int audioChannelSelected = -1;
+        private string audioCodecSelected = "";
+        private string enableStreamCopySelected = "";
 
         public PlayerPage()
         {
@@ -77,6 +84,20 @@ namespace SmartPlayer
             mediaPlayer.BufferingProgressChanged += mediaPlayer_BufferingProgressChanged;
 
             mediaPlayer.PlayerStateChanged += mediaPlayer_PlayerStateChanged;
+
+            videoBitrateSelected = InterfaceHelpers.SetupVideoBitrate(videoBitrate);
+            videoMaxWidthSelected = InterfaceHelpers.SetupVideoMaxWidth(videoMaxWidth);
+            audioBitrateSelected = InterfaceHelpers.SetupAudioBitrate(audioBitrate);
+            audioChannelSelected = InterfaceHelpers.SetupAudioChannel(audioChannels);
+            audioCodecSelected = InterfaceHelpers.SetupAudioCodec(audioCodecs);
+            enableStreamCopySelected = InterfaceHelpers.SetupEnableStreamCopy(enableStreamCopy);
+
+            videoBitrate.SelectionChanged += videoBitrate_SelectionChanged;
+            videoMaxWidth.SelectionChanged += videoMaxWidth_SelectionChanged;
+            audioBitrate.SelectionChanged += audioBitrate_SelectionChanged;
+            audioChannels.SelectionChanged += audioChannels_SelectionChanged;
+            audioCodecs.SelectionChanged += audioCodecs_SelectionChanged;
+            enableStreamCopy.SelectionChanged += enableStreamCopy_SelectionChanged;
 
             // reset session info controls
             transcodeInfoACodec.Text = ": -";
@@ -318,7 +339,7 @@ namespace SmartPlayer
             App.AddNotification(new Notification() { Title = "Error Playing Media", Message = error });
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void backButton_Click(object sender, RoutedEventArgs e)
         {
             mediaPlayer.Close();
             StopTimer();
@@ -356,32 +377,33 @@ namespace SmartPlayer
             string server = settings.GetServer();
 
             // get streaming values
-            int videoBitrateSetting = settings.GetAppSettingInt("video_bitrate");
+            int videoBitrateSetting = videoBitrateSelected;
             if (videoBitrateSetting == -1)
             {
                 videoBitrateSetting = 10000000;
             }
-            int videoMaxWidthSetting = settings.GetAppSettingInt("video_max_width");
+            int videoMaxWidthSetting = videoMaxWidthSelected;
             if (videoMaxWidthSetting == -1)
             {
                 videoMaxWidthSetting = 1920;
             }
-            int audioBitrateSetting = settings.GetAppSettingInt("audio_bitrate");
+            int audioBitrateSetting = audioBitrateSelected;
             if (audioBitrateSetting == -1)
             {
                 audioBitrateSetting = 128000;
             }
-            int audioChannels = settings.GetAppSettingInt("audio_channels");
+            int audioChannels = audioChannelSelected;
             if (audioChannels == -1)
             {
                 audioChannels = 6;
             }
-            string audioCodecs = settings.GetAppSettingString("audio_codec");
+            string audioCodecs = audioCodecSelected;
             if(string.IsNullOrWhiteSpace(audioCodecs))
             {
                 audioCodecs = "aac,ac3";
             }
-            string enableStreamCopy = settings.GetAppSettingString("stream_copy");
+
+            string enableStreamCopy = enableStreamCopySelected;
             if (string.IsNullOrWhiteSpace(enableStreamCopy))
             {
                 enableStreamCopy = "true";
@@ -456,16 +478,52 @@ namespace SmartPlayer
         {
             ComboBoxData selected = (sender as ComboBox).SelectedItem as ComboBoxData;
             audioStreamSelected = selected.DataValueInt;
-
-            long currentPos = (long)(playbackProgress.Value);
-            PlaybackAction(currentPos);
         }
 
         private void subStreamSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ComboBoxData selected = (sender as ComboBox).SelectedItem as ComboBoxData;
             subStreamSelected = selected.DataValueInt;
+        }
 
+        private void enableStreamCopy_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBoxData selected = (sender as ComboBox).SelectedItem as ComboBoxData;
+            enableStreamCopySelected = selected.DataValueString;
+        }
+
+        private void audioCodecs_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBoxData selected = (sender as ComboBox).SelectedItem as ComboBoxData;
+            audioCodecSelected = selected.DataValueString;
+        }
+
+        private void audioChannels_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBoxData selected = (sender as ComboBox).SelectedItem as ComboBoxData;
+            audioChannelSelected = selected.DataValueInt;
+        }
+
+        private void audioBitrate_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBoxData selected = (sender as ComboBox).SelectedItem as ComboBoxData;
+            audioBitrateSelected = selected.DataValueInt;
+        }
+
+        private void videoMaxWidth_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBoxData selected = (sender as ComboBox).SelectedItem as ComboBoxData;
+            videoMaxWidthSelected = selected.DataValueInt;
+        }
+
+        private void videoBitrate_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBoxData selected = (sender as ComboBox).SelectedItem as ComboBoxData;
+            videoBitrateSelected = selected.DataValueInt;
+        }
+
+        private void applyButton_Click(object sender, RoutedEventArgs e)
+        {
             long currentPos = (long)(playbackProgress.Value);
             PlaybackAction(currentPos);
         }

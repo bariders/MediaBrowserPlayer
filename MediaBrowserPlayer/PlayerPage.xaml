@@ -54,7 +54,7 @@
 
         </Grid>
 
-        <Grid x:Name="gridAreaInfo" Grid.Row="0" Grid.Column="1" Grid.RowSpan="3" Margin="50,0,100,0">
+        <Grid x:Name="gridAreaInfo" Grid.Row="0" Grid.Column="1" Grid.RowSpan="3" Margin="50,0,50,0" VerticalAlignment="Center">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -66,7 +66,7 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Row="0" Content="Back" Click="Button_Click" Width="250" Padding="12,4" Margin="0,5"/>
+            <Button Grid.Row="0" Content="Back" Click="backButton_Click" Width="250" Padding="12,4" Margin="0,5"/>
             <Button Grid.Row="1" x:Name="pauseButton" Content="Pause" Click="pauseButton_Click" Width="250" Margin="0,5"/>
 
             <Grid Grid.Row="2" Margin="0,5">
@@ -163,7 +163,7 @@
 
             </Grid>
 
-            <Button Grid.Row="4" x:Name="applyButton" Content="Apply" Width="250" Margin="0,5"/>
+            <Button Grid.Row="4" x:Name="applyButton" Content="Apply" Width="250" Margin="0,5" Click="applyButton_Click"/>
             
         </Grid>
 
