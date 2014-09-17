@@ -86,7 +86,7 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="Transcoding Info" FontSize="18" TextAlignment="Left" FontWeight="Bold"/>
+                <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="Transcoding Session" FontSize="18" TextAlignment="Left" FontWeight="Bold"/>
 
                 <TextBlock Grid.Row="1" Grid.Column="0" Text="Audio" FontSize="16" TextAlignment="Left"/>
                 <TextBlock Grid.Row="1" Grid.Column="1" Text=": -" FontSize="16" TextAlignment="Left" x:Name="transcodeInfoACodec" Margin="2,0,0,0"/>
@@ -132,39 +132,42 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Row="0" Text="Audio" FontSize="14"/>
-                <ComboBox Grid.Row="1" x:Name="audioStreamSelector"/>
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Streaming Settings" FontSize="18" TextAlignment="Left" FontWeight="Bold"/>
+                
+                <TextBlock Grid.Row="1" Text="Audio" FontSize="14"/>
+                <ComboBox Grid.Row="2" x:Name="audioStreamSelector" FontSize="14" Height="22" FontFamily="Global User Interface"/>
 
-                <TextBlock Grid.Row="2" Text="Subtitle" FontSize="14"/>
-                <ComboBox Grid.Row="3" x:Name="subStreamSelector"/>
+                <TextBlock Grid.Row="3" Text="Subtitle" FontSize="14"/>
+                <ComboBox Grid.Row="4" x:Name="subStreamSelector" Height="22" FontSize="14" FontFamily="Global User Interface"/>
 
-                <TextBlock Grid.Row="4" Text="Max Video Bitrate" FontSize="14"/>
-                <ComboBox Grid.Row="5" x:Name="videoBitrate" Width="250"/>
+                <TextBlock Grid.Row="5" Text="Max Video Bitrate" FontSize="14"/>
+                <ComboBox Grid.Row="6" x:Name="videoBitrate" Width="250" Height="22" FontSize="14" FontFamily="Global User Interface"/>
 
-                <TextBlock Grid.Row="6" Text="Max Video Width" FontSize="14"/>
-                <ComboBox Grid.Row="7" x:Name="videoMaxWidth" Width="250"/>
+                <TextBlock Grid.Row="7" Text="Max Video Width" FontSize="14"/>
+                <ComboBox Grid.Row="8" x:Name="videoMaxWidth" Width="250" Height="22" FontSize="14" FontFamily="Global User Interface"/>
 
-                <TextBlock Grid.Row="8" Text="Max Audio Bitrate" FontSize="14"/>
-                <ComboBox Grid.Row="9" x:Name="audioBitrate" Width="250"/>
+                <TextBlock Grid.Row="9" Text="Max Audio Bitrate" FontSize="14"/>
+                <ComboBox Grid.Row="10" x:Name="audioBitrate" Width="250" Height="22" FontSize="14" FontFamily="Global User Interface"/>
 
-                <TextBlock Grid.Row="10" Text="Max Audio Channels" FontSize="14"/>
-                <ComboBox Grid.Row="11" x:Name="audioChannels" Width="250"/>
+                <TextBlock Grid.Row="11" Text="Max Audio Channels" FontSize="14"/>
+                <ComboBox Grid.Row="12" x:Name="audioChannels" Width="250" Height="22" FontSize="14" FontFamily="Global User Interface"/>
 
-                <TextBlock Grid.Row="12" Text="Audio Codecs" FontSize="14" />
-                <ComboBox Grid.Row="13" x:Name="audioCodecs" Width="250"/>
+                <TextBlock Grid.Row="13" Text="Audio Codecs" FontSize="14" />
+                <ComboBox Grid.Row="14" x:Name="audioCodecs" Width="250" Height="22" FontSize="14" FontFamily="Global User Interface"/>
 
-                <TextBlock Grid.Row="14" TextWrapping="Wrap" Text="Enable Stream Copy" FontSize="14"/>
-                <ComboBox Grid.Row="15" x:Name="enableStreamCopy" Width="250"/>
+                <TextBlock Grid.Row="15" TextWrapping="Wrap" Text="Enable Stream Copy" FontSize="14"/>
+                <ComboBox Grid.Row="16" x:Name="enableStreamCopy" Width="250" Height="22" FontSize="14" FontFamily="Global User Interface"/>
 
             </Grid>
 
             <Button Grid.Row="4" x:Name="applyButton" Content="Apply" Width="250" Margin="0,5" Click="applyButton_Click"/>
-            
+
         </Grid>
 
         <Grid x:Name="gridAreaProgress" Grid.Row="2" Grid.Column="0" Margin="10">
