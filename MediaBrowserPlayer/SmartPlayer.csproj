@@ -115,6 +115,7 @@
     <Compile Include="Classes\AppSettings.cs" />
     <Compile Include="Classes\ComboBoxData.cs" />
     <Compile Include="Classes\DiscoverServer.cs" />
+    <Compile Include="Classes\InterfaceHelpers.cs" />
     <Compile Include="Classes\MediaItem.cs" />
     <Compile Include="Classes\MetroEventSource.cs" />
     <Compile Include="Classes\Notification.cs" />
