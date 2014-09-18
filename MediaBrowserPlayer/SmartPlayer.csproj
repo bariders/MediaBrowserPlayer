@@ -120,6 +120,7 @@
     <Compile Include="Classes\MetroEventSource.cs" />
     <Compile Include="Classes\Notification.cs" />
     <Compile Include="Classes\SecondsToTimeSpan.cs" />
+    <Compile Include="Classes\ServerListItem.cs" />
     <Compile Include="Classes\SessionInfo.cs" />
     <Compile Include="Classes\StorageFileEventListener.cs" />
     <Compile Include="Classes\TileNotifications.cs" />

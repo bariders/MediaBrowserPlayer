@@ -140,5 +140,26 @@ namespace SmartPlayer
                 App.AddNotification(new Notification() { Title = "Error Sending Discover Data", Message = exep.Message });
             }
         }
+
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            List<ServerListItem> serverItems = new List<ServerListItem>();
+
+            ServerListItem server = new ServerListItem();
+            server.host = "192.168.0.15";
+            server.port = "8096";
+            server.client = "win8.1";
+
+            serverItems.Add(server);
+
+            server = new ServerListItem();
+            server.host = "home.server.com";
+            server.port = "1289";
+            server.client = "win8.1";
+
+            serverItems.Add(server);
+
+            serverList.ItemsSource = serverItems;
+        }
     }
 }

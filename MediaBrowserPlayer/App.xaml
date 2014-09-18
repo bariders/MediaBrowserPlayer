@@ -4,4 +4,24 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:SmartPlayer">
 
+    <Application.Resources>
+        <ResourceDictionary>
+            <SolidColorBrush x:Key="ListViewItemCheckHintThemeBrush" Color="#FF0000FF" />
+            <SolidColorBrush x:Key="ListViewItemCheckSelectingThemeBrush" Color="#FF0000FF" />
+            <SolidColorBrush x:Key="ListViewItemCheckThemeBrush" Color="#FF0000FF" />
+            <SolidColorBrush x:Key="ListViewItemDragBackgroundThemeBrush" Color="#994617B4" />
+            <SolidColorBrush x:Key="ListViewItemDragForegroundThemeBrush" Color="Red" />
+            <SolidColorBrush x:Key="ListViewItemFocusBorderThemeBrush" Color="#FFFFFFFF"  />
+            <SolidColorBrush x:Key="ListViewItemOverlayBackgroundThemeBrush" Color="#A6000000" />
+            <SolidColorBrush x:Key="ListViewItemOverlayForegroundThemeBrush" Color="#FF0000FF" />
+            <SolidColorBrush x:Key="ListViewItemOverlaySecondaryForegroundThemeBrush" Color="#99000FFF"/>
+            <SolidColorBrush x:Key="ListViewItemPlaceholderBackgroundThemeBrush" Color="#FF3D3D3D" />
+            <SolidColorBrush x:Key="ListViewItemPointerOverBackgroundThemeBrush" Color="#4DFFFFFF" />
+            <SolidColorBrush x:Key="ListViewItemSelectedBackgroundThemeBrush" Color="#444617B4" />
+            <SolidColorBrush x:Key="ListViewItemSelectedForegroundThemeBrush" Color="#FF000000" />
+            <SolidColorBrush x:Key="ListViewItemSelectedPointerOverBackgroundThemeBrush" Color="#445F37BE" />
+            <SolidColorBrush x:Key="ListViewItemSelectedPointerOverBorderThemeBrush" Color="#445F37BE" />
+        </ResourceDictionary>
+    </Application.Resources>
+
 </Application>
