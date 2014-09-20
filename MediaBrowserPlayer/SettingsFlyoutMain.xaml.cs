@@ -185,7 +185,7 @@ namespace SmartPlayer
             }
         }
 
-        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        private void AddButton_Click(object sender, RoutedEventArgs e)
         {
             ObservableCollection<ServerListItem> list = serverList.ItemsSource as ObservableCollection<ServerListItem>;
 
@@ -195,6 +195,10 @@ namespace SmartPlayer
 
             list.Add(server);
             int selectedIndex = serverList.SelectedIndex;
+            if (selectedIndex == -1 && list.Count > 0)
+            {
+                serverList.SelectedIndex = 0;
+            }
         }
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)

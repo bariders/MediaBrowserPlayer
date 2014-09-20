@@ -170,16 +170,16 @@ namespace SmartPlayer
         {
 
             args.Request.ApplicationCommands.Add(new SettingsCommand(
-                "General Settings", "General Settings", (handler) => ShowCustomSettingFlyoutGeneral()));
+                "General Settings", "General", (handler) => ShowCustomSettingFlyoutGeneral()));
 
             args.Request.ApplicationCommands.Add(new SettingsCommand(
-                "Server Settings", "Server Settings", (handler) => ShowCustomSettingFlyoutMain()));
+                "Server Settings", "Server", (handler) => ShowCustomSettingFlyoutMain()));
 
             args.Request.ApplicationCommands.Add(new SettingsCommand(
-                "Streaming Settings", "Streaming Settings", (handler) => ShowCustomSettingFlyoutStreaming()));
+                "Streaming Settings", "Streaming", (handler) => ShowCustomSettingFlyoutStreaming()));
 
             args.Request.ApplicationCommands.Add(new SettingsCommand(
-                "Privacy Policy", "Privacy Policy", (handler) => ShowPrivacyPolicy()));
+                "Privacy Policy", "Privacy statment (online)", (handler) => ShowPrivacyPolicy()));
         }
 
         public void ShowPrivacyPolicy()

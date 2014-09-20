@@ -40,7 +40,7 @@
         <TextBox x:Name="setting_port"/>
         <Button Content="Auto Detect" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="DetectButton_Click"/>
         <Button Content="Update" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="UpdateButton_Click"/>
-        <Button Content="Add" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="SaveButton_Click"/>
+        <Button Content="Add" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="AddButton_Click"/>
         <Button Content="Delete" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="DeleteButton_Click"/>
 
     </StackPanel>
