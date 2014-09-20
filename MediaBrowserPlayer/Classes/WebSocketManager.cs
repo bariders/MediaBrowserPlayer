@@ -66,7 +66,7 @@ namespace SmartPlayer.Classes
             bool worked = false;
             try
             {
-                string server = settings.GetServer();
+                ServerListItem server = settings.GetServer();
                 if (server == null)
                 {
                     return false;

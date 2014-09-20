@@ -17,18 +17,63 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
 */
 
 using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace SmartPlayer.Classes
 {
-    public class ServerListItem
+    public class ServerListItem : INotifyPropertyChanged
     {
-        public string host { get; set; }
-        public string port { get; set; }
-        public string client { get; set; }
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public string _host = string.Empty;
+        public string _port = string.Empty;
 
         public override string ToString()
         {
-            return host + ":" + port;
+            return _host + ":" + _port;
+        }
+
+        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        public string host
+        {
+            get
+            {
+                return this._host;
+            }
+
+            set
+            {
+                if (value != this._host)
+                {
+                    this._host = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        public string port
+        {
+            get
+            {
+                return this._port;
+            }
+
+            set
+            {
+                if (value != this._port)
+                {
+                    this._port = value;
+                    NotifyPropertyChanged();
+                }
+            }
         }
     }
 }

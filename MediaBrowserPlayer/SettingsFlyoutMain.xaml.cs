@@ -33,6 +33,8 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using System.Xml.Serialization;
+using System.Collections.ObjectModel;
 
 // The Settings Flyout item template is documented at http://go.microsoft.com/fwlink/?LinkId=273769
 
@@ -48,33 +50,40 @@ namespace SmartPlayer
         private void SettingsFlyout_Unloaded(object sender, RoutedEventArgs e)
         {
             var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
-
-            string original_server_host = (string)localSettings.Values["server_host"];
-            string original_server_post = (string)localSettings.Values["server_port"];
             string original_server_name = (string)localSettings.Values["device_name"];
+            localSettings.Values["device_name"] = setting_device_name.Text.Trim();
 
-            // if settings change then set them and reload interface
-            if (original_server_host != setting_server.Text.Trim() || 
-                original_server_post != setting_port.Text.Trim() ||
-                original_server_name != setting_device_name.Text.Trim())
+            //
+            // load server list
+            //
+            ObservableCollection<ServerListItem> servers = null;
+            //List<ServerListItem> servers = null;
+            if(serverList.ItemsSource != null)
             {
-
-                localSettings.Values["server_host"] = setting_server.Text.Trim();
-                localSettings.Values["server_port"] = setting_port.Text.Trim();
-                localSettings.Values["device_name"] = setting_device_name.Text.Trim();
-
-                // on settings update reload main page and reconnect websocket
-
-                Frame rootFrame = Window.Current.Content as Frame;
-                var p = rootFrame.Content as MainPage;
-                if (p != null)
-                {
-                    p.LoadMainPage(true);
-                }
-
-                // ReInitialize WebSocket
-                App.ReInitializeWebSocket();
+                servers = serverList.ItemsSource as ObservableCollection<ServerListItem>;
             }
+            if(servers == null)
+            {
+                servers = new ObservableCollection<ServerListItem>();
+            }
+
+            XmlSerializer serializer = new XmlSerializer(typeof(ObservableCollection<ServerListItem>));
+            StringWriter sw = new StringWriter();
+            serializer.Serialize(sw, servers);
+            sw.Flush();
+            localSettings.Values["server_list"] = sw.ToString();
+
+            int selectedServer = serverList.SelectedIndex;
+            localSettings.Values["server_selected"] = selectedServer;
+
+            // reload page and web socket
+            Frame rootFrame = Window.Current.Content as Frame;
+            var p = rootFrame.Content as MainPage;
+            if (p != null)
+            {
+                p.LoadMainPage();
+            }
+
         }
 
         private string GetSetting(string name)
@@ -94,10 +103,34 @@ namespace SmartPlayer
         private void SettingsFlyout_Loaded(object sender, RoutedEventArgs e)
         {
             var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
-
-            setting_server.Text = GetSetting("server_host");
-            setting_port.Text = GetSetting("server_port");
             setting_device_name.Text = GetSetting("device_name");
+
+            string serversXml = localSettings.Values["server_list"] as string;
+            int? selectedServer = localSettings.Values["server_selected"] as int?;
+
+            ObservableCollection<ServerListItem> servers = null;
+            if (string.IsNullOrEmpty(serversXml) == false)
+            {
+                XmlSerializer deserializer = new XmlSerializer(typeof(ObservableCollection<ServerListItem>));
+                StringReader sr = new StringReader(serversXml);
+                servers = (ObservableCollection<ServerListItem>)deserializer.Deserialize(sr);
+            }
+
+            if (servers == null)
+            {
+                servers = new ObservableCollection<ServerListItem>();
+            }
+            serverList.ItemsSource = servers;
+
+            if (selectedServer == null)
+            {
+                selectedServer = -1;
+            }
+
+            if(servers.Count > 0)
+            {
+                serverList.SelectedIndex = (int)selectedServer;
+            }
         }
 
         public void DataReceived(string discoverData)
@@ -127,7 +160,7 @@ namespace SmartPlayer
 
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void DetectButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -141,25 +174,52 @@ namespace SmartPlayer
             }
         }
 
+        private void UpdateButton_Click(object sender, RoutedEventArgs e)
+        {
+            ServerListItem server = serverList.SelectedItem as ServerListItem;
+
+            if (server != null)
+            {
+                server.host = setting_server.Text.Trim();
+                server.port = setting_port.Text.Trim();
+            }
+        }
+
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            List<ServerListItem> serverItems = new List<ServerListItem>();
+            ObservableCollection<ServerListItem> list = serverList.ItemsSource as ObservableCollection<ServerListItem>;
 
             ServerListItem server = new ServerListItem();
-            server.host = "192.168.0.15";
-            server.port = "8096";
-            server.client = "win8.1";
+            server.host = setting_server.Text.Trim();
+            server.port = setting_port.Text.Trim();
 
-            serverItems.Add(server);
+            list.Add(server);
+            int selectedIndex = serverList.SelectedIndex;
+        }
 
-            server = new ServerListItem();
-            server.host = "home.server.com";
-            server.port = "1289";
-            server.client = "win8.1";
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            ObservableCollection<ServerListItem> list = serverList.ItemsSource as ObservableCollection<ServerListItem>;
 
-            serverItems.Add(server);
+            if (serverList.SelectedIndex != -1)
+            {
+                list.RemoveAt(serverList.SelectedIndex);
+                if(list.Count > 0)
+                {
+                    serverList.SelectedIndex = 0;
+                }
+            }
+        }
 
-            serverList.ItemsSource = serverItems;
+        private void serverList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ServerListItem server = serverList.SelectedItem as ServerListItem;
+
+            if (server != null)
+            {
+                setting_server.Text = server.host;
+                setting_port.Text = server.port;
+            }
         }
     }
 }

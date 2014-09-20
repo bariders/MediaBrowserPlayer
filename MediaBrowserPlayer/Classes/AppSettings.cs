@@ -18,9 +18,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace SmartPlayer.Classes
 {
@@ -131,43 +134,29 @@ namespace SmartPlayer.Classes
             return tempData;
         }
 
-        public string GetServerHost()
-        {
-            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
-            string tempData = (string)localSettings.Values["server_host"];
-            return tempData;
-        }
-
-        public string GetServer()
+        public ServerListItem GetServer()
         {
             var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
 
-            string value = null;
-            string tempData = (string)localSettings.Values["server_host"];
+            string serversXml = localSettings.Values["server_list"] as string;
+            int? selectedServer = localSettings.Values["server_selected"] as int?;
 
-            if (!string.IsNullOrEmpty(tempData))
+            ObservableCollection<ServerListItem> servers = null;
+            if (string.IsNullOrEmpty(serversXml) == false)
             {
-                value = tempData;
+                XmlSerializer deserializer = new XmlSerializer(typeof(ObservableCollection<ServerListItem>));
+                StringReader sr = new StringReader(serversXml);
+                servers = (ObservableCollection<ServerListItem>)deserializer.Deserialize(sr);
+            }
+
+            if (servers != null && selectedServer != -1 && servers.Count > selectedServer)
+            {
+                return servers[(int)selectedServer];
             }
             else
             {
                 return null;
             }
-
-            value += ":";
-
-            tempData = (string)localSettings.Values["server_port"];
-
-            if (!string.IsNullOrEmpty(tempData))
-            {
-                value += tempData;
-            }
-            else
-            {
-                return null;
-            }
-
-            return value;
         }
 
     }

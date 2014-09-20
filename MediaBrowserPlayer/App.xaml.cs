@@ -48,8 +48,6 @@ using Windows.UI.Notifications;
 using Windows.Data.Xml.Dom;
 using Windows.System;
 
-// The Blank Application template is documented at http://go.microsoft.com/fwlink/?LinkId=234227
-
 namespace SmartPlayer
 {
     /// <summary>
@@ -256,15 +254,8 @@ namespace SmartPlayer
 #endif
 
             // if there is no server/port then try to discover it
-            string server = settings.GetServer();
-            if (server == null)
-            {
-                SettingsFlyoutMain settingFlyout = new SettingsFlyoutMain();
-                settingFlyout.Show();
-
-                //App.AddNotification(new Notification() { Title = "Notice", Message = "You need to set the server details in the settings" });
-            }
-            else
+            ServerListItem server = settings.GetServer();
+            if (server != null)
             {
                 // set up WebSocket
                 await socketManager.SetupWebSocket();

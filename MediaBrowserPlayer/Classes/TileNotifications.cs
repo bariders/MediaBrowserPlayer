@@ -38,7 +38,7 @@ namespace SmartPlayer.Classes
             AppSettings settings = new AppSettings();
             ApiClient client = new ApiClient();
 
-            string server = settings.GetServer();
+            ServerListItem server = settings.GetServer();
             if(server == null)
             {
                 return false;

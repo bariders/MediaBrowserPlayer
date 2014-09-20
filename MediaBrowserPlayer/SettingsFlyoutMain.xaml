@@ -11,17 +11,13 @@
     d:DesignWidth="346" Unloaded="SettingsFlyout_Unloaded" Loaded="SettingsFlyout_Loaded">
 
     <!-- This StackPanel acts as a root panel for vertical layout of the content sections -->
-    <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" RenderTransformOrigin="0.514,0.471" Height="459" Width="265" >
+    <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Width="265">
 
-        <TextBlock TextWrapping="Wrap" Text="Server" RenderTransformOrigin="0.468,4.429" FontSize="16" Height="21"/>
-        <TextBox x:Name="setting_server" Height="22" TextWrapping="Wrap" Text="" RenderTransformOrigin="0.112,0.469"/>
-        <TextBlock HorizontalAlignment="Left" Height="24" TextWrapping="Wrap" Text="Port" Width="265" FontSize="16"/>
-        <TextBox x:Name="setting_port" TextWrapping="Wrap"/>
-        <Button Content="Auto Detect" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="Button_Click"/>
-        <TextBlock TextWrapping="Wrap" Text="Device Name" FontSize="16"/>
-        <TextBox x:Name="setting_device_name" TextWrapping="Wrap"/>
-        <Button Content="Save" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="SaveButton_Click"/>
-        <ListView x:Name="serverList" Height="191" Background="#FFFFFFFF" BorderBrush="Black" BorderThickness="1">
+        <TextBlock Text="Device Name" FontSize="20"/>
+        <TextBox x:Name="setting_device_name"/>
+        
+        <TextBlock TextWrapping="Wrap" Text="Server List" FontSize="20"/>
+        <ListView x:Name="serverList" Height="191" Background="#FFFFFFFF" BorderBrush="Black" BorderThickness="1" SelectionChanged="serverList_SelectionChanged">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid Height="25" Margin="6">
@@ -31,30 +27,21 @@
                         <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="10,0,0,0" Orientation="Horizontal">
                             <TextBlock Text="{Binding host}" TextWrapping="NoWrap"/>
                             <TextBlock Text=":" />
-                            <TextBlock Text="{Binding port}" />                            
-                        </StackPanel>
-                    </Grid>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-            <!--
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <Grid Height="25" Margin="5">
-                        <Grid.ColumnDefinitions>
-                             <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="5,0,0,0" Orientation="Horizontal">
-                            <TextBlock Text="{Binding host}" />
-                            <TextBlock Text=":" />
                             <TextBlock Text="{Binding port}" />
                         </StackPanel>
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
-            -->
         </ListView>
 
-
+        <TextBlock Text="Host" FontSize="16"/>
+        <TextBox x:Name="setting_server"/>
+        <TextBlock Text="Port" FontSize="16"/>
+        <TextBox x:Name="setting_port"/>
+        <Button Content="Auto Detect" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="DetectButton_Click"/>
+        <Button Content="Update" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="UpdateButton_Click"/>
+        <Button Content="Add" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="SaveButton_Click"/>
+        <Button Content="Delete" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="DeleteButton_Click"/>
 
     </StackPanel>
 </SettingsFlyout>

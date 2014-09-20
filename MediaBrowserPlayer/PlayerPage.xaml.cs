@@ -374,7 +374,7 @@ namespace SmartPlayer
 
             long startTicks = startAtSeconds * 1000 * 10000;
 
-            string server = settings.GetServer();
+            ServerListItem server = settings.GetServer();
 
             // get streaming values
             int videoBitrateSetting = videoBitrateSelected;

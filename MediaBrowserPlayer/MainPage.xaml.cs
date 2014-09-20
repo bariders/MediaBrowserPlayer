@@ -67,7 +67,7 @@ namespace SmartPlayer
             {
                 try
                 {
-                    string server = appSettings.GetServer();
+                    ServerListItem server = appSettings.GetServer();
                     if (server != null)
                     {
                         Uri mb = new Uri("http://" + server + "/mediabrowser");
@@ -150,9 +150,9 @@ namespace SmartPlayer
             tnu.UpdateTileNotifications();
         }
 
-        public void LoadMainPage(bool overRide = false)
+        public void LoadMainPage()
         {
-            string server = appSettings.GetServer();
+            ServerListItem server = appSettings.GetServer();
             if (server == null)
             {
                 SettingsFlyoutMain settingFlyout = new SettingsFlyoutMain();
@@ -160,6 +160,8 @@ namespace SmartPlayer
 
                 return;
             }
+
+            App.ReInitializeWebSocket();
 
             try
             {
@@ -180,8 +182,8 @@ namespace SmartPlayer
             Uri destination = args.Uri;
             
             // block if not to media portal
-            string host = appSettings.GetServerHost();
-            if (destination.Host != host)
+            ServerListItem server = appSettings.GetServer();
+            if (server == null || destination.Host != server.host)
             {
                 args.Cancel = true;
                 App.AddNotification(new Notification() { Title = "Navigation Error", Message = "Remote sites not allowed" });
@@ -211,7 +213,7 @@ namespace SmartPlayer
 
         private void AppBarButton_Home(object sender, RoutedEventArgs e)
         {
-            LoadMainPage(true);
+            LoadMainPage();
         }
 
     }

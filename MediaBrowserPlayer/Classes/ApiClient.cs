@@ -79,7 +79,7 @@ namespace SmartPlayer.Classes
                 return false;
             }
 
-            string server = settings.GetServer();
+            ServerListItem server = settings.GetServer();
             if (server == null)
             {
                 throw new Exception("Server not set");
@@ -110,7 +110,7 @@ namespace SmartPlayer.Classes
 
         public async Task<SessionInfo> GetSessionInfo()
         {
-            string server = settings.GetServer();
+            ServerListItem server = settings.GetServer();
             if (server == null)
             {
                 return null;
@@ -187,7 +187,7 @@ namespace SmartPlayer.Classes
 
             string playbackData = jsonData.ToString();
 
-            string server = settings.GetServer();
+            ServerListItem server = settings.GetServer();
             if (server == null)
             {
                 throw new Exception("Server not set");
@@ -226,7 +226,7 @@ namespace SmartPlayer.Classes
 
             string playbackData = jsonData.ToString();
 
-            string server = settings.GetServer();
+            ServerListItem server = settings.GetServer();
             if (server == null)
             {
                 throw new Exception("Server not set");
@@ -263,7 +263,7 @@ namespace SmartPlayer.Classes
 
             string playbackData = jsonData.ToString();
 
-            string server = settings.GetServer();
+            ServerListItem server = settings.GetServer();
             if (server == null)
             {
                 throw new Exception("Server not set");
@@ -293,7 +293,7 @@ namespace SmartPlayer.Classes
 
             string userId = await GetUserID();
 
-            string server = settings.GetServer();
+            ServerListItem server = settings.GetServer();
             if (server == null)
             {
                 throw new Exception("Server not set");
@@ -359,7 +359,7 @@ namespace SmartPlayer.Classes
 
         public async Task<byte[]> GetImage(string Id, string type, int width, int height, string format)
         {
-            string server = settings.GetServer();
+            ServerListItem server = settings.GetServer();
             if (server == null)
             {
                 return null;
@@ -380,7 +380,7 @@ namespace SmartPlayer.Classes
 
             string userId = await GetUserID();
 
-            string server = settings.GetServer();
+            ServerListItem server = settings.GetServer();
             if (server == null)
             {
                 return recentItems;
