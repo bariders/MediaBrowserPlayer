@@ -58,23 +58,23 @@ namespace SmartPlayer.Classes
                 {
                     var storageFileTask = await ApplicationData.Current.LocalFolder.CreateFileAsync(imageName, CreationCollisionOption.ReplaceExisting);
                     await FileIO.WriteBytesAsync(storageFileTask, image);
+
+                    XmlDocument tileXml = TileUpdateManager.GetTemplateContent(TileTemplateType.TileWide310x150Image);
+
+                    //XmlDocument tileXml = TileUpdateManager.GetTemplateContent(TileTemplateType.TileWide310x150ImageAndText01);
+                    //XmlNodeList tileTextAttributes = tileXml.GetElementsByTagName("text");
+                    //tileTextAttributes[0].InnerText = name;
+
+                    XmlNodeList tileImageAttributes = tileXml.GetElementsByTagName("image");
+                    ((XmlElement)tileImageAttributes[0]).SetAttribute("src", "ms-appdata:///local/" + imageName);
+                    ((XmlElement)tileImageAttributes[0]).SetAttribute("alt", "item thumb");
+
+                    TileNotification tileNotification = new TileNotification(tileXml);
+
+                    tileNotification.ExpirationTime = DateTimeOffset.UtcNow.AddDays(90);
+
+                    TileUpdateManager.CreateTileUpdaterForApplication().Update(tileNotification);
                 }
-
-                XmlDocument tileXml = TileUpdateManager.GetTemplateContent(TileTemplateType.TileWide310x150Image);
-
-                //XmlDocument tileXml = TileUpdateManager.GetTemplateContent(TileTemplateType.TileWide310x150ImageAndText01);
-                //XmlNodeList tileTextAttributes = tileXml.GetElementsByTagName("text");
-                //tileTextAttributes[0].InnerText = name;
-
-                XmlNodeList tileImageAttributes = tileXml.GetElementsByTagName("image");
-                ((XmlElement)tileImageAttributes[0]).SetAttribute("src", "ms-appdata:///local/" + imageName);
-                ((XmlElement)tileImageAttributes[0]).SetAttribute("alt", "item thumb");
-
-                TileNotification tileNotification = new TileNotification(tileXml);
-
-                tileNotification.ExpirationTime = DateTimeOffset.UtcNow.AddDays(90);
-
-                TileUpdateManager.CreateTileUpdaterForApplication().Update(tileNotification);
             }
 
             MetroEventSource.Log.Info("Setting Tile Notifications Started");

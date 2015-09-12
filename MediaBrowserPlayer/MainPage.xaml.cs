@@ -94,7 +94,7 @@ namespace SmartPlayer
 
                 settings.SaveUserId(userIdData);
 
-                string[] accessTokenCall = { "Dashboard.getAccessToken()" };
+                string[] accessTokenCall = { "ApiClient.accessToken()" };
                 string accessTokenData = await mainWebPage.InvokeScriptAsync("eval", accessTokenCall);
 
                 settings.SaveAccessToken(accessTokenData);
@@ -106,7 +106,8 @@ namespace SmartPlayer
             }
             catch (Exception exp)
             {
-                App.AddNotification(new Notification() { Title = "Error Extracting Current User Info", Message = exp.Message });
+                MetroEventSource.Log.Info("Error getting user data : " + exp.ToString());
+                //App.AddNotification(new Notification() { Title = "Error Extracting Current User Info", Message = exp.Message });
             }
 
             if (canSetRemote == false)

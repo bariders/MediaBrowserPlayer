@@ -14,10 +14,10 @@
     <MinimumVisualStudioVersion>12</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{BC8A1FFA-BEE3-4634-8014-F334798102B3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <PackageCertificateKeyFile>MediaBrowserPlayer_StoreKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>SmartPlayer_TemporaryKey.pfx</PackageCertificateKeyFile>
     <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
     <AppxBundlePlatforms>neutral</AppxBundlePlatforms>
-    <PackageCertificateThumbprint>6158CB39F09A980D1E78C4FC15A36D48EB9F9DC4</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>7C56FEC4786AAE3C5CA9D86E51FC4597DBC30F99</PackageCertificateThumbprint>
     <AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
     <AppxBundle>Never</AppxBundle>
   </PropertyGroup>
@@ -146,9 +146,8 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <None Include="MediaBrowserPlayer_StoreKey.pfx" />
-    <None Include="MediaBrowserPlayer_TemporaryKey.pfx" />
     <None Include="packages.config" />
+    <None Include="SmartPlayer_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Logo.scale-100.png" />
@@ -206,7 +205,8 @@
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>MediaBrowserPlayer_TemporaryKey.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

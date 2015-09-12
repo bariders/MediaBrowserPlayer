@@ -365,11 +365,20 @@ namespace SmartPlayer.Classes
                 return null;
             }
 
-            Uri url = new Uri("http://" + server + "/mediabrowser/Items/" + Id + "/Images/" + type + "?Width= " + width + "&Height=" + height + "&Format=" + format);
+            Uri url = new Uri("http://" + server + "/mediabrowser/Items/" + Id + "/Images/" + type + "?Width=" + width + "&Height=" + height + "&Format=" + format);
 
             HttpClient httpClient = new HttpClient();
 
-            byte[] data = await httpClient.GetByteArrayAsync(url);
+            byte[] data = null;
+
+            try
+            {
+                data = await httpClient.GetByteArrayAsync(url);
+            }
+            catch(Exception e)
+            {
+                data = null;
+            }
 
             return data;
         }
