@@ -184,7 +184,7 @@ namespace SmartPlayer
 
         public void ShowPrivacyPolicy()
         {
-            Uri uri = new Uri("https://raw.githubusercontent.com/faush01/MediaBrowserPlayer/master/PrivacyPolicy.txt");
+            Uri uri = new Uri("https://raw.githubusercontent.com/faush01/SmartPlayer/master/PrivacyPolicy.txt");
             Launcher.LaunchUriAsync(uri);
         }
 

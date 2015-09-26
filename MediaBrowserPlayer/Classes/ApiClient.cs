@@ -148,7 +148,9 @@ namespace SmartPlayer.Classes
                 if (transcodingInfo != null)
                 {
                     info.AudioCodec = (transcodingInfo["AudioCodec"] != null) ? (string)transcodingInfo["AudioCodec"] : "";
+                    info.IsAudioDirect = (transcodingInfo["IsAudioDirect"] != null) ? (bool)transcodingInfo["IsAudioDirect"] : false;
                     info.VideoCodec = (transcodingInfo["VideoCodec"] != null) ? (string)transcodingInfo["VideoCodec"] : "";
+                    info.IsVideoDirect = (transcodingInfo["IsVideoDirect"] != null) ? (bool)transcodingInfo["IsVideoDirect"] : false;
                     info.Container = (transcodingInfo["Container"] != null) ? (string)transcodingInfo["Container"] : "";
                     info.Bitrate = (transcodingInfo["Bitrate"] != null) ? (int)transcodingInfo["Bitrate"] : 0;
                     info.Framerate = (transcodingInfo["Framerate"] != null) ? (double)transcodingInfo["Framerate"] : 0;

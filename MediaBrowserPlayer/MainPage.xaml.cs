@@ -33,8 +33,6 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
-
 namespace SmartPlayer
 {
     /// <summary>
@@ -60,27 +58,6 @@ namespace SmartPlayer
 
         private async void mainWebPage_LoadCompleted(object sender, NavigationEventArgs e)
         {
-            
-            // if linking to dashboard after login then redirect to media home
-            Uri destination = e.Uri;
-            if (destination.ToString().Contains("dashboard.html?u="))
-            {
-                try
-                {
-                    ServerListItem server = appSettings.GetServer();
-                    if (server != null)
-                    {
-                        Uri mb = new Uri("http://" + server + "/mediabrowser");
-                        mainWebPage.Navigate(mb);
-                    }
-                }
-                catch (Exception exeption)
-                {
-                    App.AddNotification(new Notification() { Title = "Error Loading Main Page", Message = exeption.Message });
-                }
-                return;
-            }
-
             // extract the luser and security token info
             bool canSetRemote = false;
 
@@ -89,12 +66,12 @@ namespace SmartPlayer
             {
                 AppSettings settings = new AppSettings();
 
-                string[] userIdCall = { "Dashboard.getCurrentUserId()" };
+                string[] userIdCall = { "if(typeof Dashboard != 'undefined'){Dashboard.getCurrentUserId()}" };
                 string userIdData = await mainWebPage.InvokeScriptAsync("eval", userIdCall);
 
                 settings.SaveUserId(userIdData);
 
-                string[] accessTokenCall = { "ApiClient.accessToken()" };
+                string[] accessTokenCall = { "if(typeof ApiClient != 'undefined'){ApiClient.accessToken()}" };
                 string accessTokenData = await mainWebPage.InvokeScriptAsync("eval", accessTokenCall);
 
                 settings.SaveAccessToken(accessTokenData);
@@ -107,7 +84,7 @@ namespace SmartPlayer
             catch (Exception exp)
             {
                 MetroEventSource.Log.Info("Error getting user data : " + exp.ToString());
-                //App.AddNotification(new Notification() { Title = "Error Extracting Current User Info", Message = exp.Message });
+                App.AddNotification(new Notification() { Title = "Error Extracting Current User Info", Message = exp.Message });
             }
 
             if (canSetRemote == false)
@@ -130,7 +107,7 @@ namespace SmartPlayer
 
                     string[] args = { "MediaController.setActivePlayer(\"Remote Control\", " + itemObj + ")" };
 
-                    await mainWebPage.InvokeScriptAsync("eval", args);                    
+                    await mainWebPage.InvokeScriptAsync("eval", args);
                 }
             }
             catch(Exception exp)

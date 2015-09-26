@@ -2,7 +2,7 @@
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest">
   <Identity Name="65223BlueBitSolutions.MediaBrowserPlayer" Publisher="CN=AB272381-7B5C-4819-8D05-30E144F1F843" Version="1.4.0.2" />
   <Properties>
-    <DisplayName>Smart Player for Media Browser</DisplayName>
+    <DisplayName>Smart Player for Emby</DisplayName>
     <PublisherDisplayName>Blue Bit Solutions</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -14,8 +14,8 @@
     <Resource Language="x-generate" />
   </Resources>
   <Applications>
-    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="MediaBrowserPlayer.App">
-      <m2:VisualElements DisplayName="Smart Player for Media Browser" Square150x150Logo="Assets\Logo.png" Square30x30Logo="Assets\SmallLogo.png" Description="Smart Player for Media Browser" ForegroundText="light" BackgroundColor="#2c5687">
+    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="SmartPlayer.App">
+      <m2:VisualElements DisplayName="Smart Player for Emby" Square150x150Logo="Assets\Logo.png" Square30x30Logo="Assets\SmallLogo.png" Description="Smart Player for Emby" ForegroundText="light" BackgroundColor="#2c5687">
         <m2:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" DefaultSize="wide310x150Logo">
         </m2:DefaultTile>
         <m2:SplashScreen Image="Assets\SplashScreen.png" />

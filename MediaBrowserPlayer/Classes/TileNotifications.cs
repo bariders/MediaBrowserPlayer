@@ -77,7 +77,7 @@ namespace SmartPlayer.Classes
                 }
             }
 
-            MetroEventSource.Log.Info("Setting Tile Notifications Started");
+            MetroEventSource.Log.Info("Setting Tile Notifications Ended");
 
             return true;
         }

@@ -29,7 +29,9 @@ namespace SmartPlayer.Classes
         public string Id = "";
 
         public string AudioCodec = "";
+        public bool IsAudioDirect = false;
         public string VideoCodec = "";
+        public bool IsVideoDirect = false;
         public string Container = "";
         public int Bitrate = 0;
         public double Framerate = 0;

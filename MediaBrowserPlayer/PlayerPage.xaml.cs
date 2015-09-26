@@ -102,8 +102,6 @@ namespace SmartPlayer
             // reset session info controls
             transcodeInfoACodec.Text = ": -";
             transcodeInfoVCodec.Text = ": -";
-            transcodeInfoRes.Text = ": -";
-            transcodeInfoChan.Text = ": -";
             transcodeInfoBitrate.Text = ": -";
             transcodeInfoSpeed.Text = ": -";
             transcodeInfoComplete.Text = ": -";
@@ -269,15 +267,44 @@ namespace SmartPlayer
             {
                 transcodingProgress.Value = info.CompletionPercentage;
 
-                transcodeInfoACodec.Text = ": " + info.AudioCodec;
-                transcodeInfoVCodec.Text = ": " + info.VideoCodec;
-                transcodeInfoRes.Text = ": " + info.Width + "x" + info.Height;
-                transcodeInfoChan.Text = ": " + info.AudioChannels.ToString();
-                transcodeInfoBitrate.Text = ": " + info.Bitrate.ToString("n0");
+                string videoInfo = info.Width + "x" + info.Height + " " + info.VideoCodec;
+                if(info.IsVideoDirect)
+                {
+                    videoInfo += " Direct"; 
+                }
+                else
+                {
+                    videoInfo += " Trans"; 
+                }
+
+                string audioInfo = info.AudioCodec + " " + info.AudioChannels.ToString() + "Chan";
+                if (info.IsAudioDirect)
+                {
+                    audioInfo += " Direct";
+                }
+                else
+                {
+                    audioInfo += " Trans";
+                }
+
+                transcodeInfoACodec.Text = ": " + audioInfo;
+                transcodeInfoVCodec.Text = ": " + videoInfo;
+                transcodeInfoBitrate.Text = ": " + BytesToString(info.Bitrate);//.ToString("n0");
                 transcodeInfoSpeed.Text = ": " + info.Framerate.ToString("f1") + " fps";
                 transcodeInfoComplete.Text = ": " + info.CompletionPercentage.ToString("f1") + "%";
             }
             
+        }
+
+        String BytesToString(long byteCount)
+        {
+            string[] suf = { " b/s", " Kb/s", " Mb/s", " Gb/s", " Tb/s", " Pb/s", " Eb/s" }; //Longs run out around EB
+            if (byteCount == 0)
+                return "0" + suf[0];
+            long bytes = Math.Abs(byteCount);
+            int place = Convert.ToInt32(Math.Floor(Math.Log(bytes, 1024)));
+            double num = Math.Round(bytes / Math.Pow(1024, place), 1);
+            return (Math.Sign(byteCount) * num).ToString() + suf[place];
         }
 
         private void SetupTimer()
@@ -526,6 +553,20 @@ namespace SmartPlayer
         {
             long currentPos = (long)(playbackProgress.Value);
             PlaybackAction(currentPos);
+        }
+
+        private void streamSettings_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            if (StreamSettingsGrid.Visibility != Visibility.Collapsed)
+            {
+                streamSettings.Text = "Stream Settings +";
+                StreamSettingsGrid.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                streamSettings.Text = "Stream Settings -";
+                StreamSettingsGrid.Visibility = Visibility.Visible;
+            }
         }
     }
 }
